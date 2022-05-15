@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #181818;
+  color: var(--color-white);
+  position: fixed;
+  top: 0;
+  padding: 0 10vw;
+  font-weight: bold;
+  border-bottom: 1px solid var(--color-gray);
+  z-index: 99;
+}
+
+.profile {
+  margin: auto 0;
+  font-family: var(--font-fam-nanum);
+  text-align: center;
+}
+.username {
+  margin: 8px 0 0;
+}
+
+.image {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.logo {
+  background-color: var(--color-black);
+  margin: 0 0 0 -20px;
+  padding: 10px;
+}

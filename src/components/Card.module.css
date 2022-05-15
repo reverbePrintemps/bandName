@@ -1,0 +1,70 @@
+.container {
+  padding: 16px 32px 16px;
+  margin: 1rem 0;
+  border-radius: 16px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-white);
+}
+
+.form input {
+  background: none;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
+.title {
+  font-family: var(--font-fam-knewave);
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 2px;
+  font-size: 20px;
+}
+
+.genre {
+  margin: 0;
+  color: var(--color-gray);
+  font-family: var(--font-fam-inter);
+  text-transform: lowercase;
+  line-height: 1;
+  font-size: 20px;
+}
+
+.country {
+  margin: 12px 0 0;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.country fieldset {
+  border: none;
+}
+
+.username {
+  font-family: var(--font-fam-nanum);
+  font-size: 20px;
+  color: var(--color-gray);
+  display: block;
+  margin: 8px 0 0;
+}
+
+.button {
+  background-color: var(--color-black);
+  font-family: var(--font-fam-knewave);
+  font-size: 20px;
+}
+
+.button:hover {
+  background-color: var(--color-gray);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

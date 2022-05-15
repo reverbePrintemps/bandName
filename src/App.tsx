@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box } from "@mui/material";
+import { DocumentData } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router";
+import Feed from "./components/Feed";
+import Navbar from "./components/Navbar";
+import { firestore, postToJSON } from "./lib/firebase";
 
-function App() {
+// Max post to query per page
+export const POSTS_PER_REQUEST_LIMIT = 3;
+
+const getInitialPosts = async () => {
+  const postsQuery = firestore
+    .collectionGroup("posts")
+    .orderBy("createdAt", "desc")
+    .limit(POSTS_PER_REQUEST_LIMIT);
+
+  try {
+    return (await postsQuery.get()).docs.map(postToJSON);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const App = () => {
+  const [posts, setPosts] = useState<DocumentData>();
+  useEffect(() => {
+    (async () => {
+      const initialPosts = await getInitialPosts();
+      setPosts(initialPosts);
+    })();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={posts && <Feed posts={posts} />} />
+      </Routes>
+    </Box>
   );
-}
+};
 
 export default App;
