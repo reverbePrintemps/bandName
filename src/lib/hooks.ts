@@ -27,3 +27,9 @@ export function useUserData() {
 
   return { user, username };
 }
+
+export async function doesUserExist(username: string) {
+  const ref = firestore.doc(`usernames/${username}`);
+  const { exists } = await ref.get();
+  return exists;
+}

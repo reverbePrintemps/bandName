@@ -1,10 +1,10 @@
 # Currently broken
 
-- Feed/Own Feed
 - Hearts
 
 # TODO
 
+- [x] Show 404 on /username that doesn't exist
 - [x] What happened to load more button?
 - [x] Fix hot reload
 - [x] Create new simple React project, no SSR bullshit
