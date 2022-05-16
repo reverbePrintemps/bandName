@@ -12,7 +12,12 @@ export const UserProfile = ({ user }: UserProfileProps) => {
   const { user: signedIn } = useContext(UserContext);
   return (
     <div className="UserProfile">
-      <img width={50} height={50} src={"/hacker.png"} alt="Profile" />
+      <img
+        width={50}
+        height={50}
+        src={require("../assets/hacker.png")}
+        alt="Profile"
+      />
       <h1>u/{user.username || "Anonymous User"}</h1>
       {signedIn && <SignOutButton />}
     </div>

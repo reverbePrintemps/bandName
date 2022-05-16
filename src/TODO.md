@@ -1,12 +1,13 @@
 # Currently broken
 
+- Feed/Own Feed
 - Hearts
 
 # TODO
 
-- [] What happened to load more button?
+- [x] What happened to load more button?
 - [x] Fix hot reload
-- [] Create new simple React project, no SSR bullshit
+- [x] Create new simple React project, no SSR bullshit
 - [] Check out realtime subscription stuff in hooks.ts
 - [x] Fix fucking no-unused-vars and deploy
 - [x] Stylesheet not applying to PostFeed

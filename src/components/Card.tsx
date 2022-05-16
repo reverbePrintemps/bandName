@@ -52,7 +52,7 @@ export const Card = (props: CardKindProps) => {
               country}
           </h3>
           <div className="Card__footer">
-            <Link to={`/${username}`}>
+            <Link className="Card__username" to={`/${username}`}>
               <strong>u/{username}</strong>
             </Link>
             <Heart postRef={postRef} />

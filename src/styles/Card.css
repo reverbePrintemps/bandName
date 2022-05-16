@@ -33,6 +33,7 @@
   text-transform: lowercase;
   line-height: 1;
   font-size: 20px;
+  font-weight: 100;
 }
 
 .Card__country {
@@ -43,14 +44,6 @@
 
 .Card__country fieldset {
   border: none;
-}
-
-.Card__username {
-  font-family: var(--font-fam-nanum);
-  font-size: 20px;
-  color: var(--color-gray);
-  display: block;
-  margin: 8px 0 0;
 }
 
 .Card__button {
@@ -67,4 +60,12 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
+
+.Card__username {
+  font-family: var(--font-fam-nanum);
+  font-size: 20px;
+  font-weight: 100;
+  color: var(--color-gray);
+  margin: 8px 0 0;
 }

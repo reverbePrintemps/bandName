@@ -7,5 +7,5 @@ export const UserContext = createContext<{
   username: string | null;
 }>({
   user: null,
-  username: "",
+  username: null,
 });

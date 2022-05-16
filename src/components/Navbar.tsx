@@ -28,7 +28,7 @@ export default function Navbar() {
               width={50}
               height={50}
               className="Navbar__image"
-              src={"/hacker.png"}
+              src={require("../assets/hacker.png")}
               alt="User profile"
             />
           </Link>
