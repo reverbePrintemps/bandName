@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Knewave&family=Nanum+Pen+Script&display=swap");
+
+/* Default overrides */
+
+:root {
+  --color-white: #eef0f1;
+  --color-black: #181818;
+  --color-blue: #3b49df;
+  --color-red: #df3b3b;
+  --color-green: #3bdf72;
+  --color-gray: #606060;
+  --font-fam-knewave: "Knewave", cursive;
+  --font-fam-inter: "Inter", sans-serif;
+  --font-fam-nanum: "Nanum Pen Script", cursive;
+}
+
+/* TODO Cleanup overrides */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-fam-inter);
+  background-color: var(--color-white);
+  color: var(--color-black);
+  margin-top: 50px;
+}
+
+main {
+  padding: 1rem 10vw;
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input {
+  display: inline-block;
+  outline: none;
+  border: none;
+  font-size: 1.5rem;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+fieldset {
+  border: none;
+  padding: 1rem 0;
+  font-size: 1.25rem;
+}
+
+code {
+  overflow-x: scroll;
+}
+
+.App__container {
+  padding: 1rem 10vw;
+}

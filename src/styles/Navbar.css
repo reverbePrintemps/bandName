@@ -1,4 +1,4 @@
-.container {
+.Navbar {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -12,23 +12,23 @@
   z-index: 99;
 }
 
-.profile {
+.Navbar__profile {
   margin: auto 0;
   font-family: var(--font-fam-nanum);
   text-align: center;
 }
-.username {
+.Navbar__username {
   margin: 8px 0 0;
 }
 
-.image {
+.Navbar__image {
   border-radius: 50%;
   width: 50px;
   height: 50px;
   cursor: pointer;
 }
 
-.logo {
+.Navbar__logo {
   background-color: var(--color-black);
   margin: 0 0 0 -20px;
   padding: 10px;

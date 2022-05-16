@@ -1,9 +1,11 @@
-.button {
+.Feed__button {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
   font-size: 20px;
+  color: var(--color-white);
+  text-transform: uppercase;
 }
 
-.button:hover {
+.Feed__button:hover {
   background-color: var(--color-gray);
 }

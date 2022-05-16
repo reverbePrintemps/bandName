@@ -1,4 +1,4 @@
-.container {
+.Card {
   padding: 16px 32px 16px;
   margin: 1rem 0;
   border-radius: 16px;
@@ -6,19 +6,19 @@
   background-color: var(--color-white);
 }
 
-.form input {
+.Card__form input {
   background: none;
   padding: 0;
 }
 
-.header {
+.Card__header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   font-size: 1.5rem;
 }
 
-.title {
+.Card__title {
   font-family: var(--font-fam-knewave);
   text-transform: uppercase;
   margin: 0;
@@ -26,7 +26,7 @@
   font-size: 20px;
 }
 
-.genre {
+.Card__genre {
   margin: 0;
   color: var(--color-gray);
   font-family: var(--font-fam-inter);
@@ -35,17 +35,17 @@
   font-size: 20px;
 }
 
-.country {
+.Card__country {
   margin: 12px 0 0;
   font-size: 24px;
   line-height: 1;
 }
 
-.country fieldset {
+.Card__country fieldset {
   border: none;
 }
 
-.username {
+.Card__username {
   font-family: var(--font-fam-nanum);
   font-size: 20px;
   color: var(--color-gray);
@@ -53,17 +53,17 @@
   margin: 8px 0 0;
 }
 
-.button {
+.Card__button {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
   font-size: 20px;
 }
 
-.button:hover {
+.Card__button:hover {
   background-color: var(--color-gray);
 }
 
-.footer {
+.Card__footer {
   display: flex;
   justify-content: space-between;
   align-items: baseline;

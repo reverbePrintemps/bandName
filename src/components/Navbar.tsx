@@ -1,15 +1,16 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../lib/context";
-import styles from "./Navbar.module.css";
+import "../styles/Navbar.css";
+
 // Top navbar
 export default function Navbar() {
   const { user, username } = useContext(UserContext);
 
   return (
-    <nav className={styles.container}>
+    <nav className="Navbar">
       <Link to="/">
-        <button className={styles.logo}>
+        <button className="Navbar__logo">
           <img
             width={110}
             height={80}
@@ -21,17 +22,17 @@ export default function Navbar() {
       </Link>
       {/* user is signed-in and has username */}
       {user && username && (
-        <div className={styles.profile}>
+        <div className="Navbar__profile">
           <Link to={`/${username}`}>
             <img
               width={50}
               height={50}
-              className={styles.image}
+              className="Navbar__image"
               src={"/hacker.png"}
               alt="User profile"
             />
           </Link>
-          <h4 className={styles.username}>u/{username}</h4>
+          <h4 className="Navbar__username">u/{username}</h4>
         </div>
       )}
       {/* user is not signed OR has not created username */}

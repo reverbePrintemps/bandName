@@ -4,6 +4,8 @@
 
 # TODO
 
+- [] What happened to load more button?
+- [] Fix hot reload
 - [] Create new simple React project, no SSR bullshit
 - [] Check out realtime subscription stuff in hooks.ts
 - [x] Fix fucking no-unused-vars and deploy

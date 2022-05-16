@@ -3,9 +3,9 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 import { FormEvent } from "react";
 import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
 import BasicMenu from "./BasicMenu";
-import styles from "./Card.module.css";
 import { Heart } from "./HeartButton";
 import { Link } from "react-router-dom";
+import "../styles/Card.css";
 
 export enum CardKind {
   Post,
@@ -41,17 +41,17 @@ export const Card = (props: CardKindProps) => {
     case CardKind.Post: {
       const { title, genre, username, isOwner, country, postRef } = props;
       return (
-        <div className={styles.container}>
-          <div className={styles.header}>
-            <h2 className={styles.title}>{title}</h2>
+        <div className="Card">
+          <div className="Card__header">
+            <h2 className="Card__title">{title}</h2>
             {isOwner && <BasicMenu />}
           </div>
-          <h3 className={styles.genre}>{genre}</h3>
-          <h3 className={styles.country}>
+          <h3 className="Card__genre">{genre}</h3>
+          <h3 className="Card__country">
             {COUNTRY_FLAGS.find((item) => item.name === country)?.flag ??
               country}
           </h3>
-          <div className={styles.footer}>
+          <div className="Card__footer">
             <Link to={`/${username}`}>
               <strong>u/{username}</strong>
             </Link>
@@ -75,20 +75,20 @@ export const Card = (props: CardKindProps) => {
       } = props;
 
       return (
-        <div className={styles.container}>
-          <form className={styles.form} onSubmit={onSubmit}>
+        <div className="Card">
+          <form className="Card__form" onSubmit={onSubmit}>
             <input
               value={title}
               onChange={(e) => onTitleChange(e.currentTarget.value)}
               placeholder={titlePlaceholder}
-              className={styles.title}
+              className="Card__title"
               autoFocus
             />
             <input
               value={genre}
               onChange={(e) => onGenreChange(e.currentTarget.value)}
               placeholder={genrePlaceholder}
-              className={styles.genre}
+              className="Card__genre"
             />
             <Autocomplete
               value={country}
@@ -99,14 +99,14 @@ export const Card = (props: CardKindProps) => {
                 <TextField {...params} label="Country" />
               )}
               onChange={(e) => onCountryChange(e.currentTarget.textContent)}
-              className={styles.country}
+              className="Card__country"
             />
             <Button
               variant="contained"
               size="large"
               type="submit"
               disabled={!isValid}
-              className={styles.button}
+              className="Card__button"
             >
               {isValid ? "BAND NAME!" : "You can do better than that"}
             </Button>

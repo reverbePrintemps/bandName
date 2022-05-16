@@ -1,12 +1,12 @@
-import { Box } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
-import Feed from "./components/Feed";
-import Navbar from "./components/Navbar";
-import { UserContext } from "./lib/context";
-import { firestore, postToJSON } from "./lib/firebase";
-import { useUserData } from "./lib/hooks";
+import Feed from "./Feed";
+import Navbar from "./Navbar";
+import { UserContext } from "../lib/context";
+import { firestore, postToJSON } from "../lib/firebase";
+import { useUserData } from "../lib/hooks";
+import "../styles/App.css";
 
 // Max post to query per page
 export const POSTS_PER_REQUEST_LIMIT = 3;
@@ -41,12 +41,12 @@ const App = () => {
 
   return (
     <UserContext.Provider value={{ user, username }}>
-      <Box>
-        <Navbar />
+      <Navbar />
+      <div className="App">
         <Routes>
           <Route path="/" element={posts && <Feed posts={posts} />} />
         </Routes>
-      </Box>
+      </div>
     </UserContext.Provider>
   );
 };

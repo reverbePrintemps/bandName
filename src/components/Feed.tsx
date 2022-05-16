@@ -1,12 +1,10 @@
-import { Button } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
-
 import { useContext, useState } from "react";
 import { UserContext } from "../lib/context";
 import { firestore } from "../lib/firebase";
 import { Card, CardKind } from "./Card";
 import { CreateNewPost } from "./CreateNewPost";
-import styles from "./Feed.module.css";
+import "../styles/Feed.css";
 
 export type Post = {
   // TODO might be better type for createdAt
@@ -33,14 +31,12 @@ export const Feed = ({ posts }: PostFeedProps) => {
 
   return (
     <>
-      <Button
-        size="large"
-        variant="contained"
+      <button
+        className="Feed__button"
         onClick={() => setCreatePost(!createPost)}
-        className={styles.button}
       >
         {createPost ? "Actually, maybe not" : "Share your band name"}
-      </Button>
+      </button>
       {createPost && <CreateNewPost />}
       {posts && username
         ? posts.map((post: Post) => {
