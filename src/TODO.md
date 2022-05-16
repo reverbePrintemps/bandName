@@ -5,6 +5,7 @@
 # TODO
 
 - [] Create new simple React project, no SSR bullshit
+- [] Check out realtime subscription stuff in hooks.ts
 - [x] Fix fucking no-unused-vars and deploy
 - [x] Stylesheet not applying to PostFeed
 - [] Load only own posts on load more on /username

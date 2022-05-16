@@ -28,8 +28,6 @@ type PostFeedProps = {
 };
 
 export const Feed = ({ posts }: PostFeedProps) => {
-  console.log("posts", posts);
-
   const { username } = useContext(UserContext);
   const [createPost, setCreatePost] = useState(false);
 
