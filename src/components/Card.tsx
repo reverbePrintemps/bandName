@@ -1,9 +1,9 @@
 import firebase from "firebase/compat/app";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { FormEvent } from "react";
 import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
 import BasicMenu from "./BasicMenu";
-import { Heart } from "./HeartButton";
+import { HeartButton } from "./HeartButton";
 import { Link } from "react-router-dom";
 import "../styles/Card.css";
 
@@ -21,6 +21,7 @@ type CardKindProps =
       username: string;
       isOwner: boolean;
       postRef: firebase.firestore.DocumentReference;
+      heartCount: number;
     }
   | {
       kind: CardKind.CreateNew;
@@ -39,7 +40,8 @@ type CardKindProps =
 export const Card = (props: CardKindProps) => {
   switch (props.kind) {
     case CardKind.Post: {
-      const { title, genre, username, isOwner, country, postRef } = props;
+      const { title, genre, username, isOwner, country, postRef, heartCount } =
+        props;
       return (
         <div className="Card">
           <div className="Card__header">
@@ -55,7 +57,7 @@ export const Card = (props: CardKindProps) => {
             <Link className="Card__username" to={`/${username}`}>
               <strong>u/{username}</strong>
             </Link>
-            <Heart postRef={postRef} />
+            <HeartButton postRef={postRef} count={heartCount} />
           </div>
         </div>
       );
@@ -101,15 +103,9 @@ export const Card = (props: CardKindProps) => {
               onChange={(e) => onCountryChange(e.currentTarget.textContent)}
               className="Card__country"
             />
-            <Button
-              variant="contained"
-              size="large"
-              type="submit"
-              disabled={!isValid}
-              className="Card__button"
-            >
+            <button type="submit" disabled={!isValid} className="Card__button">
               {isValid ? "BAND NAME!" : "You can do better than that"}
-            </Button>
+            </button>
           </form>
         </div>
       );

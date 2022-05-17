@@ -1,17 +1,28 @@
 import { firestore, auth, increment } from "../lib/firebase";
-import { useDocument } from "react-firebase-hooks/firestore";
-import { DocumentData } from "firebase/firestore";
+import "../styles/HeartButton.css";
+
+// TODO Not a fan of this any
+type HeartProps = {
+  postRef: any;
+  count: number;
+};
 
 // Allows user to heart or like a post
-export const Heart = ({ postRef }: DocumentData) => {
+export const HeartButton = ({ postRef, count }: HeartProps) => {
+  const currentlySignedInUser = auth.currentUser;
   // Listen to heart document for currently logged in user
-  const heartRef = postRef.collection("hearts").doc(auth?.currentUser?.uid);
-  const [heartDoc] = useDocument(heartRef);
+  const heartRef = auth.currentUser
+    ? postRef.collection("hearts").doc(auth.currentUser.uid)
+    : undefined;
 
   // Create a user-to-post relationship
-  const addHeart = async () => {
-    const uid = auth?.currentUser?.uid;
+  const addHeart = async (id: string) => {
+    const uid = id;
     const batch = firestore.batch();
+
+    console.log("postRef", postRef);
+    console.log("heartRef", heartRef);
+    console.log("uid", uid);
 
     batch.update(postRef, { heartCount: increment(1) });
     batch.set(heartRef, { uid });
@@ -19,19 +30,12 @@ export const Heart = ({ postRef }: DocumentData) => {
     await batch.commit();
   };
 
-  // Remove a user-to-post relationship
-  const removeHeart = async () => {
-    const batch = firestore.batch();
-
-    batch.update(postRef, { heartCount: increment(-1) });
-    batch.delete(heartRef);
-
-    await batch.commit();
-  };
-
-  return heartDoc?.exists ? (
-    <button onClick={removeHeart}>💔 Unheart</button>
+  return currentlySignedInUser ? (
+    <button
+      className="HeartButton"
+      onClick={() => addHeart(currentlySignedInUser.uid)}
+    >{`${count} 👏`}</button>
   ) : (
-    <button onClick={addHeart}>💗 Heart</button>
+    <p className="HeartCount">{`${count} 👏`}</p>
   );
 };

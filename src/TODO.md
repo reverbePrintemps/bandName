@@ -1,6 +1,7 @@
 # Currently broken
 
 - Hearts
+- Rerenders entire Feed on load more (refreshes to top of page, might be due to rendering spinner? render spinner more locally instead)
 
 # TODO
 
@@ -8,13 +9,14 @@
 - [x] What happened to load more button?
 - [x] Fix hot reload
 - [x] Create new simple React project, no SSR bullshit
-- [] Check out realtime subscription stuff in hooks.ts
 - [x] Fix fucking no-unused-vars and deploy
 - [x] Stylesheet not applying to PostFeed
-- [] Load only own posts on load more on /username
-- [] Get rid of /enter route
+- [x] Load only own posts on load more on /username
+- [x] Show UserProfile component if logged in user is on own page
+- [] Publish to GH Pages (and pray that it works)
 - [] Reintroduce hearts
-- [] Show spinner on post creation?
+- [] Get rid of /enter route
+- [] Show spinner where relevant (loading page, uploading new post)
 - [] Suggest existing genres on typing
 - [] Introduce field validation for genre and country as well
 - [] Create routes to check all posts of same genre or same country
@@ -22,7 +24,7 @@
 - [x] Feed appears to anonymous users
 - [x] Figure out shit with images (avatar and google sign in logo)
 - [x] Bug: Other's posts appearing under my username
-- [] Update feed in realtime instead of brute refresh
+- [] Update feed in realtime instead of brute refresh upon post upload
 - [] Address TODOs
 - [] Introduce ability to delete
 - [x] Delete concept of post content
@@ -42,3 +44,6 @@
 - [] Add tooltip to country flag
 - [] Get rid of concept of slug?
 - [] Undo Firebase hosting
+- [] Check out realtime subscription stuff in hooks.ts
+- [] Unify buttons
+- [] Add "Posted on" date to posts

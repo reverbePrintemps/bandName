@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Auth } from "firebase/auth";
 
-// Custom hook to read  auth record and user profile doc
+// Custom hook to read auth record and user profile doc
 export function useUserData() {
   const typeCastAuth = auth as unknown as Auth;
   const [user] = useAuthState(typeCastAuth);

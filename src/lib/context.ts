@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 export const UserContext = createContext<{
   // TODO Not sure if null here is the best option
-  user: User | null;
+  user: User | null | undefined;
   username: string | null;
 }>({
   user: null,

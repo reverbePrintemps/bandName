@@ -7,14 +7,10 @@ import "../styles/App.css";
 import { UserFeed } from "./UserFeed";
 
 const App = () => {
-  const { user, username } = useUserData();
-
-  if (!user) {
-    return null;
-  }
+  const userData = useUserData();
 
   return (
-    <UserContext.Provider value={{ user, username }}>
+    <UserContext.Provider value={userData}>
       <Navbar />
       <div className="App__container">
         <Routes>

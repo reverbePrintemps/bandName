@@ -5,6 +5,7 @@ import { Card, CardKind } from "./Card";
 import { CreateNewPost } from "./CreateNewPost";
 import { useUserData } from "../lib/hooks";
 import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import { Spinner } from "./Spinner";
 
 import "../styles/Feed.css";
 
@@ -16,8 +17,6 @@ export type Post = {
   title: string;
   genre: string;
   country: string;
-  // There might be a better type?
-  uid: string;
   // Same as for createdAt
   updatedAt: number;
   username: string;
@@ -25,9 +24,7 @@ export type Post = {
 
 export const Feed = () => {
   const currentlyLoggedInUser = useUserData();
-  const [username, setUsername] = useState<string | undefined | null>(
-    currentlyLoggedInUser.username
-  );
+  const [username, setUsername] = useState<string | undefined | null>();
   const [createPost, setCreatePost] = useState(false);
   const [posts, setPosts] = useState<DocumentData>();
   const [last, setLast] = useState<Post>();
@@ -35,7 +32,7 @@ export const Feed = () => {
   const [reachedEnd, setReachedEnd] = useState(
     posts?.length < POSTS_PER_REQUEST_LIMIT
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [userDoc, setUserDoc] = useState<DocumentData>();
 
   const getMorePosts = async (
@@ -49,6 +46,13 @@ export const Feed = () => {
     setLoading(false);
   };
 
+  // Set username if user is logged in
+  useEffect(() => {
+    if (currentlyLoggedInUser.username) {
+      setUsername(currentlyLoggedInUser.username);
+    }
+  }, [currentlyLoggedInUser]);
+
   // Set userDoc
   useEffect(() => {
     if (username) {
@@ -61,9 +65,12 @@ export const Feed = () => {
 
   // Set initial posts
   useEffect(() => {
+    setLoading(true);
     (async () => {
-      const initialPosts = await getPosts(cursor, userDoc);
-      setPosts(initialPosts);
+      if (userDoc) {
+        const initialPosts = await getPosts(cursor, userDoc);
+        setPosts(initialPosts);
+      }
     })();
   }, [userDoc]);
 
@@ -71,6 +78,7 @@ export const Feed = () => {
   useEffect(() => {
     if (posts) {
       setLast(posts[posts.length - 1]);
+      setLoading(false);
     }
   }, [posts]);
 
@@ -80,6 +88,10 @@ export const Feed = () => {
       setCursor(last.createdAt);
     }
   }, [last]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -103,13 +115,19 @@ export const Feed = () => {
                 country={post.country}
                 username={post.username}
                 isOwner={isOwner}
-                postRef={firestore.doc(`posts/${post.uid}`)}
+                postRef={firestore.doc(`posts/${post.slug}`)}
+                heartCount={post.heartCount}
               />
             );
           })
         : null}
       {!loading && !reachedEnd ? (
-        <button onClick={() => getMorePosts(cursor, userDoc)}>Load more</button>
+        <button
+          className="Feed__button"
+          onClick={() => getMorePosts(cursor, userDoc)}
+        >
+          Load more
+        </button>
       ) : (
         !loading && "This is the end, my friend. (for now)"
       )}

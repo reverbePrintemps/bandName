@@ -2,7 +2,7 @@ import { DocumentData } from "firebase/firestore";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 import { SignOutButton } from "./SignOutButton";
-import "./styles/UserProfile.css";
+import "../styles/UserProfile.css";
 
 type UserProfileProps = {
   user: DocumentData;

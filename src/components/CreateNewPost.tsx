@@ -8,6 +8,7 @@ import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
 
 const taunts = [
+  "Get typing, douchebag..",
   "Let's see what you got, big guy.",
   "C'mon hotshot, the stage is all yours",
   "Think you’re funny, huh? Prove it.",

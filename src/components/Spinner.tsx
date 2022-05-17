@@ -1,9 +1,5 @@
-import React from "react";
+import "../styles/Spinner.css";
 
-type Props = { show: boolean };
-
-const Spinner = ({ show }: Props) => {
-  return show ? <div className="Spinner"></div> : null;
+export const Spinner = () => {
+  return <div className="Spinner"></div>;
 };
-
-export default Spinner;

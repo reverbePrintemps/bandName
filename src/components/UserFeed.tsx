@@ -5,24 +5,12 @@ import { Card, CardKind } from "./Card";
 import { useParams } from "react-router-dom";
 import { doesUserExist, useUserData } from "../lib/hooks";
 import { POSTS_PER_REQUEST_LIMIT, getPosts } from "../lib/get-posts";
-
-import "../styles/Feed.css";
 import { Custom404 } from "./404";
+import UserProfile from "./UserProfile";
+import { Post } from "./Feed";
 
-export type Post = {
-  // TODO might be better type for createdAt
-  createdAt: number;
-  heartCount: number;
-  slug: string;
-  title: string;
-  genre: string;
-  country: string;
-  // There might be a better type?
-  uid: string;
-  // Same as for createdAt
-  updatedAt: number;
-  username: string;
-};
+import "../styles/UserFeed.css";
+import { Spinner } from "./Spinner";
 
 export const UserFeed = () => {
   const { urlUsername } = useParams();
@@ -33,9 +21,11 @@ export const UserFeed = () => {
   const [reachedEnd, setReachedEnd] = useState(
     posts?.length < POSTS_PER_REQUEST_LIMIT
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [userDoc, setUserDoc] = useState<DocumentData>();
   const [userExists, setUserExists] = useState<boolean>();
+
+  const isUserProfile = currentlyLoggedInUser.username === urlUsername;
 
   const getMorePosts = async (
     cursor: number | undefined,
@@ -69,6 +59,7 @@ export const UserFeed = () => {
 
   // Set initial posts
   useEffect(() => {
+    setLoading(true);
     if (userDoc) {
       (async () => {
         const initialPosts = await getPosts(cursor, userDoc);
@@ -81,6 +72,7 @@ export const UserFeed = () => {
   useEffect(() => {
     if (posts) {
       setLast(posts[posts.length - 1]);
+      setLoading(false);
     }
   }, [posts]);
 
@@ -91,8 +83,13 @@ export const UserFeed = () => {
     }
   }, [last]);
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
+      {isUserProfile && <UserProfile user={currentlyLoggedInUser} />}
       {posts &&
         posts.map((post: Post) => {
           const isOwner = post.username === currentlyLoggedInUser.username;
@@ -106,13 +103,17 @@ export const UserFeed = () => {
               country={post.country}
               username={post.username}
               isOwner={isOwner}
-              postRef={firestore.doc(`posts/${post.uid}`)}
+              postRef={firestore.doc(`posts/${post.slug}`)}
+              heartCount={post.heartCount}
             />
           );
         })}
       {userExists ? (
         !loading && !reachedEnd ? (
-          <button onClick={() => getMorePosts(cursor, userDoc)}>
+          <button
+            className="UserFeed__button"
+            onClick={() => getMorePosts(cursor, userDoc)}
+          >
             Load more
           </button>
         ) : (
@@ -124,9 +125,3 @@ export const UserFeed = () => {
     </>
   );
 };
-
-// {!loading && !reachedEnd ? (
-//   <button onClick={() => getMorePosts(cursor, userDoc)}>Load more</button>
-// ) : (
-//   !loading && "This is the end, my friend. (for now)"
-// )}

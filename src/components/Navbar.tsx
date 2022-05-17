@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../lib/context";
 import "../styles/Navbar.css";
+import { SignInButton } from "./SignInButton";
 
 // Top navbar
 export default function Navbar() {
@@ -36,11 +37,7 @@ export default function Navbar() {
         </div>
       )}
       {/* user is not signed OR has not created username */}
-      {!username && (
-        <Link to="/enter">
-          <button className="btn-blue">Log in</button>
-        </Link>
-      )}
+      {!username && <SignInButton />}
     </nav>
   );
 }

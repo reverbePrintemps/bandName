@@ -1,0 +1,26 @@
+.SignInButton {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  margin: auto 0;
+  background-color: var(--color-white);
+  font-family: var(--font-fam-knewave);
+  letter-spacing: 1px;
+  font-size: 20px;
+  color: var(--color-black);
+  text-transform: uppercase;
+  padding: 8px 22px;
+}
+
+.SignInButton:hover {
+  background-color: var(--color-gray);
+}
+
+.SignInButton:disabled {
+  background-color: var(--color-gray);
+  cursor: not-allowed;
+}
+
+.SignInButton__text {
+  padding-left: 12px;
+}
