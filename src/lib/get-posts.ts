@@ -2,12 +2,15 @@ import { DocumentData } from "firebase/firestore";
 import { fromMillis, firestore, postToJSON } from "./firebase";
 
 // Max post to query per page
-export const POSTS_PER_REQUEST_LIMIT = 3;
+export const POSTS_PER_REQUEST_LIMIT = 10;
 
 export const getPosts = async (
-  cursor: number | undefined,
-  userDoc: DocumentData | undefined
+  cursor?: number | undefined,
+  userDoc?: DocumentData | undefined
 ) => {
+  console.log("cursor", cursor);
+  console.log("userDoc", userDoc);
+
   // TODO Simplify
   const postsQuery = cursor
     ? userDoc

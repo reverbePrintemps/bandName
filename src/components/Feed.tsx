@@ -24,70 +24,39 @@ export type Post = {
 
 export const Feed = () => {
   const currentlyLoggedInUser = useUserData();
-  const [username, setUsername] = useState<string | undefined | null>();
   const [createPost, setCreatePost] = useState(false);
   const [posts, setPosts] = useState<DocumentData>();
   const [last, setLast] = useState<Post>();
-  const [cursor, setCursor] = useState<number>();
-  const [reachedEnd, setReachedEnd] = useState(
-    posts?.length < POSTS_PER_REQUEST_LIMIT
-  );
-  const [loading, setLoading] = useState<boolean>(true);
-  const [userDoc, setUserDoc] = useState<DocumentData>();
+  const [reachedEnd, setReachedEnd] = useState(true);
+  const [loading, setLoading] = useState<boolean>();
 
-  const getMorePosts = async (
-    cursor: number | undefined,
-    userDoc?: DocumentData
-  ) => {
+  const getMorePosts = async (last: Post | undefined) => {
     setLoading(true);
-    const newPosts = await getPosts(cursor, userDoc);
+    const cursor = last?.createdAt;
+    const newPosts = await getPosts(cursor);
     posts && setPosts(posts.concat(newPosts));
     newPosts && setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
     setLoading(false);
   };
 
-  // Set username if user is logged in
-  useEffect(() => {
-    if (currentlyLoggedInUser.username) {
-      setUsername(currentlyLoggedInUser.username);
-    }
-  }, [currentlyLoggedInUser]);
-
-  // Set userDoc
-  useEffect(() => {
-    if (username) {
-      (async () => {
-        const userDoc = await getUserWithUsername(username);
-        setUserDoc(userDoc);
-      })();
-    }
-  }, [username]);
-
   // Set initial posts
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     (async () => {
-      if (userDoc) {
-        const initialPosts = await getPosts(cursor, userDoc);
-        setPosts(initialPosts);
-      }
+      const initialPosts = await getPosts();
+      setPosts(initialPosts);
     })();
-  }, [userDoc]);
+  }, []);
 
   // Set last
   useEffect(() => {
+    console.log("posts", posts);
+
     if (posts) {
       setLast(posts[posts.length - 1]);
-      setLoading(false);
+      // setLoading(false);
     }
   }, [posts]);
-
-  // Set cursor
-  useEffect(() => {
-    if (last) {
-      setCursor(last.createdAt);
-    }
-  }, [last]);
 
   if (loading) {
     return <Spinner />;
@@ -122,10 +91,7 @@ export const Feed = () => {
           })
         : null}
       {!loading && !reachedEnd ? (
-        <button
-          className="Feed__button"
-          onClick={() => getMorePosts(cursor, userDoc)}
-        >
+        <button className="Feed__button" onClick={() => getMorePosts(last)}>
           Load more
         </button>
       ) : (
