@@ -59,7 +59,7 @@ export const Feed = () => {
   }
 
   return (
-    <>
+    <div className="Feed">
       <button
         className="Feed__button"
         onClick={() => setCreatePost(!createPost)}
@@ -93,8 +93,12 @@ export const Feed = () => {
           Load more
         </button>
       ) : (
-        !loading && "This is the end, my friend. (for now)"
+        !loading && (
+          <span className="Feed__footerMessage">
+            This is the end, my friend. (for now)
+          </span>
+        )
       )}
-    </>
+    </div>
   );
 };

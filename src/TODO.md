@@ -8,6 +8,7 @@
 - [] Optimize design for mobile
 - [] Replace country input with custom filter input from typing to flags
 - [] Reintroduce hearts
+- [] Unify Feeds (?)
 - [] Get rid of /enter route
 - [] Show spinner where relevant (loading page, uploading new post)
 - [] Suggest existing genres on typing
@@ -34,6 +35,7 @@
 - [] Add "Posted on" date to posts
 - [] Clean up unused packages
 - [] Swap default exports/imports to named exports/imports
+- [] Smaller nav bar (no need for profile image in nav bar?)
 
 # DONE
 

@@ -23,7 +23,6 @@ body {
   font-family: var(--font-fam-inter);
   background-color: var(--color-white);
   color: var(--color-black);
-  margin-top: 50px;
 }
 
 main {
@@ -74,4 +73,5 @@ code {
   padding: 16px;
   max-width: 1000px;
   margin: auto;
+  scroll-behavior: smooth;
 }

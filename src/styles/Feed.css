@@ -1,3 +1,10 @@
+.Feed {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  top: 100px;
+}
+
 .Feed__button {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
@@ -6,8 +13,14 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 8px 22px;
+  max-width: max-content;
 }
 
 .Feed__button:hover {
   background-color: var(--color-gray);
+}
+
+.Feed__footerMessage {
+  margin: 22px auto;
+  font-family: var(--font-fam-nanum);
 }
