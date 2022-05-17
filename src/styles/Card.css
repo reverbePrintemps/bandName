@@ -1,6 +1,6 @@
 .Card {
   padding: 16px 22px;
-  margin: 1rem 0;
+  margin: 16px 0 0;
   border-radius: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   background-color: var(--color-white);

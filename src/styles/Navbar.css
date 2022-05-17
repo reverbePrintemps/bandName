@@ -6,10 +6,19 @@
   color: var(--color-white);
   position: fixed;
   top: 0;
-  padding: 0 10vw;
+  left: 0;
   font-weight: bold;
   border-bottom: 1px solid var(--color-gray);
   z-index: 99;
+}
+
+.Navbar__container {
+  padding: 0 16px;
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
 }
 
 .Navbar__profile {

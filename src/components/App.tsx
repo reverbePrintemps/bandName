@@ -11,8 +11,8 @@ const App = () => {
 
   return (
     <UserContext.Provider value={userData}>
-      <Navbar />
       <div className="App__container">
+        <Navbar />
         <Routes>
           <Route path="/" element={<Feed />} />
           <Route path="/:urlUsername" element={<UserFeed />} />
