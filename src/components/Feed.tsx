@@ -31,30 +31,26 @@ export const Feed = () => {
   const [loading, setLoading] = useState<boolean>();
 
   const getMorePosts = async (last: Post | undefined) => {
-    setLoading(true);
     const cursor = last?.createdAt;
     const newPosts = await getPosts(cursor);
     posts && setPosts(posts.concat(newPosts));
     newPosts && setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-    setLoading(false);
   };
 
   // Set initial posts
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     (async () => {
       const initialPosts = await getPosts();
       setPosts(initialPosts);
+      setLoading(false);
     })();
   }, []);
 
   // Set last
   useEffect(() => {
-    console.log("posts", posts);
-
     if (posts) {
       setLast(posts[posts.length - 1]);
-      // setLoading(false);
     }
   }, [posts]);
 
@@ -68,7 +64,9 @@ export const Feed = () => {
         className="Feed__button"
         onClick={() => setCreatePost(!createPost)}
       >
-        {createPost ? "Actually, maybe not" : "Share your band name"}
+        {!loading && createPost
+          ? "Actually, maybe not"
+          : "Share your band name"}
       </button>
       {createPost && <CreateNewPost />}
       {posts

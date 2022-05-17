@@ -104,7 +104,7 @@ export const Card = (props: CardKindProps) => {
               className="Card__country"
             />
             <button type="submit" disabled={!isValid} className="Card__button">
-              {isValid ? "BAND NAME!" : "You can do better than that"}
+              {isValid ? "BAND NAME!" : "No bueno"}
             </button>
           </form>
         </div>

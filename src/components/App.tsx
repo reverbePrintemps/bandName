@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router";
 import { Feed } from "./Feed";
-import Navbar from "./Navbar";
+import { Navbar } from "./Navbar";
 import { UserContext } from "../lib/context";
 import { useUserData } from "../lib/hooks";
-import "../styles/App.css";
 import { UserFeed } from "./UserFeed";
+import "../styles/App.css";
 
 const App = () => {
   const userData = useUserData();

@@ -8,9 +8,6 @@ export const getPosts = async (
   cursor?: number | undefined,
   userDoc?: DocumentData | undefined
 ) => {
-  console.log("cursor", cursor);
-  console.log("userDoc", userDoc);
-
   // TODO Simplify
   const postsQuery = cursor
     ? userDoc

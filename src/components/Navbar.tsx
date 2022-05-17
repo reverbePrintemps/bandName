@@ -1,13 +1,12 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../lib/context";
-import "../styles/Navbar.css";
 import { SignInButton } from "./SignInButton";
+import { Spinner } from "./Spinner";
+import { useUserData } from "../lib/hooks";
 
-// Top navbar
-export default function Navbar() {
-  const { user, username } = useContext(UserContext);
+import "../styles/Navbar.css";
 
+export const Navbar = () => {
+  const userData = useUserData();
   return (
     <nav className="Navbar">
       <Link to="/">
@@ -21,10 +20,9 @@ export default function Navbar() {
           />
         </button>
       </Link>
-      {/* user is signed-in and has username */}
-      {user && username && (
+      {userData.username ? (
         <div className="Navbar__profile">
-          <Link to={`/${username}`}>
+          <Link to={`/${userData.username}`}>
             <img
               width={50}
               height={50}
@@ -33,11 +31,11 @@ export default function Navbar() {
               alt="User profile"
             />
           </Link>
-          <h4 className="Navbar__username">u/{username}</h4>
+          <h4 className="Navbar__username">u/{userData.username}</h4>
         </div>
+      ) : (
+        <SignInButton />
       )}
-      {/* user is not signed OR has not created username */}
-      {!username && <SignInButton />}
     </nav>
   );
-}
+};

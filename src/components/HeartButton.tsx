@@ -20,10 +20,6 @@ export const HeartButton = ({ postRef, count }: HeartProps) => {
     const uid = id;
     const batch = firestore.batch();
 
-    console.log("postRef", postRef);
-    console.log("heartRef", heartRef);
-    console.log("uid", uid);
-
     batch.update(postRef, { heartCount: increment(1) });
     batch.set(heartRef, { uid });
 
