@@ -7,6 +7,7 @@
 
 # TODO
 
+- [] Copy Metatags from other project see if it helps with social media sharing image preview
 - [] Optimize design for mobile
 - [] Replace country input with custom filter input from typing to flags
 - [] Reintroduce hearts
