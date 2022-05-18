@@ -6,6 +6,7 @@ import AuthCheck from "./AuthCheck";
 import toast from "react-hot-toast";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
+import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
 
 // const taunts = [
 //   "Get typing, douchebag..",
@@ -36,7 +37,7 @@ export const CreateNewPost = () => {
   const { username } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
-  const [country, setCountry] = useState<string | null>("");
+  const [country, setCountry] = useState("");
 
   const randomTaunt = useMemo(
     () => taunts[Math.floor(Math.random() * taunts.length)],
@@ -44,6 +45,10 @@ export const CreateNewPost = () => {
   );
   const randomGenre = useMemo(
     () => genres[Math.floor(Math.random() * genres.length)],
+    []
+  );
+  const randomCountry = useMemo(
+    () => COUNTRY_FLAGS[Math.floor(Math.random() * COUNTRY_FLAGS.length)].flag,
     []
   );
 
@@ -97,8 +102,10 @@ export const CreateNewPost = () => {
         genrePlaceholder={randomGenre}
         genre={genre}
         // TODO Could be better
-        country={country ?? ""}
+        countryPlaceholder={randomCountry}
+        country={country}
         onCountryChange={(country) => setCountry(country)}
+        username={username}
         isValid={isValid}
         title={title}
       />

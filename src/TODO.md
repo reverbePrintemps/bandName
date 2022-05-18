@@ -1,7 +1,9 @@
 # Currently broken
 
-- Hearts
+- Weird behavior with country select on blur/focus
+- Country selector not submitting country on post submit
 - Rerenders entire Feed on load more (refreshes to top of page, might be due to rendering spinner? render spinner more locally instead)
+- Hearts
 
 # TODO
 

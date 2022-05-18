@@ -1,10 +1,11 @@
 import firebase from "firebase/compat/app";
-import { Autocomplete, TextField } from "@mui/material";
 import { FormEvent } from "react";
-import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
+import { COUNTRY_FLAGS } from "../constants/constants";
 import BasicMenu from "./BasicMenu";
 import { HeartButton } from "./HeartButton";
 import { Link } from "react-router-dom";
+import { CountrySelector } from "./CountrySelector";
+
 import "../styles/Card.css";
 
 export enum CardKind {
@@ -33,8 +34,10 @@ type CardKindProps =
       genrePlaceholder: string;
       onGenreChange: (e: string) => void;
       country: string;
-      onCountryChange: (e: string | null) => void;
+      countryPlaceholder: string;
+      onCountryChange: (e: string) => void;
       isValid: boolean;
+      username: string | null;
     };
 
 export const Card = (props: CardKindProps) => {
@@ -57,7 +60,11 @@ export const Card = (props: CardKindProps) => {
             <Link className="Card__username" to={`/${username}`}>
               <strong>u/{username}</strong>
             </Link>
-            <HeartButton postRef={postRef} count={heartCount} />
+            <HeartButton
+              ownPost={isOwner}
+              postRef={postRef}
+              count={heartCount}
+            />
           </div>
         </div>
       );
@@ -67,45 +74,50 @@ export const Card = (props: CardKindProps) => {
         onSubmit,
         title,
         genre,
+        country,
         onTitleChange,
         titlePlaceholder,
         genrePlaceholder,
         onGenreChange,
-        isValid,
-        country,
         onCountryChange,
+        isValid,
+        countryPlaceholder,
+        username,
       } = props;
 
       return (
         <div className="Card">
           <form className="Card__form" onSubmit={onSubmit}>
             <input
+              className="Card__formInput Card__title"
               value={title}
               onChange={(e) => onTitleChange(e.currentTarget.value)}
               placeholder={titlePlaceholder}
-              className="Card__title"
               autoFocus
             />
             <input
+              className="Card__formInput Card__genre"
               value={genre}
               onChange={(e) => onGenreChange(e.currentTarget.value)}
               placeholder={genrePlaceholder}
-              className="Card__genre"
             />
-            <Autocomplete
-              value={country}
-              disablePortal
-              options={COUNTRIES}
-              sx={{ width: 200 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Country" />
-              )}
-              onChange={(e) => onCountryChange(e.currentTarget.textContent)}
-              className="Card__country"
+            <CountrySelector
+              country={country}
+              onChange={(country) => onCountryChange(country)}
+              placeholder={countryPlaceholder}
             />
-            <button type="submit" disabled={!isValid} className="Card__button">
-              {isValid ? "BAND NAME!" : "No bueno"}
-            </button>
+            <div className="Card__footer">
+              <Link className="Card__username" to={`/${username}`}>
+                <strong>u/{username}</strong>
+              </Link>
+              <button
+                type="submit"
+                disabled={!isValid}
+                className="Card__button"
+              >
+                {isValid ? "BAND NAME!" : "No bueno"}
+              </button>
+            </div>
           </form>
         </div>
       );

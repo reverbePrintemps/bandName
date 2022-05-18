@@ -3,12 +3,13 @@ import "../styles/HeartButton.css";
 
 // TODO Not a fan of this any
 type HeartProps = {
+  ownPost: boolean;
   postRef: any;
   count: number;
 };
 
 // Allows user to heart or like a post
-export const HeartButton = ({ postRef, count }: HeartProps) => {
+export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
   const currentlySignedInUser = auth.currentUser;
   // Listen to heart document for currently logged in user
   const heartRef = auth.currentUser
@@ -26,7 +27,7 @@ export const HeartButton = ({ postRef, count }: HeartProps) => {
     await batch.commit();
   };
 
-  return currentlySignedInUser ? (
+  return currentlySignedInUser && ownPost ? (
     <button
       className="HeartButton"
       onClick={() => addHeart(currentlySignedInUser.uid)}

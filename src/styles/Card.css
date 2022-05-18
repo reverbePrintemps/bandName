@@ -6,11 +6,12 @@
   background-color: var(--color-white);
 }
 
-.Card__form input {
+.Card__formInput {
   background: none;
   padding: 0;
   outline: none;
   border: none;
+  width: 100%;
 }
 
 .Card__header {
@@ -44,10 +45,6 @@
   line-height: 1;
 }
 
-.Card__country fieldset {
-  border: none;
-}
-
 .Card__button {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
@@ -70,7 +67,7 @@
 .Card__footer {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
 }
 
 .Card__username {
