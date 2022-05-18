@@ -1,12 +1,11 @@
-import { firestore, auth, serverTimestamp } from "../lib/firebase";
-import { UserContext } from "../lib/context";
-import { FormEvent, useContext, useMemo, useState } from "react";
 import kebabCase from "lodash.kebabcase";
-import { AuthCheck } from "./AuthCheck";
 import toast from "react-hot-toast";
+import { firestore, auth, serverTimestamp } from "../lib/firebase";
+import { FormEvent, useState } from "react";
+import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
-import { COUNTRY_FLAGS } from "../constants/constants";
+import { Post } from "./Feed";
 
 // const taunts = [
 //   "Get typing, douchebag..",
@@ -32,9 +31,12 @@ import { COUNTRY_FLAGS } from "../constants/constants";
 //   "Traditional Speed Metal",
 // ];
 
-export const CreateNewPost = () => {
+type CreateNewPostProps = {
+  username: string;
+};
+
+export const CreateNewPost = ({ username }: CreateNewPostProps) => {
   const navigate = useNavigate();
-  const { username } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [country, setCountry] = useState("");
@@ -47,10 +49,10 @@ export const CreateNewPost = () => {
   //   () => genres[Math.floor(Math.random() * genres.length)],
   //   []
   // );
-  const randomCountry = useMemo(
-    () => COUNTRY_FLAGS[Math.floor(Math.random() * COUNTRY_FLAGS.length)].flag,
-    []
-  );
+  // const randomCountry = useMemo(
+  //   () => COUNTRY_FLAGS[Math.floor(Math.random() * COUNTRY_FLAGS.length)].flag,
+  //   []
+  // );
 
   // Ensure slug is URL safe
   const slug = encodeURI(kebabCase(title));
@@ -69,7 +71,7 @@ export const CreateNewPost = () => {
       .doc(slug);
 
     // Tip: give all fields a default value here
-    const data = {
+    const data: Post = {
       title,
       genre,
       country,
@@ -102,7 +104,7 @@ export const CreateNewPost = () => {
         genrePlaceholder={"Enter genre"}
         genre={genre}
         // TODO Could be better
-        countryPlaceholder={randomCountry}
+        countryPlaceholder={"Country"}
         country={country}
         onCountryChange={(country) => setCountry(country)}
         username={username}

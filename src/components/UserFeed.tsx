@@ -8,16 +8,19 @@ import { POSTS_PER_REQUEST_LIMIT, getPosts } from "../lib/get-posts";
 import { Custom404 } from "./404";
 import UserProfile from "./UserProfile";
 import { Post } from "./Feed";
-
-import "../styles/UserFeed.css";
 import { Spinner } from "./Spinner";
 
-export const UserFeed = () => {
+import "../styles/UserFeed.css";
+
+type UserFeedProps = {
+  initialPosts: DocumentData;
+};
+
+export const UserFeed = ({ initialPosts }: UserFeedProps) => {
   const { urlUsername } = useParams();
   const currentlyLoggedInUser = useUserData();
-  const [posts, setPosts] = useState<DocumentData>();
-  const [last, setLast] = useState<Post>();
-  const [cursor, setCursor] = useState<number>();
+  const [posts, setPosts] = useState<DocumentData>(initialPosts);
+  const [last, setLast] = useState<Post>(posts[posts.length - 1]);
   const [reachedEnd, setReachedEnd] = useState(
     posts?.length < POSTS_PER_REQUEST_LIMIT
   );
@@ -27,15 +30,11 @@ export const UserFeed = () => {
 
   const isUserProfile = currentlyLoggedInUser.username === urlUsername;
 
-  const getMorePosts = async (
-    cursor: number | undefined,
-    userDoc?: DocumentData
-  ) => {
-    setLoading(true);
+  const getMorePosts = async (last: Post) => {
+    const cursor = last.createdAt;
     const newPosts = await getPosts(cursor, userDoc);
     posts && setPosts(posts.concat(newPosts));
     newPosts && setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -57,17 +56,6 @@ export const UserFeed = () => {
     }
   }, [urlUsername]);
 
-  // Set initial posts
-  useEffect(() => {
-    setLoading(true);
-    if (userDoc) {
-      (async () => {
-        const initialPosts = await getPosts(cursor, userDoc);
-        setPosts(initialPosts);
-      })();
-    }
-  }, [userDoc]);
-
   // Set last
   useEffect(() => {
     if (posts) {
@@ -75,13 +63,6 @@ export const UserFeed = () => {
       setLoading(false);
     }
   }, [posts]);
-
-  // Set cursor
-  useEffect(() => {
-    if (last) {
-      setCursor(last.createdAt);
-    }
-  }, [last]);
 
   if (loading) {
     return <Spinner />;
@@ -112,7 +93,7 @@ export const UserFeed = () => {
         !loading && !reachedEnd ? (
           <button
             className="UserFeed__button"
-            onClick={() => getMorePosts(cursor, userDoc)}
+            onClick={() => getMorePosts(last)}
           >
             Load more
           </button>

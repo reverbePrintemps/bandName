@@ -1,22 +1,20 @@
 # Currently broken
 
-- Weird behavior with country select on blur/focus
-- Country selector not submitting country on post submit
+- Fix user feed (and footer)
 - Rerenders entire Feed on load more (refreshes to top of page, might be due to rendering spinner? render spinner more locally instead)
-- Hearts
 
 # TODO
 
-- [] Copy Metatags from other project see if it helps with social media sharing image preview
-- [] Optimize design for mobile
-- [] Replace country input with custom filter input from typing to flags
-- [] Reintroduce hearts
+- [] Introduce clapping animation on clap (inspiration: medium.com)
+- [] Rename heart concept to clap
+- [] Debounce (?) clapping update behavior
+- [] Link to posts with similar countries
 - [] Unify Feeds (?)
 - [] Get rid of /enter route
 - [] Show spinner where relevant (loading page, uploading new post)
 - [] Suggest existing genres on typing
+  - [] Link to posts with similar genres
 - [] Introduce field validation for genre and country as well
-- [] Create routes to check all posts of same genre or same country
 - [] Introduce clapping instead of hearts
 - [] Update feed in realtime instead of brute refresh upon post upload
 - [] Address TODOs
@@ -44,6 +42,10 @@
 
 # DONE
 
+- [x] Reintroduce hearts
+- [x] Replace country input with custom filter input from typing to flags
+- [x] Optimize design for mobile
+- [x] Copy Metatags from other project see if it helps with social media sharing image preview
 - [x] Complete list of country flags
 - [x] Publish to GH Pages (and pray that it works)
 - [x] Show 404 on /username that doesn't exist

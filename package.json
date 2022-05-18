@@ -1,6 +1,6 @@
 {
   "name": "band-name-no-ssr",
-  "homepage": "https://reverbePrintemps.github.io/BandNameNoSSR",
+  "homepage": "https://reverbePrintemps.github.io/bandName",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

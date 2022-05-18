@@ -15,7 +15,7 @@
 .Navbar__container {
   padding: 0 16px;
   width: 100%;
-  max-width: 1000px;
+  max-width: var(--container-max-width);
   margin: auto;
   display: flex;
   justify-content: space-between;

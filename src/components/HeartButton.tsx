@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { firestore, auth, increment } from "../lib/firebase";
 import "../styles/HeartButton.css";
 
@@ -10,6 +11,8 @@ type HeartProps = {
 
 // Allows user to heart or like a post
 export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
+  const [shrink, setShrink] = useState(false);
+  const [clapCount, setClapCount] = useState(count);
   const currentlySignedInUser = auth.currentUser;
   // Listen to heart document for currently logged in user
   const heartRef = auth.currentUser
@@ -18,6 +21,8 @@ export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
 
   // Create a user-to-post relationship
   const addHeart = async (id: string) => {
+    console.log("id", id);
+
     const uid = id;
     const batch = firestore.batch();
 
@@ -29,9 +34,14 @@ export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
 
   return !ownPost && currentlySignedInUser ? (
     <button
-      className="HeartButton"
-      onClick={() => addHeart(currentlySignedInUser.uid)}
-    >{`${count} 👏`}</button>
+      className={`HeartButton ${shrink ? "m-shrink" : ""}`}
+      onMouseUp={() => {
+        addHeart(currentlySignedInUser.uid);
+        setShrink(false);
+        setClapCount(clapCount + 1);
+      }}
+      onMouseDown={() => setShrink(true)}
+    >{`${clapCount} 👏`}</button>
   ) : (
     <p className="HeartCount">{`${count} 👏`}</p>
   );

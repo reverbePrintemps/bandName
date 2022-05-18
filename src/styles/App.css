@@ -14,6 +14,7 @@
   --font-fam-inter: "Inter", sans-serif;
   --font-fam-nanum: "Nanum Pen Script", cursive;
   --navbar-height: 80px;
+  --container-max-width: 800px;
 }
 
 /* TODO Cleanup overrides */
@@ -80,6 +81,6 @@ code {
 
 .App__innerContainer {
   margin: auto;
-  max-width: 1000px;
+  max-width: var(--container-max-width);
   width: 100%;
 }

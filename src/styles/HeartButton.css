@@ -5,10 +5,16 @@
   color: var(--color-black);
   border: 1px solid var(--color-gray);
   border-radius: 8px;
+  margin: 0;
+}
+
+.HeartButton.m-shrink {
+  background-color: var(--color-light-gray);
 }
 
 .HeartButton:hover {
-  background-color: var(--color-light-gray);
+  padding: 8px 12px;
+  margin: 4px 4px;
 }
 
 .HeartCount {

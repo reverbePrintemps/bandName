@@ -1,6 +1,6 @@
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, FieldValue } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { firestore, getUserWithUsername } from "../lib/firebase";
+import { firestore } from "../lib/firebase";
 import { Card, CardKind } from "./Card";
 import { CreateNewPost } from "./CreateNewPost";
 import { useUserData } from "../lib/hooks";
@@ -11,41 +11,37 @@ import "../styles/Feed.css";
 
 export type Post = {
   // TODO might be better type for createdAt
-  createdAt: number;
+  createdAt: FieldValue;
   heartCount: number;
   slug: string;
   title: string;
   genre: string;
   country: string;
+  uid: string | undefined;
   // Same as for createdAt
-  updatedAt: number;
+  updatedAt: FieldValue;
   username: string;
 };
 
-export const Feed = () => {
+type FeedProps = {
+  initialPosts: DocumentData;
+};
+
+export const Feed = ({ initialPosts }: FeedProps) => {
   const currentlyLoggedInUser = useUserData();
+  const username = currentlyLoggedInUser.username;
   const [createPost, setCreatePost] = useState(false);
-  const [posts, setPosts] = useState<DocumentData>();
-  const [last, setLast] = useState<Post>();
+  const [posts, setPosts] = useState<DocumentData>(initialPosts);
+  const [last, setLast] = useState<Post>(posts[posts.length - 1]);
   const [reachedEnd, setReachedEnd] = useState(true);
   const [loading, setLoading] = useState<boolean>();
 
-  const getMorePosts = async (last: Post | undefined) => {
-    const cursor = last?.createdAt;
+  const getMorePosts = async (last: Post) => {
+    const cursor = last.createdAt;
     const newPosts = await getPosts(cursor);
     posts && setPosts(posts.concat(newPosts));
     newPosts && setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
   };
-
-  // Set initial posts
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
-      const initialPosts = await getPosts();
-      setPosts(initialPosts);
-      setLoading(false);
-    })();
-  }, []);
 
   // Set last
   useEffect(() => {
@@ -68,7 +64,7 @@ export const Feed = () => {
           ? "Actually, maybe not"
           : "Share your band name"}
       </button>
-      {createPost && <CreateNewPost />}
+      {createPost && username && <CreateNewPost username={username} />}
       {posts
         ? posts.map((post: Post) => {
             const isOwner = post.username === currentlyLoggedInUser.username;
@@ -82,7 +78,7 @@ export const Feed = () => {
                 country={post.country}
                 username={post.username}
                 isOwner={isOwner}
-                postRef={firestore.doc(`posts/${post.slug}`)}
+                postRef={firestore.doc(`users/${post.uid}/posts/${post.slug}`)}
                 heartCount={post.heartCount}
               />
             );

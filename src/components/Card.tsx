@@ -37,7 +37,7 @@ type CardKindProps =
       countryPlaceholder: string;
       onCountryChange: (e: string) => void;
       isValid: boolean;
-      username: string | null;
+      username: string;
     };
 
 export const Card = (props: CardKindProps) => {

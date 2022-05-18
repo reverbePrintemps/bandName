@@ -1,11 +1,11 @@
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, FieldValue } from "firebase/firestore";
 import { fromMillis, firestore, postToJSON } from "./firebase";
 
 // Max post to query per page
 export const POSTS_PER_REQUEST_LIMIT = 10;
 
 export const getPosts = async (
-  cursor?: number | undefined,
+  cursor?: FieldValue,
   userDoc?: DocumentData | undefined
 ) => {
   // TODO Simplify
@@ -14,12 +14,12 @@ export const getPosts = async (
       ? userDoc.ref
           .collection("posts")
           .orderBy("createdAt", "desc")
-          .startAfter(fromMillis(cursor))
+          .startAfter(cursor)
           .limit(POSTS_PER_REQUEST_LIMIT)
       : firestore
           .collectionGroup("posts")
           .orderBy("createdAt", "desc")
-          .startAfter(fromMillis(cursor))
+          .startAfter(cursor)
           .limit(POSTS_PER_REQUEST_LIMIT)
     : userDoc
     ? userDoc.ref

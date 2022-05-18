@@ -6,6 +6,10 @@
   background-color: var(--color-white);
 }
 
+.Card__form {
+  padding: 8px 0 0;
+}
+
 .Card__formInput {
   background: none;
   padding: 0;
@@ -18,7 +22,6 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  font-size: 1.5rem;
 }
 
 .Card__title {
