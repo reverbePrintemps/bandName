@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/BandNameNoSSR/static/css/main.b11bdf9a.css",
-    "main.js": "/BandNameNoSSR/static/js/main.fbce79cf.js",
+    "main.js": "/BandNameNoSSR/static/js/main.05171e14.js",
     "static/js/787.dbe2ce8c.chunk.js": "/BandNameNoSSR/static/js/787.dbe2ce8c.chunk.js",
-    "static/media/band-name-logo.png": "/BandNameNoSSR/static/media/band-name-logo.fef9a291d3e37b69cfbe.png",
+    "static/media/band-name-logo.png": "/BandNameNoSSR/static/media/band-name-logo.147bf882a4d839d140cb.png",
     "static/media/hacker.png": "/BandNameNoSSR/static/media/hacker.4124d026d0da868ba317.png",
     "index.html": "/BandNameNoSSR/index.html",
     "main.b11bdf9a.css.map": "/BandNameNoSSR/static/css/main.b11bdf9a.css.map",
-    "main.fbce79cf.js.map": "/BandNameNoSSR/static/js/main.fbce79cf.js.map",
+    "main.05171e14.js.map": "/BandNameNoSSR/static/js/main.05171e14.js.map",
     "787.dbe2ce8c.chunk.js.map": "/BandNameNoSSR/static/js/787.dbe2ce8c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b11bdf9a.css",
-    "static/js/main.fbce79cf.js"
+    "static/js/main.05171e14.js"
   ]
 }
