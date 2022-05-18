@@ -11,8 +11,8 @@ export const SignInButton = () => {
       <img
         src={require("../assets/google.png")}
         alt="Google icon"
-        width={30}
-        height={30}
+        width={22}
+        height={22}
       />
       <p className="SignInButton__text">Sign in</p>
     </button>

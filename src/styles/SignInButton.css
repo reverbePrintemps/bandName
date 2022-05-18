@@ -6,10 +6,10 @@
   background-color: var(--color-white);
   font-family: var(--font-fam-knewave);
   letter-spacing: 1px;
-  font-size: 20px;
+  font-size: 16px;
   color: var(--color-black);
   text-transform: uppercase;
-  padding: 8px 22px;
+  padding: 8px 16px;
 }
 
 .SignInButton:hover {
@@ -22,5 +22,5 @@
 }
 
 .SignInButton__text {
-  padding-left: 12px;
+  padding-left: 8px;
 }

@@ -13,6 +13,7 @@
   --font-fam-knewave: "Knewave", cursive;
   --font-fam-inter: "Inter", sans-serif;
   --font-fam-nanum: "Nanum Pen Script", cursive;
+  --navbar-height: 80px;
 }
 
 /* TODO Cleanup overrides */
@@ -68,11 +69,17 @@ code {
   overflow-x: scroll;
 }
 
-.App__container {
+.App {
   position: absolute;
-  top: 80px;
+  top: var(--navbar-height);
+  display: flex;
+  width: 100%;
   padding: 16px;
-  max-width: 1000px;
+  background-color: var(--color-light-gray);
+}
+
+.App__innerContainer {
   margin: auto;
-  scroll-behavior: smooth;
+  max-width: 1000px;
+  width: 100%;
 }

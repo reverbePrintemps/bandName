@@ -19,6 +19,7 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
+  box-sizing: content-box;
 }
 .Navbar__profileContainer {
   display: flex;
@@ -43,6 +44,6 @@
 
 .Navbar__logo {
   background-color: var(--color-black);
-  width: 80px;
+  width: var(--navbar-height);
   object-fit: cover;
 }

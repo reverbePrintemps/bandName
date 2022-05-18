@@ -1,8 +1,8 @@
 import { firestore, auth, serverTimestamp } from "../lib/firebase";
 import { UserContext } from "../lib/context";
-import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
+import { FormEvent, useContext, useMemo, useState } from "react";
 import kebabCase from "lodash.kebabcase";
-import AuthCheck from "./AuthCheck";
+import { AuthCheck } from "./AuthCheck";
 import toast from "react-hot-toast";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
