@@ -6,7 +6,7 @@ import AuthCheck from "./AuthCheck";
 import toast from "react-hot-toast";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
-import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
+import { COUNTRY_FLAGS } from "../constants/constants";
 
 // const taunts = [
 //   "Get typing, douchebag..",
@@ -16,21 +16,21 @@ import { COUNTRIES, COUNTRY_FLAGS } from "../constants/constants";
 //   "Stupid-a facking game-a",
 // ];
 
-const taunts = [
-  "Get typing...",
-  "Whatchu got?",
-  "C'mon hotshot..",
-  "Think you’re funny?",
-];
+// const taunts = [
+//   "Get typing...",
+//   "Whatchu got?",
+//   "C'mon hotshot..",
+//   "Think you’re funny?",
+// ];
 
-const genres = [
-  "Progressive Death Metal",
-  "Gypsy Metal",
-  "Country Blues Metal",
-  "Heavy Metal Metal",
-  "Folk Opera Metal",
-  "Traditional Speed Metal",
-];
+// const genres = [
+//   "Progressive Death Metal",
+//   "Gypsy Metal",
+//   "Country Blues Metal",
+//   "Heavy Metal Metal",
+//   "Folk Opera Metal",
+//   "Traditional Speed Metal",
+// ];
 
 export const CreateNewPost = () => {
   const navigate = useNavigate();
@@ -39,14 +39,14 @@ export const CreateNewPost = () => {
   const [genre, setGenre] = useState("");
   const [country, setCountry] = useState("");
 
-  const randomTaunt = useMemo(
-    () => taunts[Math.floor(Math.random() * taunts.length)],
-    []
-  );
-  const randomGenre = useMemo(
-    () => genres[Math.floor(Math.random() * genres.length)],
-    []
-  );
+  // const randomTaunt = useMemo(
+  //   () => taunts[Math.floor(Math.random() * taunts.length)],
+  //   []
+  // );
+  // const randomGenre = useMemo(
+  //   () => genres[Math.floor(Math.random() * genres.length)],
+  //   []
+  // );
   const randomCountry = useMemo(
     () => COUNTRY_FLAGS[Math.floor(Math.random() * COUNTRY_FLAGS.length)].flag,
     []
@@ -97,9 +97,9 @@ export const CreateNewPost = () => {
         kind={CardKind.CreateNew}
         onSubmit={(e) => createPost(e)}
         onTitleChange={(title) => setTitle(title)}
-        titlePlaceholder={randomTaunt}
+        titlePlaceholder={"Enter band name"}
         onGenreChange={(genre) => setGenre(genre)}
-        genrePlaceholder={randomGenre}
+        genrePlaceholder={"Enter genre"}
         genre={genre}
         // TODO Could be better
         countryPlaceholder={randomCountry}

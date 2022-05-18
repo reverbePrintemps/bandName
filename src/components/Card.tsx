@@ -111,11 +111,11 @@ export const Card = (props: CardKindProps) => {
                 <strong>u/{username}</strong>
               </Link>
               <button
+                className="Card__button"
                 type="submit"
                 disabled={!isValid}
-                className="Card__button"
               >
-                {isValid ? "BAND NAME!" : "No bueno"}
+                {isValid ? "🤘 Submit" : "👎 Start typin'"}
               </button>
             </div>
           </form>

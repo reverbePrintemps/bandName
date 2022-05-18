@@ -39,6 +39,8 @@
 - [] Clean up unused packages
 - [] Swap default exports/imports to named exports/imports
 - [] Smaller nav bar (no need for profile image in nav bar?)
+- [] Run npm run deploy on git push
+- [] Write JSDocs
 
 # DONE
 

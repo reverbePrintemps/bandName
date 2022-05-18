@@ -27,7 +27,7 @@ export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
     await batch.commit();
   };
 
-  return currentlySignedInUser && ownPost ? (
+  return !ownPost && currentlySignedInUser ? (
     <button
       className="HeartButton"
       onClick={() => addHeart(currentlySignedInUser.uid)}

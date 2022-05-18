@@ -11,12 +11,8 @@
   background-color: var(--color-light-gray);
 }
 
-.HeartButton:disabled {
-  background-color: var(--color-gray);
-  cursor: not-allowed;
-}
-
 .HeartCount {
   font-size: 16px;
   padding: 12px 16px;
+  margin: 0;
 }
