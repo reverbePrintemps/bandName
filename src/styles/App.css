@@ -69,6 +69,8 @@ code {
 }
 
 .App__container {
+  position: absolute;
+  top: 80px;
   padding: 16px;
   max-width: 1000px;
   margin: auto;

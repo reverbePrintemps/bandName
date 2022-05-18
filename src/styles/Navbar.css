@@ -20,14 +20,18 @@
   display: flex;
   justify-content: space-between;
 }
+.Navbar__profileContainer {
+  display: flex;
+}
 
 .Navbar__profile {
   margin: auto 0;
   font-family: var(--font-fam-nanum);
   text-align: center;
 }
+
 .Navbar__username {
-  margin: 8px 0 0;
+  margin: 0;
 }
 
 .Navbar__image {
@@ -39,6 +43,6 @@
 
 .Navbar__logo {
   background-color: var(--color-black);
-  margin: 0 0 0 -20px;
-  padding: 10px;
+  width: 80px;
+  object-fit: cover;
 }

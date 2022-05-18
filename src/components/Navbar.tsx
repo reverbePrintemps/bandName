@@ -10,19 +10,22 @@ export const Navbar = () => {
     <nav className="Navbar">
       <div className="Navbar__container">
         <Link to="/">
-          <button className="Navbar__logo">
-            <img
-              width={110}
-              height={80}
-              // TODO ????
-              src={require("../assets/band-name-logo.png")}
-              alt="BandName! logo"
-            />
-          </button>
+          <img
+            className="Navbar__logo"
+            // Ratio of image is 1,91:1
+            width={152.8}
+            height={80}
+            // TODO ????
+            src={require("../assets/band-name-logo.png")}
+            alt="BandName! logo"
+          />
         </Link>
         {userData.username ? (
-          <div className="Navbar__profile">
-            <Link to={`/${userData.username}`}>
+          <Link
+            className="Navbar__profileContainer"
+            to={`/${userData.username}`}
+          >
+            <div className="Navbar__profile">
               <img
                 width={50}
                 height={50}
@@ -30,9 +33,9 @@ export const Navbar = () => {
                 src={require("../assets/hacker.png")}
                 alt="User profile"
               />
-            </Link>
-            <h4 className="Navbar__username">u/{userData.username}</h4>
-          </div>
+              <h4 className="Navbar__username">u/{userData.username}</h4>
+            </div>
+          </Link>
         ) : (
           <SignInButton />
         )}
