@@ -6,9 +6,10 @@ import { useParams } from "react-router-dom";
 import { doesUserExist, useUserData } from "../lib/hooks";
 import { POSTS_PER_REQUEST_LIMIT, getPosts } from "../lib/get-posts";
 import { Custom404 } from "./404";
-import UserProfile from "./UserProfile";
+import { UserProfile } from "./UserProfile";
 import { Post } from "./Feed";
 import { Spinner } from "./Spinner";
+import { Navbar } from "./Navbar";
 
 import "../styles/UserFeed.css";
 
@@ -18,6 +19,7 @@ type UserFeedProps = {
 
 export const UserFeed = ({ initialPosts }: UserFeedProps) => {
   const { urlUsername } = useParams();
+  // TODO Use context instead of hook
   const currentlyLoggedInUser = useUserData();
   const [posts, setPosts] = useState<DocumentData>(initialPosts);
   const [last, setLast] = useState<Post>(posts[posts.length - 1]);
@@ -69,7 +71,8 @@ export const UserFeed = ({ initialPosts }: UserFeedProps) => {
   }
 
   return (
-    <>
+    <div className="UserFeed">
+      <Navbar />
       {isUserProfile && <UserProfile user={currentlyLoggedInUser} />}
       {posts &&
         posts.map((post: Post) => {
@@ -105,6 +108,6 @@ export const UserFeed = ({ initialPosts }: UserFeedProps) => {
       ) : (
         <Custom404 itemNotFound="user" />
       )}
-    </>
+    </div>
   );
 };

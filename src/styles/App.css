@@ -71,8 +71,6 @@ code {
 }
 
 .App {
-  position: absolute;
-  top: var(--navbar-height);
   display: flex;
   width: 100%;
   padding: 16px;

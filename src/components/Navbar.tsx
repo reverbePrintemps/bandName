@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom";
 import { SignInButton } from "./SignInButton";
-import { useUserData } from "../lib/hooks";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 
 import "../styles/Navbar.css";
 
-export const Navbar = () => {
-  const userData = useUserData();
+type NavBarProps = {
+  noSignIn?: boolean;
+};
+
+export const Navbar = ({ noSignIn }: NavBarProps) => {
+  const { user, username } = useContext(UserContext);
+
   return (
     <nav className="Navbar">
       <div className="Navbar__container">
@@ -20,11 +26,8 @@ export const Navbar = () => {
             alt="BandName! logo"
           />
         </Link>
-        {userData.username ? (
-          <Link
-            className="Navbar__profileContainer"
-            to={`/${userData.username}`}
-          >
+        {username ? (
+          <Link className="Navbar__profileContainer" to={`/${username}`}>
             <div className="Navbar__profile">
               <img
                 width={50}
@@ -33,10 +36,10 @@ export const Navbar = () => {
                 src={require("../assets/hacker.png")}
                 alt="User profile"
               />
-              <h4 className="Navbar__username">u/{userData.username}</h4>
+              <h4 className="Navbar__username">u/{username}</h4>
             </div>
           </Link>
-        ) : (
+        ) : noSignIn ? null : (
           <SignInButton />
         )}
       </div>

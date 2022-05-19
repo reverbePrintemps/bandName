@@ -1,5 +1,6 @@
 .Feed {
   position: relative;
+  top: var(--navbar-height);
   display: flex;
   flex-direction: column;
 }

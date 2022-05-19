@@ -1,13 +1,11 @@
 import kebabCase from "lodash.kebabcase";
 import toast from "react-hot-toast";
-import { firestore, auth, serverTimestamp } from "../lib/firebase";
+import { firestore, serverTimestamp } from "../lib/firebase";
 import { FormEvent, useState } from "react";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
 import { Post } from "./Feed";
-import { User } from "firebase/auth";
-import { useUserData } from "../lib/hooks";
 
 // const taunts = [
 //   "Get typing, douchebag..",

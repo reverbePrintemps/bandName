@@ -15,7 +15,6 @@
 - [] Dark mode
 - [] Link to posts with similar countries
 - [] Unify Feeds (?)
-- [] Get rid of /enter route
 - [] Show spinner where relevant (loading page, uploading new post)
 - [] Suggest existing genres on typing
   - [] Link to posts with similar genres

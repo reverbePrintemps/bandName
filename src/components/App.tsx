@@ -7,6 +7,7 @@ import { UserFeed } from "./UserFeed";
 import { useEffect, useState } from "react";
 import { getPosts } from "../lib/get-posts";
 import { DocumentData } from "firebase/firestore";
+import { UsernameForm } from "./UsernameForm";
 
 import "../styles/App.css";
 
@@ -26,13 +27,14 @@ const App = () => {
     <UserContext.Provider value={userData}>
       <div className="App">
         <div className="App__innerContainer">
-          <Navbar />
+          {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
           <Routes>
             <Route path="/" element={posts && <Feed initialPosts={posts} />} />
             <Route
               path="/:urlUsername"
               element={posts && <UserFeed initialPosts={posts} />}
             />
+            <Route path="/signup" element={<UsernameForm />} />
           </Routes>
         </div>
       </div>

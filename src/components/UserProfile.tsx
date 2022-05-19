@@ -1,4 +1,3 @@
-import { auth } from "../lib/firebase";
 import { DocumentData } from "firebase/firestore";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
@@ -24,5 +23,3 @@ export const UserProfile = ({ user }: UserProfileProps) => {
     </div>
   );
 };
-
-export default UserProfile;

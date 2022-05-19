@@ -1,3 +1,8 @@
+.UserFeed {
+  position: relative;
+  top: var(--navbar-height);
+}
+
 .UserFeed__button {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
