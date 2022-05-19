@@ -1,16 +1,22 @@
 import firebase from "firebase/compat/app";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { COUNTRY_FLAGS } from "../constants/constants";
-import BasicMenu from "./BasicMenu";
+import { BasicMenu } from "./BasicMenu";
 import { HeartButton } from "./HeartButton";
 import { Link } from "react-router-dom";
 import { CountrySelector } from "./CountrySelector";
+import { Cancel } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { doc, deleteDoc } from "firebase/firestore";
 
 import "../styles/Card.css";
+import { firestore } from "../lib/firebase";
+import toast from "react-hot-toast";
 
 export enum CardKind {
   Post,
-  CreateNew,
+  Submit,
+  Delete,
 }
 
 type CardKindProps =
@@ -23,9 +29,11 @@ type CardKindProps =
       isOwner: boolean;
       postRef: firebase.firestore.DocumentReference;
       heartCount: number;
+      slug: string;
+      uid: string;
     }
   | {
-      kind: CardKind.CreateNew;
+      kind: CardKind.Submit;
       onSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
       title: string;
       titlePlaceholder: string;
@@ -38,18 +46,54 @@ type CardKindProps =
       onCountryChange: (e: string) => void;
       isValid: boolean;
       username: string;
+    }
+  | {
+      kind: CardKind.Delete;
+      slug: string;
+      uid: string;
     };
 
 export const Card = (props: CardKindProps) => {
-  switch (props.kind) {
+  const [cardProps, setCardProps] = useState<CardKindProps>(props);
+
+  // If cardProps changes, update state
+  useEffect(() => {
+    setCardProps(props);
+  }, [props]);
+
+  const deletePost = async (uid: string, slug: string) =>
+    await deleteDoc(doc(firestore, `/users/${uid}/posts`, slug));
+
+  switch (cardProps.kind) {
     case CardKind.Post: {
-      const { title, genre, username, isOwner, country, postRef, heartCount } =
-        props;
+      const {
+        title,
+        genre,
+        username,
+        isOwner,
+        country,
+        postRef,
+        heartCount,
+        slug,
+        uid,
+      } = cardProps;
+
       return (
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">{title}</h2>
-            {isOwner && <BasicMenu />}
+            {isOwner && (
+              <BasicMenu
+                onDeletePressed={() =>
+                  setCardProps({
+                    ...props,
+                    kind: CardKind.Delete,
+                    slug: slug,
+                    uid: uid,
+                  })
+                }
+              />
+            )}
           </div>
           <h3 className="Card__genre">{genre}</h3>
           <h3 className="Card__country">
@@ -69,7 +113,7 @@ export const Card = (props: CardKindProps) => {
         </div>
       );
     }
-    case CardKind.CreateNew: {
+    case CardKind.Submit: {
       const {
         onSubmit,
         title,
@@ -83,7 +127,7 @@ export const Card = (props: CardKindProps) => {
         isValid,
         countryPlaceholder,
         username,
-      } = props;
+      } = cardProps;
 
       return (
         <div className="Card">
@@ -119,6 +163,37 @@ export const Card = (props: CardKindProps) => {
               </button>
             </div>
           </form>
+        </div>
+      );
+    }
+    case CardKind.Delete: {
+      const { slug, uid } = cardProps;
+      return (
+        <div className="Card">
+          <div className="Card__header">
+            <h2 className="Card__title">Are you sure?</h2>
+            <Cancel />
+          </div>
+          <h3 className="Card__genre">There is no turning back</h3>
+          <h3 className="Card__country">(kind of)</h3>
+          <div className="Card__footer">
+            <Button>Turn back</Button>
+            <Button
+              onClick={() => {
+                try {
+                  deletePost(uid, slug).then(() => {
+                    toast.success("Post deleted!");
+                  });
+                } catch (error) {
+                  toast.error(
+                    "There was an error deleting post, please try again later"
+                  );
+                }
+              }}
+            >
+              DELET
+            </Button>
+          </div>
         </div>
       );
     }

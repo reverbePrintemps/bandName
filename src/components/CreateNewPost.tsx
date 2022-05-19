@@ -6,6 +6,8 @@ import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 import { useNavigate } from "react-router-dom";
 import { Post } from "./Feed";
+import { User } from "firebase/auth";
+import { useUserData } from "../lib/hooks";
 
 // const taunts = [
 //   "Get typing, douchebag..",
@@ -31,11 +33,12 @@ import { Post } from "./Feed";
 //   "Traditional Speed Metal",
 // ];
 
+// TODO Find correct type
 type CreateNewPostProps = {
-  username: string;
+  user: any;
 };
 
-export const CreateNewPost = ({ username }: CreateNewPostProps) => {
+export const CreateNewPost = ({ user }: CreateNewPostProps) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
@@ -60,10 +63,14 @@ export const CreateNewPost = ({ username }: CreateNewPostProps) => {
   // Validate length
   const isValid = title.length > 3 && title.length < 100;
 
+  const username = user.username;
+
   // Create a new post in firestore
   const createPost = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const uid = auth?.currentUser?.uid;
+
+    // TODO Silly
+    const uid = user.user.uid;
     const ref = firestore
       .collection("users")
       .doc(uid)
@@ -96,7 +103,7 @@ export const CreateNewPost = ({ username }: CreateNewPostProps) => {
   return (
     <AuthCheck>
       <Card
-        kind={CardKind.CreateNew}
+        kind={CardKind.Submit}
         onSubmit={(e) => createPost(e)}
         onTitleChange={(title) => setTitle(title)}
         titlePlaceholder={"Enter band name"}

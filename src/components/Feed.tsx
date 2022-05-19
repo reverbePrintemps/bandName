@@ -17,7 +17,7 @@ export type Post = {
   title: string;
   genre: string;
   country: string;
-  uid: string | undefined;
+  uid: string;
   // Same as for createdAt
   updatedAt: FieldValue;
   username: string;
@@ -50,6 +50,13 @@ export const Feed = ({ initialPosts }: FeedProps) => {
     }
   }, [posts]);
 
+  // Trigger rerender when username changes
+  useEffect(() => {
+    if (username) {
+      setPosts(posts);
+    }
+  }, [username]);
+
   if (loading) {
     return <Spinner />;
   }
@@ -64,10 +71,13 @@ export const Feed = ({ initialPosts }: FeedProps) => {
           ? "Actually, maybe not"
           : "Share your band name"}
       </button>
-      {createPost && username && <CreateNewPost username={username} />}
-      {posts
+      {createPost && currentlyLoggedInUser && (
+        <CreateNewPost user={currentlyLoggedInUser} />
+      )}
+      {posts && username
         ? posts.map((post: Post) => {
-            const isOwner = post.username === currentlyLoggedInUser.username;
+            const isOwner = post.username === username;
+
             return (
               <Card
                 // TODO using slug for now but might be cleverer to use id
@@ -77,9 +87,11 @@ export const Feed = ({ initialPosts }: FeedProps) => {
                 genre={post.genre}
                 country={post.country}
                 username={post.username}
-                isOwner={isOwner}
-                postRef={firestore.doc(`users/${post.uid}/posts/${post.slug}`)}
                 heartCount={post.heartCount}
+                slug={post.slug}
+                isOwner={isOwner}
+                uid={post.uid}
+                postRef={firestore.doc(`users/${post.uid}/posts/${post.slug}`)}
               />
             );
           })

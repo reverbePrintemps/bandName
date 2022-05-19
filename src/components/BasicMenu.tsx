@@ -6,7 +6,11 @@ import { MoreVert } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function BasicMenu() {
+type BasicMenuProps = {
+  onDeletePressed: () => void;
+};
+
+export const BasicMenu = ({ onDeletePressed }: BasicMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -14,6 +18,7 @@ export default function BasicMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    onDeletePressed();
   };
 
   return (
@@ -47,4 +52,4 @@ export default function BasicMenu() {
       </Menu>
     </>
   );
-}
+};

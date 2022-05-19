@@ -84,6 +84,8 @@ export const UserFeed = ({ initialPosts }: UserFeedProps) => {
               country={post.country}
               username={post.username}
               isOwner={isOwner}
+              slug={post.slug}
+              uid={post.uid}
               postRef={firestore.doc(`posts/${post.slug}`)}
               heartCount={post.heartCount}
             />

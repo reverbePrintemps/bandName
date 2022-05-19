@@ -21,8 +21,6 @@ export const HeartButton = ({ ownPost, postRef, count }: HeartProps) => {
 
   // Create a user-to-post relationship
   const addHeart = async (id: string) => {
-    console.log("id", id);
-
     const uid = id;
     const batch = firestore.batch();
 

@@ -5,9 +5,12 @@
 
 # TODO
 
+- [] Introduce ability to delete
+- [] Introduce ability to edit
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Rename heart concept to clap
 - [] Debounce (?) clapping update behavior
+- [] Dark mode
 - [] Link to posts with similar countries
 - [] Unify Feeds (?)
 - [] Get rid of /enter route
@@ -18,13 +21,12 @@
 - [] Introduce clapping instead of hearts
 - [] Update feed in realtime instead of brute refresh upon post upload
 - [] Address TODOs
-- [] Introduce ability to delete
 - [] Remove unused routes/pages
 - [] BEM the shit out of everything
 - [] Demolish CSS defaults
 - [] Spinner not showing on main feed
 - [] Check for existence of band name on input field change (debounce?)
-- [] Introduce push notification on new post created (PWA?)
+- [] Introduce push notification on new post created (PWA? Firebase Cloud Messaging?)
 - [] Update meta information
 - [] Test sharing (Twitter card validator)
 - [] Install CSS classname usage plugin and run it
@@ -39,6 +41,8 @@
 - [] Smaller nav bar (no need for profile image in nav bar?)
 - [] Run npm run deploy on git push
 - [] Write JSDocs
+- [] React lazy + suspense to lazy load components to improve performance :)
+- [] Create custom hooks to simplify code (cf. https://youtu.be/b0IZo2Aho9Y?t=502)
 
 # DONE
 

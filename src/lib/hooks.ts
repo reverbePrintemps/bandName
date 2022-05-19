@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Auth } from "firebase/auth";
 
 // Custom hook to read auth record and user profile doc
-export function useUserData() {
+export const useUserData = () => {
   const typeCastAuth = auth as unknown as Auth;
   const [user] = useAuthState(typeCastAuth);
   const [username, setUsername] = useState(null);
@@ -26,7 +26,7 @@ export function useUserData() {
   }, [user]);
 
   return { user, username };
-}
+};
 
 export async function doesUserExist(username: string) {
   const ref = firestore.doc(`usernames/${username}`);
