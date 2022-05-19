@@ -77,10 +77,11 @@ code {
   width: 100%;
   padding: 16px;
   background-color: var(--color-light-gray);
+  min-height: 100vh;
 }
 
 .App__innerContainer {
-  margin: auto;
+  margin: 0 auto;
   max-width: var(--container-max-width);
   width: 100%;
 }

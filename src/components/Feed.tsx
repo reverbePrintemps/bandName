@@ -74,7 +74,7 @@ export const Feed = ({ initialPosts }: FeedProps) => {
       {createPost && currentlyLoggedInUser && (
         <CreateNewPost user={currentlyLoggedInUser} />
       )}
-      {posts && username
+      {posts
         ? posts.map((post: Post) => {
             const isOwner = post.username === username;
 

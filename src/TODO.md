@@ -1,10 +1,12 @@
 # Currently broken
 
-- Fix user feed (and footer)
+- Fix user feed showing other's posts (and footer) (might be worth just unifying feeds)
+- Rendering feed footer instead of load more although there are more posts to load
 - Rerenders entire Feed on load more (refreshes to top of page, might be due to rendering spinner? render spinner more locally instead)
 
 # TODO
 
+- [] Implement username choosing (redirect to separate route if no username?)
 - [] Introduce ability to delete
 - [] Introduce ability to edit
 - [] Introduce clapping animation on clap (inspiration: medium.com)
