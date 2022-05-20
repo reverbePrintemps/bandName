@@ -45,6 +45,7 @@ type CardProps =
       titlePlaceholder: string;
       genrePlaceholder: string;
       countryPlaceholder: string;
+      cancelSubmission: () => void;
     } & CommonProps)
   | {
       kind: CardKind.Delete;
@@ -92,6 +93,7 @@ export const Card = (props: CardProps) => {
                     titlePlaceholder: title,
                     genrePlaceholder: genre,
                     countryPlaceholder: country,
+                    cancelSubmission: () => {},
                     slug,
                     user,
                     username,
@@ -123,12 +125,13 @@ export const Card = (props: CardProps) => {
     }
     case CardKind.Submit: {
       const {
+        user,
+        slug,
         title,
         genre,
         country,
-        user,
-        slug,
         username,
+        cancelSubmission,
         titlePlaceholder,
         genrePlaceholder,
         countryPlaceholder,
@@ -166,14 +169,7 @@ export const Card = (props: CardProps) => {
                 placeholder={titlePlaceholder}
                 autoFocus
               />
-              <IconButton
-                className="Card__menuIcon"
-                onClick={() => {
-                  setCardProps({
-                    ...props,
-                  });
-                }}
-              >
+              <IconButton className="Card__menuIcon" onClick={cancelSubmission}>
                 <Cancel />
               </IconButton>
             </div>

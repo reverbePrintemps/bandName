@@ -6,6 +6,8 @@
 # TODO
 
 - [] Link to posts with similar countries
+- [] Load more on scroll
+- [] Sort by latest or most popular
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Debounce (?) clapping update behavior
 - [] Dark mode

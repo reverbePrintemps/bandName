@@ -1,10 +1,10 @@
-import kebabCase from "lodash.kebabcase";
 import { firestore, serverTimestamp } from "../lib/firebase";
-import { FormEvent, useState } from "react";
+import kebabCase from "lodash.kebabcase";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
-import { Post } from "./Feed";
 import { User } from "firebase/auth";
+import { FormEvent } from "react";
+import { Post } from "./Feed";
 
 type CreatePostProps = {
   e: FormEvent<HTMLFormElement>;
@@ -63,9 +63,14 @@ export const createPost = async ({
 type CreateNewPostProps = {
   user: User;
   username: string;
+  cancelSubmission: () => void;
 };
 
-export const CreateNewPost = ({ user, username }: CreateNewPostProps) => {
+export const CreateNewPost = ({
+  user,
+  username,
+  cancelSubmission,
+}: CreateNewPostProps) => {
   return (
     <AuthCheck>
       <Card
@@ -80,6 +85,7 @@ export const CreateNewPost = ({ user, username }: CreateNewPostProps) => {
         titlePlaceholder={"Enter band name"}
         genrePlaceholder={"Enter genre"}
         countryPlaceholder={"Country"}
+        cancelSubmission={cancelSubmission}
       />
     </AuthCheck>
   );

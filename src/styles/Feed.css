@@ -3,7 +3,14 @@
   flex-direction: column;
 }
 
-.Feed__button {
+.Feed__floatingButton {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 99;
+}
+
+.Feed__loadMoreButton {
   background-color: var(--color-black);
   font-family: var(--font-fam-knewave);
   font-size: 20px;
@@ -13,10 +20,6 @@
   padding: 8px 22px;
   margin-top: 16px;
   max-width: max-content;
-}
-
-.Feed__button:hover {
-  background-color: var(--color-gray);
 }
 
 .Feed__footerMessage {

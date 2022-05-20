@@ -6,9 +6,11 @@ import { CreateNewPost } from "./CreateNewPost";
 import { useEffect, useState } from "react";
 import { UserProfile } from "./UserProfile";
 import { useUserData } from "../lib/hooks";
+import { Add } from "@mui/icons-material";
 import { Card, CardKind } from "./Card";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
+import { Fab as FloatingButton } from "@mui/material";
 
 import "../styles/Feed.css";
 
@@ -125,14 +127,22 @@ export const Feed = (feedProps: FeedProps) => {
             <Spinner />
           ) : (
             <div className="Feed">
-              <button
-                className="Feed__button"
-                onClick={() => setCreatePost(!createPost)}
-              >
-                {createPost ? "Actually, maybe not" : "Share your band name"}
-              </button>
+              <div className="Feed__floatingButton">
+                <FloatingButton
+                  href="#top"
+                  color="primary"
+                  aria-label="add"
+                  onClick={() => setCreatePost(true)}
+                >
+                  <Add />
+                </FloatingButton>
+              </div>
               {createPost && user && username && (
-                <CreateNewPost user={user} username={username} />
+                <CreateNewPost
+                  user={user}
+                  username={username}
+                  cancelSubmission={() => setCreatePost(!createPost)}
+                />
               )}
               {posts
                 ? posts.map((post: Post) => {
@@ -161,7 +171,7 @@ export const Feed = (feedProps: FeedProps) => {
                 : null}
               {!reachedEnd ? (
                 <button
-                  className="Feed__button"
+                  className="Feed__loadMoreButton"
                   onClick={() => last && getMorePosts(last)}
                 >
                   Load more
@@ -185,15 +195,6 @@ export const Feed = (feedProps: FeedProps) => {
             <>
               <UserProfile user={currentlyLoggedInUser} />
               <div className="Feed">
-                <button
-                  className="Feed__button"
-                  onClick={() => setCreatePost(!createPost)}
-                >
-                  {createPost ? "Actually, maybe not" : "Share your band name"}
-                </button>
-                {createPost && user && username && (
-                  <CreateNewPost user={user} username={username} />
-                )}
                 {posts
                   ? posts.map((post: Post) => {
                       const isOwner = post.username === username;
@@ -221,7 +222,7 @@ export const Feed = (feedProps: FeedProps) => {
                   : null}
                 {!reachedEnd ? (
                   <button
-                    className="Feed__button"
+                    className="Feed__loadMoreButton"
                     onClick={() => last && getMorePosts(last)}
                   >
                     Load more
