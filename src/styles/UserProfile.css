@@ -1,4 +1,13 @@
 .UserProfile {
+  padding-top: 16px;
   text-align: center;
   font-family: var(--font-fam-nanum);
+}
+
+.UserProfile__username {
+  margin: 0;
+}
+
+.UserProfile__signOut {
+  margin-top: 16px;
 }

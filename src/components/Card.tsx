@@ -19,7 +19,7 @@ export enum CardKind {
   Delete,
 }
 
-type CardKindProps =
+type CardProps =
   | {
       kind: CardKind.Post;
       title: string;
@@ -53,8 +53,8 @@ type CardKindProps =
       uid: string;
     };
 
-export const Card = (props: CardKindProps) => {
-  const [cardProps, setCardProps] = useState<CardKindProps>(props);
+export const Card = (props: CardProps) => {
+  const [cardProps, setCardProps] = useState<CardProps>(props);
 
   // If cardProps changes, update state
   useEffect(() => {

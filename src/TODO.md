@@ -1,21 +1,15 @@
 # Currently broken
 
-- Fix user feed showing other's posts (and footer) (might be worth just unifying feeds)
-- Rendering feed footer instead of load more although there are more posts to load
-- Rerenders entire Feed on load more (refreshes to top of page, might be due to rendering spinner? render spinner more locally instead)
-
 # TODO
 
-- [] Implement username choosing (redirect to separate route if no username?)
-- [] Introduce ability to delete
 - [] Introduce ability to edit
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Rename heart concept to clap
 - [] Debounce (?) clapping update behavior
 - [] Dark mode
 - [] Link to posts with similar countries
-- [] Unify Feeds (?)
 - [] Show spinner where relevant (loading page, uploading new post)
+- [] Create FeedKind and render different stuff depending
 - [] Suggest existing genres on typing
   - [] Link to posts with similar genres
 - [] Introduce field validation for genre and country as well
@@ -44,9 +38,13 @@
 - [] Write JSDocs
 - [] React lazy + suspense to lazy load components to improve performance :)
 - [] Create custom hooks to simplify code (cf. https://youtu.be/b0IZo2Aho9Y?t=502)
+- [] Wrap async stuff in try/catch blocks and handle error cases
 
 # DONE
 
+- [x] Unify Feeds
+- [x] Implement username choosing (redirect to separate route if no username?)
+- [x] Introduce ability to delete
 - [x] Reintroduce hearts
 - [x] Replace country input with custom filter input from typing to flags
 - [x] Optimize design for mobile
@@ -69,3 +67,7 @@
 - [x] Introduce concept of genre
 - [x] Introduce country?
 - [x] What is the "api" page and its hello.js file?
+
+# NO-OP
+
+-̶ [̶]̶ K̶e̶e̶p̶ u̶s̶e̶r̶ s̶i̶g̶n̶e̶d̶ i̶n̶ Edit: firestore sdk does persist auth info in local storage.

@@ -103,7 +103,7 @@ export const UsernameForm = () => {
 
   return (
     <div className="UsernameForm">
-      <Navbar noSignIn />
+      <Navbar noSignIn noProfile={false} />
       {/* only return if not loading */}
       {!formLoading ? (
         <>

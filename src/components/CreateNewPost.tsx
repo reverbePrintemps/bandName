@@ -94,7 +94,7 @@ export const CreateNewPost = ({ user }: CreateNewPostProps) => {
 
     // Imperative navigation after doc is set
     setTimeout(() => {
-      navigate(0);
+      navigate("/");
     }, 3000);
   };
 
