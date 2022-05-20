@@ -14,7 +14,7 @@ export const CountrySelector = ({
   onChange,
   placeholder,
 }: CountrySelectorProps) => {
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState(country);
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const spanRef = useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = useState<number | undefined>(
@@ -27,7 +27,7 @@ export const CountrySelector = ({
 
   useEffect(() => {
     onChange(input);
-  }, [input, onChange]);
+  }, [input]);
 
   return (
     <div className="CountrySelector">
@@ -35,13 +35,13 @@ export const CountrySelector = ({
         <input
           className="CountrySelector__input"
           placeholder={placeholder}
+          value={country}
           onChange={(e) => {
             setInput(e.currentTarget.value);
           }}
           style={{ width: `${inputWidth}px` }}
           onFocus={() => setShowDropDown(true)}
           onBlur={() => setShowDropDown(false)}
-          value={input}
           // Prevent password managers autocomplete
           autoComplete="off"
           data-lpignore="true"

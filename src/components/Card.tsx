@@ -1,17 +1,20 @@
-import firebase from "firebase/compat/app";
-import { FormEvent, useEffect, useState } from "react";
-import { COUNTRY_FLAGS } from "../constants/constants";
+import toast from "react-hot-toast";
+import { User } from "firebase/auth";
 import { BasicMenu } from "./BasicMenu";
-import { HeartButton } from "./HeartButton";
-import { Link } from "react-router-dom";
-import { CountrySelector } from "./CountrySelector";
+import { ClapButton } from "./ClapButton";
+import firebase from "firebase/compat/app";
+import { IconButton } from "@mui/material";
+import { useEffect, useState } from "react";
+import { firestore } from "../lib/firebase";
 import { Cancel } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { createPost } from "./CreateNewPost";
 import { doc, deleteDoc } from "firebase/firestore";
+import { CountrySelector } from "./CountrySelector";
+import { Link, useNavigate } from "react-router-dom";
+import { COUNTRY_FLAGS } from "../constants/constants";
+import { CardButton, CardButtonKind } from "./CardButton";
 
 import "../styles/Card.css";
-import { firestore } from "../lib/firebase";
-import toast from "react-hot-toast";
 
 export enum CardKind {
   Post,
@@ -19,34 +22,30 @@ export enum CardKind {
   Delete,
 }
 
+type CommonProps = {
+  // TODO icky
+  user: User | null | undefined;
+  username: string;
+  slug: string;
+  title: string;
+  genre: string;
+  country: string;
+};
+
 type CardProps =
-  | {
+  | ({
       kind: CardKind.Post;
-      title: string;
-      genre: string;
-      country: string;
-      username: string;
       isOwner: boolean;
       postRef: firebase.firestore.DocumentReference;
-      heartCount: number;
-      slug: string;
+      clapCount: number;
       uid: string;
-    }
-  | {
+    } & CommonProps)
+  | ({
       kind: CardKind.Submit;
-      onSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
-      title: string;
       titlePlaceholder: string;
-      onTitleChange: (e: string) => void;
-      genre: string;
       genrePlaceholder: string;
-      onGenreChange: (e: string) => void;
-      country: string;
       countryPlaceholder: string;
-      onCountryChange: (e: string) => void;
-      isValid: boolean;
-      username: string;
-    }
+    } & CommonProps)
   | {
       kind: CardKind.Delete;
       slug: string;
@@ -55,6 +54,7 @@ type CardProps =
 
 export const Card = (props: CardProps) => {
   const [cardProps, setCardProps] = useState<CardProps>(props);
+  const navigate = useNavigate();
 
   // If cardProps changes, update state
   useEffect(() => {
@@ -67,15 +67,16 @@ export const Card = (props: CardProps) => {
   switch (cardProps.kind) {
     case CardKind.Post: {
       const {
-        title,
-        genre,
+        user,
         username,
         isOwner,
-        country,
         postRef,
-        heartCount,
+        clapCount,
         slug,
         uid,
+        title,
+        genre,
+        country,
       } = cardProps;
 
       return (
@@ -84,9 +85,20 @@ export const Card = (props: CardProps) => {
             <h2 className="Card__title">{title}</h2>
             {isOwner && (
               <BasicMenu
+                onEditPressed={() => {
+                  setCardProps({
+                    ...cardProps,
+                    kind: CardKind.Submit,
+                    titlePlaceholder: title,
+                    genrePlaceholder: genre,
+                    countryPlaceholder: country,
+                    slug,
+                    user,
+                    username,
+                  });
+                }}
                 onDeletePressed={() =>
                   setCardProps({
-                    ...props,
                     kind: CardKind.Delete,
                     slug: slug,
                     uid: uid,
@@ -104,63 +116,84 @@ export const Card = (props: CardProps) => {
             <Link className="Card__username" to={`/${username}`}>
               <strong>u/{username}</strong>
             </Link>
-            <HeartButton
-              ownPost={isOwner}
-              postRef={postRef}
-              count={heartCount}
-            />
+            <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
           </div>
         </div>
       );
     }
     case CardKind.Submit: {
       const {
-        onSubmit,
         title,
         genre,
         country,
-        onTitleChange,
+        user,
+        slug,
+        username,
         titlePlaceholder,
         genrePlaceholder,
-        onGenreChange,
-        onCountryChange,
-        isValid,
         countryPlaceholder,
-        username,
       } = cardProps;
+
+      const isValid = title.length > 3 && title.length < 100;
 
       return (
         <div className="Card">
-          <form className="Card__form" onSubmit={onSubmit}>
-            <input
-              className="Card__formInput Card__title"
-              value={title}
-              onChange={(e) => onTitleChange(e.currentTarget.value)}
-              placeholder={titlePlaceholder}
-              autoFocus
-            />
+          <form
+            onSubmit={(e) =>
+              createPost({
+                e,
+                user,
+                slug,
+                title,
+                genre,
+                country,
+                username,
+              }).then(() => {
+                toast.success("Post created!");
+                setTimeout(() => {
+                  navigate("/");
+                }, 3000);
+              })
+            }
+          >
+            <div className="Card__header">
+              <input
+                className="Card__formInput Card__title"
+                value={title}
+                onChange={(e) =>
+                  setCardProps({ ...cardProps, title: e.currentTarget.value })
+                }
+                placeholder={titlePlaceholder}
+                autoFocus
+              />
+              <IconButton
+                className="Card__menuIcon"
+                onClick={() => {
+                  setCardProps({
+                    ...props,
+                  });
+                }}
+              >
+                <Cancel />
+              </IconButton>
+            </div>
             <input
               className="Card__formInput Card__genre"
               value={genre}
-              onChange={(e) => onGenreChange(e.currentTarget.value)}
+              onChange={(e) =>
+                setCardProps({ ...cardProps, genre: e.currentTarget.value })
+              }
               placeholder={genrePlaceholder}
             />
             <CountrySelector
               country={country}
-              onChange={(country) => onCountryChange(country)}
+              onChange={(input) =>
+                setCardProps({ ...cardProps, country: input })
+              }
               placeholder={countryPlaceholder}
             />
-            <div className="Card__footer">
-              <Link className="Card__username" to={`/${username}`}>
-                <strong>u/{username}</strong>
-              </Link>
-              <button
-                className="Card__button"
-                type="submit"
-                disabled={!isValid}
-              >
-                {isValid ? "🤘 Submit" : "👎 Start typin'"}
-              </button>
+            <div className="Card__footer m-submit">
+              <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
             </div>
           </form>
         </div>
@@ -172,13 +205,23 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">Are you sure?</h2>
-            <Cancel />
+            <IconButton
+              className="Card__menuIcon"
+              onClick={() => {
+                setCardProps({
+                  ...props,
+                });
+              }}
+            >
+              <Cancel />
+            </IconButton>
           </div>
           <h3 className="Card__genre">There is no turning back</h3>
-          <h3 className="Card__country">(kind of)</h3>
-          <div className="Card__footer">
-            <Button>Turn back</Button>
-            <Button
+          <h3 className="Card__country">🙅</h3>
+          <div className="Card__footer m-submit">
+            <CardButton
+              kind={CardButtonKind.Action}
+              label="Delete"
               onClick={() => {
                 try {
                   deletePost(uid, slug).then(() => {
@@ -190,9 +233,7 @@ export const Card = (props: CardProps) => {
                   );
                 }
               }}
-            >
-              DELET
-            </Button>
+            />
           </div>
         </div>
       );

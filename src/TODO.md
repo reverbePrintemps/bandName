@@ -1,13 +1,14 @@
 # Currently broken
 
+- imperative navigation to home upon post creation/deletion (i.e. navigate("/"))
+- rendering spinner causes jump to top on load more, think of another way to show spinner
+
 # TODO
 
-- [] Introduce ability to edit
+- [] Link to posts with similar countries
 - [] Introduce clapping animation on clap (inspiration: medium.com)
-- [] Rename heart concept to clap
 - [] Debounce (?) clapping update behavior
 - [] Dark mode
-- [] Link to posts with similar countries
 - [] Show spinner where relevant (loading page, uploading new post)
 - [] Create FeedKind and render different stuff depending
 - [] Suggest existing genres on typing
@@ -39,9 +40,12 @@
 - [] React lazy + suspense to lazy load components to improve performance :)
 - [] Create custom hooks to simplify code (cf. https://youtu.be/b0IZo2Aho9Y?t=502)
 - [] Wrap async stuff in try/catch blocks and handle error cases
+- [] Migrate db schema from hearts to claps
 
 # DONE
 
+- [x] Introduce ability to edit
+- [x] Rename heart concept to clap
 - [x] Unify Feeds
 - [x] Implement username choosing (redirect to separate route if no username?)
 - [x] Introduce ability to delete

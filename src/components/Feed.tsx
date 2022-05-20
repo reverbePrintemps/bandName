@@ -1,19 +1,18 @@
-import { DocumentData, FieldValue } from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
 import { firestore, fromMillis, getUserWithUsername } from "../lib/firebase";
-import { Card, CardKind } from "./Card";
-import { CreateNewPost } from "./CreateNewPost";
-import { useUserData } from "../lib/hooks";
 import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import { DocumentData, FieldValue } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+import { CreateNewPost } from "./CreateNewPost";
+import { useEffect, useState } from "react";
+import { UserProfile } from "./UserProfile";
+import { useUserData } from "../lib/hooks";
+import { Card, CardKind } from "./Card";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
-import { useNavigate, useParams } from "react-router-dom";
-import { UserProfile } from "./UserProfile";
 
 import "../styles/Feed.css";
 
 export type Post = {
-  // TODO might be better type for createdAt
   createdAt: FieldValue;
   heartCount: number;
   slug: string;
@@ -43,6 +42,7 @@ export const Feed = (feedProps: FeedProps) => {
   const { urlUsername } = useParams();
   // TODO use context instead of hook
   const currentlyLoggedInUser = useUserData();
+  const user = currentlyLoggedInUser.user;
   const username = currentlyLoggedInUser.username;
   const [createPost, setCreatePost] = useState(false);
   const [posts, setPosts] = useState<DocumentData>();
@@ -131,8 +131,8 @@ export const Feed = (feedProps: FeedProps) => {
               >
                 {createPost ? "Actually, maybe not" : "Share your band name"}
               </button>
-              {createPost && currentlyLoggedInUser && (
-                <CreateNewPost user={currentlyLoggedInUser} />
+              {createPost && user && username && (
+                <CreateNewPost user={user} username={username} />
               )}
               {posts
                 ? posts.map((post: Post) => {
@@ -143,11 +143,12 @@ export const Feed = (feedProps: FeedProps) => {
                         // TODO using slug for now but might be cleverer to use id
                         key={post.slug}
                         kind={CardKind.Post}
+                        user={user}
                         title={post.title}
                         genre={post.genre}
                         country={post.country}
                         username={post.username}
-                        heartCount={post.heartCount}
+                        clapCount={post.heartCount}
                         slug={post.slug}
                         isOwner={isOwner}
                         uid={post.uid}
@@ -190,8 +191,8 @@ export const Feed = (feedProps: FeedProps) => {
                 >
                   {createPost ? "Actually, maybe not" : "Share your band name"}
                 </button>
-                {createPost && currentlyLoggedInUser && (
-                  <CreateNewPost user={currentlyLoggedInUser} />
+                {createPost && user && username && (
+                  <CreateNewPost user={user} username={username} />
                 )}
                 {posts
                   ? posts.map((post: Post) => {
@@ -202,11 +203,12 @@ export const Feed = (feedProps: FeedProps) => {
                           // TODO using slug for now but might be cleverer to use id
                           key={post.slug}
                           kind={CardKind.Post}
+                          user={user}
                           title={post.title}
                           genre={post.genre}
                           country={post.country}
                           username={post.username}
-                          heartCount={post.heartCount}
+                          clapCount={post.heartCount}
                           slug={post.slug}
                           isOwner={isOwner}
                           uid={post.uid}

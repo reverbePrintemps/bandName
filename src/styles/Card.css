@@ -6,10 +6,6 @@
   background-color: var(--color-white);
 }
 
-.Card__form {
-  padding: 8px 0 0;
-}
-
 .Card__formInput {
   background: none;
   padding: 0;
@@ -32,6 +28,10 @@
   font-size: 20px;
 }
 
+.Card__menuIcon:hover {
+  color: var(--color-black);
+}
+
 .Card__genre {
   margin: 0;
   color: var(--color-gray);
@@ -48,28 +48,14 @@
   line-height: 1;
 }
 
-.Card__button {
-  font-size: 16px;
-  padding: 12px 16px;
-  background: none;
-  color: var(--color-black);
-  border: 1px solid var(--color-gray);
-  border-radius: 8px;
-}
-
-.Card__button:hover {
-  background-color: var(--color-light-gray);
-}
-
-.Card__button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .Card__footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+.Card__footer.m-submit {
+  justify-content: flex-end;
 }
 
 .Card__username {

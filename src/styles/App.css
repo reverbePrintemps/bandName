@@ -7,6 +7,7 @@
   --color-black: #181818;
   --color-blue: #3b49df;
   --color-red: #df3b3b;
+  --color-red-dark: #b01b1b;
   --color-green: #3bdf72;
   --color-gray: #606060;
   --color-light-gray: #ddd;
@@ -79,6 +80,6 @@ code {
   max-width: var(--container-max-width);
   min-height: 100vh;
   margin: 0 auto;
-  padding: var(--navbar-height) 0 0;
+  padding: var(--navbar-height) 16px 16px;
   flex-direction: column;
 }
