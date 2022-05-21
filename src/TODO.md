@@ -5,6 +5,7 @@
 
 # TODO
 
+- [] Timestamp seems to be reset on post edit which causes edited post to appear at top of feed
 - [] Pull down to refresh feed
 - [] Don't show create post button if signed out || call for sign in when signed out
 - [] Link to posts with similar countries

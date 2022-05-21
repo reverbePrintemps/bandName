@@ -1,19 +1,19 @@
 import toast from "react-hot-toast";
 import { User } from "firebase/auth";
 import { BasicMenu } from "./BasicMenu";
+import { Link } from "react-router-dom";
 import { ClapButton } from "./ClapButton";
 import firebase from "firebase/compat/app";
 import { IconButton } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { firestore } from "../lib/firebase";
 import { Cancel } from "@mui/icons-material";
 import { createPost } from "./CreateNewPost";
-import { doc, deleteDoc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
-import { COUNTRY_FLAGS, DEFAULT_TOAST_DURATION } from "../constants/constants";
 import { CardButton, CardButtonKind } from "./CardButton";
+import { doc, deleteDoc, FieldValue } from "firebase/firestore";
+import { COUNTRY_FLAGS, DEFAULT_TOAST_DURATION } from "../constants/constants";
 
 import "../styles/Card.css";
 
@@ -31,6 +31,7 @@ type CommonProps = {
   title: string;
   genre: string;
   country: string;
+  createdAt: FieldValue | number;
 };
 
 type CardProps =
@@ -140,6 +141,7 @@ export const Card = (props: CardProps) => {
         genre,
         country,
         username,
+        createdAt,
         cancelSubmission,
         titlePlaceholder,
         genrePlaceholder,
@@ -162,6 +164,7 @@ export const Card = (props: CardProps) => {
                     genre,
                     country,
                     username,
+                    createdAt,
                   }),
                   {
                     loading: "Submitting...",

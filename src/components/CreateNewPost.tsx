@@ -1,4 +1,5 @@
-import { firestore, serverTimestamp } from "../lib/firebase";
+import { firestore, fromMillis, serverTimestamp } from "../lib/firebase";
+import { FieldValue } from "firebase/firestore";
 import kebabCase from "lodash.kebabcase";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
@@ -15,6 +16,7 @@ type CreatePostProps = {
   genre: string;
   country: string;
   username: string;
+  createdAt: FieldValue | number;
 };
 
 export const createPost = async ({
@@ -25,6 +27,7 @@ export const createPost = async ({
   genre,
   country,
   username,
+  createdAt,
 }: CreatePostProps) => {
   e.preventDefault();
 
@@ -45,19 +48,31 @@ export const createPost = async ({
     .doc(slug);
 
   // Tip: give all fields a default value here
-  const data: Post = {
-    title,
-    genre,
-    country,
-    slug,
-    uid,
-    username,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-    heartCount: 0,
-  };
-
-  await ref.set(data);
+  // If post already exists, update it
+  if (typeof createdAt === "number") {
+    const data = {
+      title,
+      genre,
+      country,
+      slug,
+      createdAt: fromMillis(createdAt),
+      updatedAt: serverTimestamp(),
+    };
+    await ref.update(data);
+  } else {
+    const data: Post = {
+      title,
+      genre,
+      country,
+      slug,
+      uid,
+      username,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      heartCount: 0,
+    };
+    await ref.set(data);
+  }
 };
 
 type CreateNewPostProps = {
@@ -78,7 +93,6 @@ export const CreateNewPost = ({
         user={user}
         username={username}
         slug={""}
-        // TODO Not sure
         title={""}
         genre={""}
         country={""}
@@ -86,6 +100,7 @@ export const CreateNewPost = ({
         genrePlaceholder={"Enter genre"}
         countryPlaceholder={"Country"}
         cancelSubmission={cancelSubmission}
+        createdAt={serverTimestamp()}
       />
     </AuthCheck>
   );

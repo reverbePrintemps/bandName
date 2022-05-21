@@ -15,7 +15,7 @@ import { Navbar } from "./Navbar";
 import "../styles/Feed.css";
 
 export type Post = {
-  createdAt: FieldValue;
+  createdAt: FieldValue | number;
   heartCount: number;
   slug: string;
   title: string;
@@ -178,6 +178,7 @@ export const Feed = (feedProps: FeedProps) => {
                         postRef={firestore.doc(
                           `users/${post.uid}/posts/${post.slug}`
                         )}
+                        createdAt={post.createdAt}
                       />
                     );
                   })
@@ -229,6 +230,7 @@ export const Feed = (feedProps: FeedProps) => {
                           postRef={firestore.doc(
                             `users/${post.uid}/posts/${post.slug}`
                           )}
+                          createdAt={post.createdAt}
                         />
                       );
                     })
