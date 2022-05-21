@@ -1,12 +1,9 @@
 import { auth, googleAuthProvider } from "../lib/firebase";
 import googleIcon from "../assets/google.png";
-import "../styles/SignInButton.css";
 import toast from "react-hot-toast";
-import { useUserData } from "../lib/hooks";
+import "../styles/SignInButton.css";
 
 export const SignInButton = () => {
-  const userInfo = useUserData();
-
   const signInWithGoogle = async () => {
     await auth.signInWithPopup(googleAuthProvider);
   };
@@ -17,9 +14,7 @@ export const SignInButton = () => {
       onClick={() => {
         toast.promise(signInWithGoogle(), {
           loading: "Signing you in...",
-          success: userInfo.username
-            ? "You're now signed in! Get crackin on the band names! 🤘"
-            : "Welcome to Band Name!, pick a username :)",
+          success: "You’re now signed in! Let's get crackin' 🤘",
           error: "Woops, there was an error signing you in. Please try again.",
         });
       }}

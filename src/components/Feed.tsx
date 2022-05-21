@@ -1,6 +1,16 @@
-import { firestore, fromMillis, getUserWithUsername } from "../lib/firebase";
+import {
+  firestore,
+  fromMillis,
+  getUserWithUsername,
+  postToJSON,
+} from "../lib/firebase";
 import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
-import { DocumentData, FieldValue } from "firebase/firestore";
+import {
+  DocumentData,
+  FieldValue,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { CreateNewPost } from "./CreateNewPost";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -56,6 +66,21 @@ export const Feed = (feedProps: FeedProps) => {
   const [cursor, setCursor] = useState<FieldValue>();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    onSnapshot(
+      query(
+        firestore
+          .collectionGroup("posts")
+          .orderBy("createdAt", "desc")
+          .limit(POSTS_PER_REQUEST_LIMIT)
+      ),
+      (querySnapshot) => {
+        const posts = querySnapshot.docs.map(postToJSON);
+        setPosts(posts);
+      }
+    );
+  }, []);
 
   const getMorePosts = async (last: Post) => {
     setLoading(true);

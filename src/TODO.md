@@ -1,13 +1,9 @@
 # Currently broken
 
-- imperative navigation to home upon post creation/deletion (i.e. navigate("/"))
 - rendering spinner causes jump to top on load more, think of another way to show spinner
 
 # TODO
 
-- [] Timestamp seems to be reset on post edit which causes edited post to appear at top of feed
-- [] Pull down to refresh feed
-- [] Don't show create post button if signed out || call for sign in when signed out
 - [] Link to posts with similar countries
 - [] Load more on scroll
 - [] Sort by latest or most popular
@@ -51,6 +47,8 @@
 
 # DONE
 
+- [x] Don't show create post button if signed out || call for sign in when signed out
+- [x] Timestamp seems to be reset on post edit which causes edited post to appear at top of feed
 - [x] Introduce ability to edit
 - [x] Rename heart concept to clap
 - [x] Unify Feeds
@@ -79,6 +77,7 @@
 - [x] Introduce country?
 - [x] What is the "api" page and its hello.js file?
 
-# NO-OP
+# NO-OP || Not done
 
+-̶ [̶]̶ P̶u̶l̶l̶ d̶o̶w̶n̶ t̶o̶ r̶e̶f̶r̶e̶s̶h̶ f̶e̶e̶d̶ Edit: no good tool out there (tried 3). Perhaps real time data will suppress the need for a pull to refresh behavior
 -̶ [̶]̶ K̶e̶e̶p̶ u̶s̶e̶r̶ s̶i̶g̶n̶e̶d̶ i̶n̶ Edit: firestore sdk does persist auth info in local storage.

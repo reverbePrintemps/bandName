@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { ClapButton } from "./ClapButton";
 import firebase from "firebase/compat/app";
 import { IconButton } from "@mui/material";
-import { useNavigate } from "react-router";
 import { firestore } from "../lib/firebase";
 import { Cancel } from "@mui/icons-material";
 import { createPost } from "./CreateNewPost";
@@ -13,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { CardButton, CardButtonKind } from "./CardButton";
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
-import { COUNTRY_FLAGS, DEFAULT_TOAST_DURATION } from "../constants/constants";
+import { COUNTRY_FLAGS } from "../constants/constants";
 
 import "../styles/Card.css";
 
@@ -58,7 +57,6 @@ type CardProps =
 export const Card = (props: CardProps) => {
   const [cardProps, setCardProps] = useState<CardProps>(props);
   const titleRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
 
   // Setting focus manually to avoid conflicting with scroll to top
   useEffect(() => {
@@ -154,30 +152,24 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <form
             onSubmit={(e) =>
-              toast
-                .promise(
-                  createPost({
-                    e,
-                    user,
-                    slug,
-                    title,
-                    genre,
-                    country,
-                    username,
-                    createdAt,
-                  }),
-                  {
-                    loading: "Submitting...",
-                    success:
-                      "Band name submitted successfully! Refreshing feed...",
-                    error: "Woops. Something went wrong. Try again.",
-                  }
-                )
-                .then(() => {
-                  setTimeout(() => {
-                    navigate(0);
-                  }, DEFAULT_TOAST_DURATION);
-                })
+              toast.promise(
+                createPost({
+                  e,
+                  user,
+                  slug,
+                  title,
+                  genre,
+                  country,
+                  username,
+                  createdAt,
+                }),
+                {
+                  loading: "Submitting...",
+                  success:
+                    "Band name submitted successfully! Refreshing feed...",
+                  error: "Woops. Something went wrong. Try again.",
+                }
+              )
             }
           >
             <div className="Card__header">
@@ -190,7 +182,17 @@ export const Card = (props: CardProps) => {
                 }
                 placeholder={titlePlaceholder}
               />
-              <IconButton className="Card__menuIcon" onClick={cancelSubmission}>
+              <IconButton
+                className="Card__menuIcon"
+                onClick={() => {
+                  // TODO Not great, but it works
+                  // cancelSubmission when creating new post and setCardProps for when editing post
+                  cancelSubmission();
+                  setCardProps({
+                    ...props,
+                  });
+                }}
+              >
                 <Cancel />
               </IconButton>
             </div>
@@ -240,18 +242,11 @@ export const Card = (props: CardProps) => {
               kind={CardButtonKind.Action}
               label="Delete"
               onClick={() => {
-                toast
-                  .promise(deletePost(uid, slug), {
-                    loading: "Deleting...",
-                    success:
-                      "Band name deleted successfully! Refreshing feed...",
-                    error: "Woops. Something went wrong. Try again.",
-                  })
-                  .then(() => {
-                    setTimeout(() => {
-                      navigate(0);
-                    }, DEFAULT_TOAST_DURATION);
-                  });
+                toast.promise(deletePost(uid, slug), {
+                  loading: "Deleting...",
+                  success: "Band name deleted successfully! Refreshing feed...",
+                  error: "Woops. Something went wrong. Try again.",
+                });
               }}
             />
           </div>
