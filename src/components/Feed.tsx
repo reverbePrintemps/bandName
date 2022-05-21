@@ -4,7 +4,11 @@ import {
   getUserWithUsername,
   postToJSON,
 } from "../lib/firebase";
-import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import {
+  getFilteredPosts,
+  getPosts,
+  POSTS_PER_REQUEST_LIMIT,
+} from "../lib/get-posts";
 import {
   DocumentData,
   FieldValue,
@@ -39,7 +43,7 @@ export type Post = {
 
 export enum FeedKind {
   Public,
-  User,
+  Filtered,
 }
 
 type FeedProps =
@@ -47,14 +51,14 @@ type FeedProps =
       kind: FeedKind.Public;
     }
   | {
-      kind: FeedKind.User;
+      kind: FeedKind.Filtered;
     };
 
+// TODO simplify
 export const Feed = (feedProps: FeedProps) => {
-  const { urlUsername } = useParams();
+  const { path } = useParams();
   // TODO use context instead of hook
   const currentlyLoggedInUser = useUserData();
-
   const user = currentlyLoggedInUser.user;
   const username = currentlyLoggedInUser.username;
   const [createPost, setCreatePost] = useState(false);
@@ -117,20 +121,34 @@ export const Feed = (feedProps: FeedProps) => {
 
   // Set userDoc
   useEffect(() => {
-    if (urlUsername) {
+    if (path === username) {
       (async () => {
-        await getUserWithUsername(urlUsername).then((userDoc) =>
-          setUserDoc(userDoc)
-        );
+        await getUserWithUsername(path).then((userDoc) => setUserDoc(userDoc));
+      })();
+    } else if (path !== undefined) {
+      (async () => {
+        await getFilteredPosts(path).then((newPosts) => {
+          setLoading(true);
+          setPosts(newPosts);
+          setLoading(false);
+        });
       })();
     } else {
-      setUserDoc(undefined);
+      // TODO Duplicate code below, should be extracted
+      (async () => {
+        await getPosts(undefined, userDoc).then((newPosts) => {
+          setLoading(true);
+          setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
+          setPosts(newPosts);
+          setLoading(false);
+        });
+      })();
     }
-  }, [urlUsername]);
+  }, [path, username]);
 
   // Trigger rerender when username changes
   useEffect(() => {
-    // When anonymouse, username === null
+    // When logged out, username === null
     const hasNoUsername = username === undefined;
     if (hasNoUsername) {
       navigate("/signup");
@@ -224,7 +242,7 @@ export const Feed = (feedProps: FeedProps) => {
           )}
         </>
       );
-    case FeedKind.User:
+    case FeedKind.Filtered:
       return (
         <>
           <Navbar noSignIn={false} noProfile />

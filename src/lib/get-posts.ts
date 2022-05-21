@@ -1,9 +1,9 @@
 import { DocumentData, FieldValue } from "firebase/firestore";
 import { firestore, postToJSON } from "./firebase";
 
-// Max post to query per page
 export const POSTS_PER_REQUEST_LIMIT = 10;
 
+// TODO Extract into separate functions
 export const getPosts = async (
   cursor?: FieldValue | number | null,
   userDoc?: DocumentData | null
@@ -33,6 +33,19 @@ export const getPosts = async (
 
   try {
     return (await postsQuery.get()).docs.map(postToJSON);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getFilteredPosts = async (filter: string) => {
+  const query = firestore
+    .collectionGroup("posts")
+    .where("country", "==", filter)
+    .orderBy("createdAt", "desc")
+    .limit(POSTS_PER_REQUEST_LIMIT);
+  try {
+    return (await query.get()).docs.map(postToJSON);
   } catch (error) {
     console.error(error);
   }

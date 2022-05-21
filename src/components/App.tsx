@@ -16,10 +16,7 @@ const App = () => {
           {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
           <Routes>
             <Route path="/" element={<Feed kind={FeedKind.Public} />} />
-            <Route
-              path="/:urlUsername"
-              element={<Feed kind={FeedKind.User} />}
-            />
+            <Route path="/:path" element={<Feed kind={FeedKind.Filtered} />} />
             <Route path="/signup" element={<UsernameForm />} />
           </Routes>
         </div>

@@ -4,7 +4,7 @@
 
 # TODO
 
-- [] Link to posts with similar countries
+- [] On country path, feed seems to load more content for a second. Investigate.
 - [] Load more on scroll
 - [] Sort by latest or most popular
 - [] Introduce clapping animation on clap (inspiration: medium.com)
@@ -47,6 +47,7 @@
 
 # DONE
 
+- [x] Link to posts with similar countries
 - [x] Don't show create post button if signed out || call for sign in when signed out
 - [x] Timestamp seems to be reset on post edit which causes edited post to appear at top of feed
 - [x] Introduce ability to edit

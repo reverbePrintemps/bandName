@@ -119,8 +119,7 @@ export const Card = (props: CardProps) => {
           </div>
           <h3 className="Card__genre">{genre}</h3>
           <h3 className="Card__country">
-            {COUNTRY_FLAGS.find((item) => item.name === country)?.flag ??
-              country}
+            <a href={country}>{country}</a>
           </h3>
           <div className="Card__footer">
             <Link className="Card__username" to={`/${username}`}>
