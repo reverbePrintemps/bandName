@@ -1,7 +1,7 @@
 import { debounce } from "@mui/material";
 import { useState, useEffect, useCallback, useContext } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { UserContext } from "../lib/context";
 import { firestore } from "../lib/firebase";
 import { Navbar } from "./Navbar";
@@ -9,6 +9,7 @@ import { Navbar } from "./Navbar";
 import "../styles/UsernameForm.css";
 import { UsernameMessage } from "./UsernameMessage";
 import { Spinner } from "./Spinner";
+import { DEFAULT_TOAST_DURATION } from "../constants/constants";
 
 export const UsernameForm = () => {
   const { user, username } = useContext(UserContext);
@@ -16,7 +17,6 @@ export const UsernameForm = () => {
   const [isValid, setIsValid] = useState(false);
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  const [canRedirect, setCanRedirect] = useState(true);
   const navigate = useNavigate();
 
   // Hit the database for username match after each debounced change
@@ -37,20 +37,12 @@ export const UsernameForm = () => {
     checkUsername(formValue);
   }, [formValue]);
 
-  useEffect(() => {
-    if (canRedirect && username) {
-      navigate("/");
-    }
-  }, [navigate, username]);
-
   if (!user) {
     return null;
   }
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Wait for toast to finish before redirecting
-    setCanRedirect(false);
 
     // Create refs for both documents
     const userDoc = firestore.doc(`users/${user.uid}`);
@@ -66,11 +58,11 @@ export const UsernameForm = () => {
 
     try {
       await batch.commit().then(() => {
-        toast.success("Account created successfully!");
+        toast.success("Account created successfully! Redirecting...");
         setFormLoading(true);
         setTimeout(() => {
           navigate("/");
-        }, 3000);
+        }, DEFAULT_TOAST_DURATION);
       });
     } catch (error) {
       // TODO handle error

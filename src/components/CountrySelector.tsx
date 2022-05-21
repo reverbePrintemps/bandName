@@ -55,7 +55,6 @@ export const CountrySelector = ({
         ref={spanRef}
         dangerouslySetInnerHTML={{ __html: input.replace(/\s/g, "&nbsp;") }}
       ></span>
-      {/* </div> */}
       {showDropDown && (
         <ul className="CountrySelector__dropdown">
           {COUNTRY_FLAGS.filter(

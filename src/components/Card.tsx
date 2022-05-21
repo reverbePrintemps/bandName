@@ -4,14 +4,15 @@ import { BasicMenu } from "./BasicMenu";
 import { ClapButton } from "./ClapButton";
 import firebase from "firebase/compat/app";
 import { IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { firestore } from "../lib/firebase";
 import { Cancel } from "@mui/icons-material";
 import { createPost } from "./CreateNewPost";
 import { doc, deleteDoc } from "firebase/firestore";
 import { CountrySelector } from "./CountrySelector";
-import { Link, useNavigate } from "react-router-dom";
-import { COUNTRY_FLAGS } from "../constants/constants";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { COUNTRY_FLAGS, DEFAULT_TOAST_DURATION } from "../constants/constants";
 import { CardButton, CardButtonKind } from "./CardButton";
 
 import "../styles/Card.css";
@@ -55,7 +56,15 @@ type CardProps =
 
 export const Card = (props: CardProps) => {
   const [cardProps, setCardProps] = useState<CardProps>(props);
+  const titleRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  // Setting focus manually to avoid conflicting with scroll to top
+  useEffect(() => {
+    setTimeout(() => {
+      titleRef.current?.focus();
+    }, 500);
+  }, []);
 
   // If cardProps changes, update state
   useEffect(() => {
@@ -68,16 +77,16 @@ export const Card = (props: CardProps) => {
   switch (cardProps.kind) {
     case CardKind.Post: {
       const {
-        user,
-        username,
-        isOwner,
-        postRef,
-        clapCount,
-        slug,
         uid,
+        user,
+        slug,
         title,
         genre,
+        isOwner,
+        postRef,
         country,
+        username,
+        clapCount,
       } = cardProps;
 
       return (
@@ -143,31 +152,40 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <form
             onSubmit={(e) =>
-              createPost({
-                e,
-                user,
-                slug,
-                title,
-                genre,
-                country,
-                username,
-              }).then(() => {
-                toast.success("Post created!");
-                setTimeout(() => {
-                  navigate("/");
-                }, 3000);
-              })
+              toast
+                .promise(
+                  createPost({
+                    e,
+                    user,
+                    slug,
+                    title,
+                    genre,
+                    country,
+                    username,
+                  }),
+                  {
+                    loading: "Submitting...",
+                    success:
+                      "Band name submitted successfully! Refreshing feed...",
+                    error: "Woops. Something went wrong. Try again.",
+                  }
+                )
+                .then(() => {
+                  setTimeout(() => {
+                    navigate(0);
+                  }, DEFAULT_TOAST_DURATION);
+                })
             }
           >
             <div className="Card__header">
               <input
+                ref={titleRef}
                 className="Card__formInput Card__title"
                 value={title}
                 onChange={(e) =>
                   setCardProps({ ...cardProps, title: e.currentTarget.value })
                 }
                 placeholder={titlePlaceholder}
-                autoFocus
               />
               <IconButton className="Card__menuIcon" onClick={cancelSubmission}>
                 <Cancel />
@@ -219,15 +237,18 @@ export const Card = (props: CardProps) => {
               kind={CardButtonKind.Action}
               label="Delete"
               onClick={() => {
-                try {
-                  deletePost(uid, slug).then(() => {
-                    toast.success("Post deleted!");
+                toast
+                  .promise(deletePost(uid, slug), {
+                    loading: "Deleting...",
+                    success:
+                      "Band name deleted successfully! Refreshing feed...",
+                    error: "Woops. Something went wrong. Try again.",
+                  })
+                  .then(() => {
+                    setTimeout(() => {
+                      navigate(0);
+                    }, DEFAULT_TOAST_DURATION);
                   });
-                } catch (error) {
-                  toast.error(
-                    "There was an error deleting post, please try again later"
-                  );
-                }
               }}
             />
           </div>

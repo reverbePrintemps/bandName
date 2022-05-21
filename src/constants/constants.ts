@@ -1,3 +1,6 @@
+// For performing actions after toast is shown
+export const DEFAULT_TOAST_DURATION = 2000;
+
 // List of countries
 export const COUNTRIES = [
   "Ascension Island",

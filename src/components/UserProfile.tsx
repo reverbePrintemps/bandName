@@ -14,9 +14,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
   return (
     <div className="UserProfile">
       <img width={50} height={50} src={avatarImage} alt="Profile" />
-      <h1 className="UserProfile__username">
-        {user.username ? `u/${user.username}` : "Anonymous"}
-      </h1>
+      <h1 className="UserProfile__username">{`u/${user.username}`}</h1>
       {signedIn && (
         <div className="UserProfile__signOut">
           <SignOutButton />

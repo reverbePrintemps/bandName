@@ -19,7 +19,6 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
-  box-sizing: content-box;
 }
 .Navbar__profileContainer {
   display: flex;

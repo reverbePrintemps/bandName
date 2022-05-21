@@ -5,6 +5,8 @@
 
 # TODO
 
+- [] Pull down to refresh feed
+- [] Don't show create post button if signed out || call for sign in when signed out
 - [] Link to posts with similar countries
 - [] Load more on scroll
 - [] Sort by latest or most popular
@@ -13,6 +15,8 @@
 - [] Dark mode
 - [] Show spinner where relevant (loading page, uploading new post)
 - [] Create FeedKind and render different stuff depending
+- [] Verify app accessibility (https://reactjs.org/docs/accessibility.html)
+  - [] Make countryselector accessible
 - [] Suggest existing genres on typing
   - [] Link to posts with similar genres
 - [] Introduce field validation for genre and country as well

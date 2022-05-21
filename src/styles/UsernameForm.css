@@ -1,6 +1,5 @@
 .UsernameForm {
-  position: relative;
-  top: var(--navbar-height);
+  padding-top: 16px;
 }
 
 .UsernameForm__title {

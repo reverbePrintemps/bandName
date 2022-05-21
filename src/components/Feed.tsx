@@ -1,16 +1,16 @@
 import { firestore, fromMillis, getUserWithUsername } from "../lib/firebase";
 import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
 import { DocumentData, FieldValue } from "firebase/firestore";
-import { useNavigate, useParams } from "react-router-dom";
 import { CreateNewPost } from "./CreateNewPost";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UserProfile } from "./UserProfile";
+import { useNavigate } from "react-router";
 import { useUserData } from "../lib/hooks";
-import { Add } from "@mui/icons-material";
 import { Card, CardKind } from "./Card";
 import { Spinner } from "./Spinner";
+import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
-import { Fab as FloatingButton } from "@mui/material";
 
 import "../styles/Feed.css";
 
@@ -44,6 +44,7 @@ export const Feed = (feedProps: FeedProps) => {
   const { urlUsername } = useParams();
   // TODO use context instead of hook
   const currentlyLoggedInUser = useUserData();
+
   const user = currentlyLoggedInUser.user;
   const username = currentlyLoggedInUser.username;
   const [createPost, setCreatePost] = useState(false);
@@ -51,7 +52,7 @@ export const Feed = (feedProps: FeedProps) => {
   const [last, setLast] = useState<Post>();
   const [reachedEnd, setReachedEnd] = useState<boolean>();
   const [userDoc, setUserDoc] = useState<DocumentData>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>();
   const [cursor, setCursor] = useState<FieldValue>();
 
   const navigate = useNavigate();
@@ -104,18 +105,19 @@ export const Feed = (feedProps: FeedProps) => {
 
   // Trigger rerender when username changes
   useEffect(() => {
-    if (username) {
-      (async () => {
-        setLoading(true);
-        await getPosts(undefined, userDoc).then((newPosts) => {
-          setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-          setPosts(newPosts);
-          setLoading(false);
-        });
-      })();
-    } else if (username === undefined) {
+    // When anonymouse, username === null
+    const hasNoUsername = username === undefined;
+    if (hasNoUsername) {
       navigate("/signup");
     }
+    (async () => {
+      await getPosts(undefined, userDoc).then((newPosts) => {
+        setLoading(true);
+        setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
+        setPosts(newPosts);
+        setLoading(false);
+      });
+    })();
   }, [userDoc, username]);
 
   switch (feedProps.kind) {
@@ -127,16 +129,27 @@ export const Feed = (feedProps: FeedProps) => {
             <Spinner />
           ) : (
             <div className="Feed">
-              <div className="Feed__floatingButton">
-                <FloatingButton
-                  href="#top"
-                  color="primary"
-                  aria-label="add"
-                  onClick={() => setCreatePost(true)}
-                >
-                  <Add />
-                </FloatingButton>
-              </div>
+              <button
+                tabIndex={0}
+                className="Feed__floatingButton"
+                aria-label="Submit a new post"
+                onClick={() => {
+                  if (username) {
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                    setCreatePost(true);
+                  } else {
+                    toast.error("You must be signed in to create a post.", {
+                      position: "bottom-center",
+                      style: { marginBottom: "72px" },
+                    });
+                  }
+                }}
+              >
+                +
+              </button>
               {createPost && user && username && (
                 <CreateNewPost
                   user={user}
@@ -193,7 +206,7 @@ export const Feed = (feedProps: FeedProps) => {
             <Spinner />
           ) : (
             <>
-              <UserProfile user={currentlyLoggedInUser} />
+              {username && <UserProfile user={currentlyLoggedInUser} />}
               <div className="Feed">
                 {posts
                   ? posts.map((post: Post) => {

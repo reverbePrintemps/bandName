@@ -6,8 +6,14 @@
 .Feed__floatingButton {
   position: fixed;
   bottom: 16px;
-  right: 16px;
   z-index: 99;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 24px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  align-self: flex-end;
 }
 
 .Feed__loadMoreButton {
