@@ -1,4 +1,4 @@
-import { getPosts, POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
 import { firestore, postToJSON } from "../lib/firebase";
 import { onSnapshot, query } from "firebase/firestore";
 import { Route, Routes } from "react-router-dom";

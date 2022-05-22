@@ -1,13 +1,13 @@
-import { firestore, fromMillis } from "../lib/firebase";
+import { submitPost, SubmitPostCard } from "./SubmitPostCard";
 import { DocumentData, FieldValue } from "firebase/firestore";
-import { CreateNewPost } from "./CreateNewPost";
+import { FloatingButton } from "./FloatingButton";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { firestore } from "../lib/firebase";
 import { UserProfile } from "./UserProfile";
-import { useNavigate } from "react-router";
 import { Card, CardKind } from "./Card";
 import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
+import { useState } from "react";
 
 import "../styles/Feed.css";
 
@@ -138,10 +138,8 @@ export const Feed = (feedProps: FeedProps) => {
         <>
           <Navbar noSignIn={false} noProfile={false} />
           <div className="Feed">
-            <button
-              tabIndex={0}
-              className="Feed__floatingButton"
-              aria-label="Submit a new post"
+            <FloatingButton
+              show={!createPost}
               onClick={() => {
                 if (username) {
                   window.scrollTo({
@@ -156,14 +154,20 @@ export const Feed = (feedProps: FeedProps) => {
                   });
                 }
               }}
-            >
-              +
-            </button>
+            />
             {createPost && uid && username && (
-              <CreateNewPost
+              <SubmitPostCard
                 uid={uid}
                 username={username}
-                cancelSubmission={() => setCreatePost(!createPost)}
+                onCancelSubmission={() => setCreatePost(!createPost)}
+                onSubmit={(submitPostProps) => {
+                  toast.promise(submitPost(submitPostProps), {
+                    loading: "Submitting...",
+                    success: "Band name submitted successfully!",
+                    error: "Woops. Something went wrong. Try again.",
+                  });
+                  setCreatePost(false);
+                }}
               />
             )}
             {posts
@@ -187,6 +191,14 @@ export const Feed = (feedProps: FeedProps) => {
                         `users/${post.uid}/posts/${post.slug}`
                       )}
                       createdAt={post.createdAt}
+                      onSubmit={(submitPostProps) => {
+                        toast.promise(submitPost(submitPostProps), {
+                          loading: "Submitting...",
+                          success: "Band name submitted successfully!",
+                          error: "Woops. Something went wrong. Try again.",
+                        });
+                        setCreatePost(false);
+                      }}
                     />
                   );
                 })
@@ -238,6 +250,14 @@ export const Feed = (feedProps: FeedProps) => {
                       postRef={firestore.doc(
                         `users/${post.uid}/posts/${post.slug}`
                       )}
+                      onSubmit={(submitPostProps) => {
+                        toast.promise(submitPost(submitPostProps), {
+                          loading: "Submitting...",
+                          success: "Band name submitted successfully!",
+                          error: "Woops. Something went wrong. Try again.",
+                        });
+                        setCreatePost(false);
+                      }}
                       createdAt={post.createdAt}
                     />
                   );

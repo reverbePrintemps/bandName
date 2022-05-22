@@ -22,8 +22,8 @@ export const CardButton = (props: CardButtonProps) => {
       const { isValid } = props;
       return (
         <button
-          className="CardButton m-submit"
           type="submit"
+          className="CardButton m-submit"
           disabled={!isValid}
         >
           {isValid ? "🤘 Submit" : "👎 Start typin'"}

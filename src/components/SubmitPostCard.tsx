@@ -3,24 +3,21 @@ import { FieldValue } from "firebase/firestore";
 import kebabCase from "lodash.kebabcase";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
-import { User } from "firebase/auth";
 import { FormEvent } from "react";
 import { Post } from "./Feed";
 
-type CreatePostProps = {
+export type SubmitPostProps = {
   e: FormEvent<HTMLFormElement>;
-  // TODO è__é
-  // user: User | null | undefined;
   uid: string;
+  username: string;
   slug: string;
   title: string;
   genre: string;
   country: string;
-  username: string;
   createdAt: FieldValue | number;
 };
 
-export const createPost = async ({
+export const submitPost = async ({
   e,
   uid,
   slug,
@@ -29,17 +26,13 @@ export const createPost = async ({
   country,
   username,
   createdAt,
-}: CreatePostProps) => {
+}: SubmitPostProps) => {
   e.preventDefault();
 
   // Ensure slug is URL safe
   if (!slug) {
     slug = encodeURI(kebabCase(title));
   }
-
-  // if (!user) {
-  //   return;
-  // }
 
   // const uid = user.uid;
   const ref = firestore
@@ -76,17 +69,29 @@ export const createPost = async ({
   }
 };
 
-type CreateNewPostProps = {
+type SubmitPostCardProps = {
   uid: string;
   username: string;
-  cancelSubmission: () => void;
+  onSubmit: ({
+    e,
+    uid,
+    slug,
+    title,
+    genre,
+    country,
+    username,
+    createdAt,
+  }: SubmitPostProps) => void;
+
+  onCancelSubmission: () => void;
 };
 
-export const CreateNewPost = ({
+export const SubmitPostCard = ({
   uid,
   username,
-  cancelSubmission,
-}: CreateNewPostProps) => {
+  onSubmit,
+  onCancelSubmission,
+}: SubmitPostCardProps) => {
   return (
     <AuthCheck>
       <Card
@@ -97,11 +102,12 @@ export const CreateNewPost = ({
         title={""}
         genre={""}
         country={""}
-        titlePlaceholder={"Enter band name"}
-        genrePlaceholder={"Enter genre"}
-        countryPlaceholder={"Country"}
-        cancelSubmission={cancelSubmission}
         createdAt={serverTimestamp()}
+        countryPlaceholder={"Country"}
+        genrePlaceholder={"Enter genre"}
+        titlePlaceholder={"Enter band name"}
+        onSubmit={onSubmit}
+        onCancelSubmission={onCancelSubmission}
       />
     </AuthCheck>
   );

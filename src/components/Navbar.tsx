@@ -13,7 +13,7 @@ type NavBarProps = {
 };
 
 export const Navbar = ({ noProfile, noSignIn }: NavBarProps) => {
-  const { user, username } = useContext(UserContext);
+  const { username } = useContext(UserContext);
 
   return (
     <nav className="Navbar">

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { COUNTRY_FLAGS } from "../constants/constants";
+import { useEffect, useRef, useState } from "react";
 
 import "../styles/CountrySelector.css";
 

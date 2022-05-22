@@ -1,18 +1,18 @@
-import { debounce } from "@mui/material";
 import { useState, useEffect, useCallback, useContext } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { DEFAULT_TOAST_DURATION } from "../constants/constants";
+import { UsernameMessage } from "./UsernameMessage";
 import { UserContext } from "../lib/context";
 import { firestore } from "../lib/firebase";
+import { useNavigate } from "react-router";
+import { debounce } from "@mui/material";
+import toast from "react-hot-toast";
+import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
 
 import "../styles/UsernameForm.css";
-import { UsernameMessage } from "./UsernameMessage";
-import { Spinner } from "./Spinner";
-import { DEFAULT_TOAST_DURATION } from "../constants/constants";
 
 export const UsernameForm = () => {
-  const { user, username } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [usernameLoading, setUsernameLoading] = useState(false);

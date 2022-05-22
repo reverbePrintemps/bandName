@@ -1,9 +1,8 @@
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { CardButton, CardButtonKind } from "./CardButton";
-import { useEffect, useRef, useState } from "react";
+import { EventHandler, FormEvent, useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { Cancel } from "@mui/icons-material";
-import { createPost } from "./CreateNewPost";
 import { firestore } from "../lib/firebase";
 import firebase from "firebase/compat/app";
 import { IconButton } from "@mui/material";
@@ -15,20 +14,33 @@ import toast from "react-hot-toast";
 import "../styles/Card.css";
 
 export enum CardKind {
-  Post,
-  Submit,
-  Delete,
+  Post = "post",
+  Submit = "submit",
+  Delete = "delete",
 }
 
+type onSubmit = {
+  e: FormEvent<HTMLFormElement>;
+  createdAt: FieldValue | number;
+} & CommonProps;
+
 type CommonProps = {
-  // TODO icky
   uid: string;
   username: string;
   slug: string;
   title: string;
   genre: string;
   country: string;
-  createdAt: FieldValue | number;
+  onSubmit: ({
+    e,
+    uid,
+    slug,
+    title,
+    genre,
+    country,
+    username,
+    createdAt,
+  }: onSubmit) => void;
 };
 
 type CardProps =
@@ -38,13 +50,15 @@ type CardProps =
       postRef: firebase.firestore.DocumentReference;
       clapCount: number;
       uid: string;
+      createdAt: FieldValue | number;
     } & CommonProps)
   | ({
       kind: CardKind.Submit;
       titlePlaceholder: string;
       genrePlaceholder: string;
       countryPlaceholder: string;
-      cancelSubmission: () => void;
+      createdAt: FieldValue | number;
+      onCancelSubmission: () => void;
     } & CommonProps)
   | {
       kind: CardKind.Delete;
@@ -82,6 +96,7 @@ export const Card = (props: CardProps) => {
         postRef,
         country,
         username,
+        onSubmit,
         clapCount,
       } = cardProps;
 
@@ -98,7 +113,8 @@ export const Card = (props: CardProps) => {
                     titlePlaceholder: title,
                     genrePlaceholder: genre,
                     countryPlaceholder: country,
-                    cancelSubmission: () => {},
+                    onSubmit,
+                    onCancelSubmission: () => {},
                     slug,
                     username,
                   });
@@ -136,8 +152,9 @@ export const Card = (props: CardProps) => {
         genre,
         country,
         username,
+        onSubmit,
         createdAt,
-        cancelSubmission,
+        onCancelSubmission,
         titlePlaceholder,
         genrePlaceholder,
         countryPlaceholder,
@@ -149,24 +166,17 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <form
             onSubmit={(e) =>
-              toast.promise(
-                createPost({
-                  e,
-                  uid,
-                  slug,
-                  title,
-                  genre,
-                  country,
-                  username,
-                  createdAt,
-                }),
-                {
-                  loading: "Submitting...",
-                  success:
-                    "Band name submitted successfully! Refreshing feed...",
-                  error: "Woops. Something went wrong. Try again.",
-                }
-              )
+              onSubmit({
+                e,
+                uid,
+                slug,
+                title,
+                genre,
+                country,
+                username,
+                createdAt,
+                onSubmit,
+              })
             }
           >
             <div className="Card__header">
@@ -184,7 +194,7 @@ export const Card = (props: CardProps) => {
                 onClick={() => {
                   // TODO Not great, but it works
                   // cancelSubmission when creating new post and setCardProps for when editing post
-                  cancelSubmission();
+                  onCancelSubmission();
                   setCardProps({
                     ...props,
                   });
@@ -241,7 +251,7 @@ export const Card = (props: CardProps) => {
               onClick={() => {
                 toast.promise(deletePost(uid, slug), {
                   loading: "Deleting...",
-                  success: "Band name deleted successfully! Refreshing feed...",
+                  success: "Band name deleted successfully!",
                   error: "Woops. Something went wrong. Try again.",
                 });
               }}

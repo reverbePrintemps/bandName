@@ -4,13 +4,9 @@
 
 # TODO
 
-- [] Hide create post (+) button when in post submit
-- [] Close submission card after submitting post
-- [] Edit toasts to not mention refreshing feed
-- [] On country path, feed seems to load more content for a second. Investigate.
-  - [] Consider filtering of feed content instead of getting posts
 - [] Load more on scroll
 - [] Sort by latest or most popular
+- [] Implement other login methods
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Debounce (?) clapping update behavior
 - [] Dark mode
@@ -29,6 +25,7 @@
 - [] Demolish CSS defaults
 - [] Spinner not showing on main feed
 - [] Check for existence of band name on input field change (debounce?)
+  - [] Prevent submitting existing band name (title)
 - [] Introduce push notification on new post created (PWA? Firebase Cloud Messaging?)
 - [] Update meta information
 - [] Test sharing (Twitter card validator)
@@ -51,6 +48,12 @@
 
 # DONE
 
+-̶ [̶x̶]̶ O̶n̶ c̶o̶u̶n̶t̶r̶y̶ p̶a̶t̶h̶,̶ f̶e̶e̶d̶ s̶e̶e̶m̶s̶ t̶o̶ l̶o̶a̶d̶ m̶o̶r̶e̶ c̶o̶n̶t̶e̶n̶t̶ f̶o̶r̶ a̶ s̶e̶c̶o̶n̶d̶.̶ I̶n̶v̶e̶s̶t̶i̶g̶a̶t̶e̶.̶
+
+- [x] Consider filtering of feed content instead of getting posts
+- [x] Edit toasts to not mention refreshing feed
+- [x] Close submission card after submitting post
+- [x] Hide create post (+) button when in post submit
 - [x] Link to posts with similar countries
 - [x] Don't show create post button if signed out || call for sign in when signed out
 - [x] Timestamp seems to be reset on post edit which causes edited post to appear at top of feed
