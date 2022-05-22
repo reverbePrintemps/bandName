@@ -1,21 +1,17 @@
-import { DocumentData } from "firebase/firestore";
-import { useContext } from "react";
-import { UserContext } from "../lib/context";
 import { SignOutButton } from "./SignOutButton";
 import avatarImage from "../assets/hacker.png";
 import "../styles/UserProfile.css";
 
 type UserProfileProps = {
-  user: DocumentData;
+  username: string | null;
 };
 
-export const UserProfile = ({ user }: UserProfileProps) => {
-  const { user: signedIn } = useContext(UserContext);
+export const UserProfile = ({ username }: UserProfileProps) => {
   return (
     <div className="UserProfile">
       <img width={50} height={50} src={avatarImage} alt="Profile" />
-      <h1 className="UserProfile__username">{`u/${user.username}`}</h1>
-      {signedIn && (
+      <h1 className="UserProfile__username">{`u/${username}`}</h1>
+      {username && (
         <div className="UserProfile__signOut">
           <SignOutButton />
         </div>

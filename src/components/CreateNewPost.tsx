@@ -10,7 +10,8 @@ import { Post } from "./Feed";
 type CreatePostProps = {
   e: FormEvent<HTMLFormElement>;
   // TODO è__é
-  user: User | null | undefined;
+  // user: User | null | undefined;
+  uid: string;
   slug: string;
   title: string;
   genre: string;
@@ -21,7 +22,7 @@ type CreatePostProps = {
 
 export const createPost = async ({
   e,
-  user,
+  uid,
   slug,
   title,
   genre,
@@ -36,11 +37,11 @@ export const createPost = async ({
     slug = encodeURI(kebabCase(title));
   }
 
-  if (!user) {
-    return;
-  }
+  // if (!user) {
+  //   return;
+  // }
 
-  const uid = user.uid;
+  // const uid = user.uid;
   const ref = firestore
     .collection("users")
     .doc(uid)
@@ -76,13 +77,13 @@ export const createPost = async ({
 };
 
 type CreateNewPostProps = {
-  user: User;
+  uid: string;
   username: string;
   cancelSubmission: () => void;
 };
 
 export const CreateNewPost = ({
-  user,
+  uid,
   username,
   cancelSubmission,
 }: CreateNewPostProps) => {
@@ -90,7 +91,7 @@ export const CreateNewPost = ({
     <AuthCheck>
       <Card
         kind={CardKind.Submit}
-        user={user}
+        uid={uid}
         username={username}
         slug={""}
         title={""}

@@ -4,7 +4,11 @@
 
 # TODO
 
+- [] Hide create post (+) button when in post submit
+- [] Close submission card after submitting post
+- [] Edit toasts to not mention refreshing feed
 - [] On country path, feed seems to load more content for a second. Investigate.
+  - [] Consider filtering of feed content instead of getting posts
 - [] Load more on scroll
 - [] Sort by latest or most popular
 - [] Introduce clapping animation on clap (inspiration: medium.com)

@@ -1,18 +1,16 @@
-import toast from "react-hot-toast";
-import { User } from "firebase/auth";
-import { BasicMenu } from "./BasicMenu";
-import { Link } from "react-router-dom";
-import { ClapButton } from "./ClapButton";
-import firebase from "firebase/compat/app";
-import { IconButton } from "@mui/material";
-import { firestore } from "../lib/firebase";
-import { Cancel } from "@mui/icons-material";
-import { createPost } from "./CreateNewPost";
+import { doc, deleteDoc, FieldValue } from "firebase/firestore";
+import { CardButton, CardButtonKind } from "./CardButton";
 import { useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
-import { CardButton, CardButtonKind } from "./CardButton";
-import { doc, deleteDoc, FieldValue } from "firebase/firestore";
-import { COUNTRY_FLAGS } from "../constants/constants";
+import { Cancel } from "@mui/icons-material";
+import { createPost } from "./CreateNewPost";
+import { firestore } from "../lib/firebase";
+import firebase from "firebase/compat/app";
+import { IconButton } from "@mui/material";
+import { ClapButton } from "./ClapButton";
+import { BasicMenu } from "./BasicMenu";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import "../styles/Card.css";
 
@@ -24,7 +22,7 @@ export enum CardKind {
 
 type CommonProps = {
   // TODO icky
-  user: User | null | undefined;
+  uid: string;
   username: string;
   slug: string;
   title: string;
@@ -77,7 +75,6 @@ export const Card = (props: CardProps) => {
     case CardKind.Post: {
       const {
         uid,
-        user,
         slug,
         title,
         genre,
@@ -103,7 +100,6 @@ export const Card = (props: CardProps) => {
                     countryPlaceholder: country,
                     cancelSubmission: () => {},
                     slug,
-                    user,
                     username,
                   });
                 }}
@@ -117,12 +113,14 @@ export const Card = (props: CardProps) => {
               />
             )}
           </div>
-          <h3 className="Card__genre">{genre}</h3>
+          <h3 className="Card__genre">
+            <a href={`genre/${genre}`}>{genre}</a>
+          </h3>
           <h3 className="Card__country">
-            <a href={country}>{country}</a>
+            <a href={`country/${country}`}>{country}</a>
           </h3>
           <div className="Card__footer">
-            <Link className="Card__username" to={`/${username}`}>
+            <Link className="Card__username" to={`/username/${username}`}>
               <strong>u/{username}</strong>
             </Link>
             <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
@@ -132,7 +130,7 @@ export const Card = (props: CardProps) => {
     }
     case CardKind.Submit: {
       const {
-        user,
+        uid,
         slug,
         title,
         genre,
@@ -154,7 +152,7 @@ export const Card = (props: CardProps) => {
               toast.promise(
                 createPost({
                   e,
-                  user,
+                  uid,
                   slug,
                   title,
                   genre,

@@ -1,5 +1,6 @@
 import { DocumentData, FieldValue } from "firebase/firestore";
 import { firestore, postToJSON } from "./firebase";
+import { Post } from "../components/Feed";
 
 export const POSTS_PER_REQUEST_LIMIT = 10;
 
@@ -32,20 +33,7 @@ export const getPosts = async (
         .limit(POSTS_PER_REQUEST_LIMIT);
 
   try {
-    return (await postsQuery.get()).docs.map(postToJSON);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getFilteredPosts = async (filter: string) => {
-  const query = firestore
-    .collectionGroup("posts")
-    .where("country", "==", filter)
-    .orderBy("createdAt", "desc")
-    .limit(POSTS_PER_REQUEST_LIMIT);
-  try {
-    return (await query.get()).docs.map(postToJSON);
+    return (await postsQuery.get()).docs.map(postToJSON) as Post[];
   } catch (error) {
     console.error(error);
   }
