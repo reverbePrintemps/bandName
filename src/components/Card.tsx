@@ -130,10 +130,12 @@ export const Card = (props: CardProps) => {
             )}
           </div>
           <h3 className="Card__genre">
-            <a href={`genre/${genre}`}>{genre}</a>
+            <a href={`${process.env.PUBLIC_URL}/genre/${genre}`}>{genre}</a>
           </h3>
           <h3 className="Card__country">
-            <a href={`country/${country}`}>{country}</a>
+            <a href={`${process.env.PUBLIC_URL}/country/${country}`}>
+              {country}
+            </a>
           </h3>
           <div className="Card__footer">
             <Link className="Card__username" to={`/username/${username}`}>
