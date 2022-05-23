@@ -5,20 +5,22 @@
 # TODO
 
 - [] Load more on scroll
+  - [] Clean Feed
 - [] Sort by latest or most popular
 - [] Implement other login methods
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Debounce (?) clapping update behavior
 - [] Dark mode
+- [] Fix country selector input bug (try selecting the US flag on mobile)
+  - [] Add short names for countries like US, UK, to avoid typing the whole thing
+- [] Enter country name (not flag) in url to filter by country
 - [] Show spinner where relevant (loading page, uploading new post)
-- [] Create FeedKind and render different stuff depending
 - [] Verify app accessibility (https://reactjs.org/docs/accessibility.html)
   - [] Make countryselector accessible
 - [] Suggest existing genres on typing
-  - [] Link to posts with similar genres
 - [] Introduce field validation for genre and country as well
-- [] Introduce clapping instead of hearts
 - [] Update feed in realtime instead of brute refresh upon post upload
+- [] Offline mode
 - [] Address TODOs
 - [] Remove unused routes/pages
 - [] BEM the shit out of everything
@@ -45,12 +47,14 @@
 - [] Create custom hooks to simplify code (cf. https://youtu.be/b0IZo2Aho9Y?t=502)
 - [] Wrap async stuff in try/catch blocks and handle error cases
 - [] Migrate db schema from hearts to claps
+- [] Ability to see all own clapped posts
 
 # DONE
 
--̶ [̶x̶]̶ O̶n̶ c̶o̶u̶n̶t̶r̶y̶ p̶a̶t̶h̶,̶ f̶e̶e̶d̶ s̶e̶e̶m̶s̶ t̶o̶ l̶o̶a̶d̶ m̶o̶r̶e̶ c̶o̶n̶t̶e̶n̶t̶ f̶o̶r̶ a̶ s̶e̶c̶o̶n̶d̶.̶ I̶n̶v̶e̶s̶t̶i̶g̶a̶t̶e̶.̶
-
-- [x] Consider filtering of feed content instead of getting posts
+- [x] Link to posts with similar genres
+- [x] Create FeedKind and render different stuff depending
+- [̶x̶]̶ O̶n̶ c̶o̶u̶n̶t̶r̶y̶ p̶a̶t̶h̶,̶ f̶e̶e̶d̶ s̶e̶e̶m̶s̶ t̶o̶ l̶o̶a̶d̶ m̶o̶r̶e̶ c̶o̶n̶t̶e̶n̶t̶ f̶o̶r̶ a̶ s̶e̶c̶o̶n̶d̶.̶ I̶n̶v̶e̶s̶t̶i̶g̶a̶t̶e̶.̶ Edit: went the filtering route.
+  - [x] Consider filtering of feed content instead of getting posts
 - [x] Edit toasts to not mention refreshing feed
 - [x] Close submission card after submitting post
 - [x] Hide create post (+) button when in post submit

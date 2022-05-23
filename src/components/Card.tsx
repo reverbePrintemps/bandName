@@ -1,6 +1,6 @@
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { CardButton, CardButtonKind } from "./CardButton";
-import { EventHandler, FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { Cancel } from "@mui/icons-material";
 import { firestore } from "../lib/firebase";

@@ -1,6 +1,6 @@
 import { submitPost, SubmitPostCard } from "./SubmitPostCard";
-import { DocumentData, FieldValue } from "firebase/firestore";
 import { FloatingButton } from "./FloatingButton";
+import { FieldValue } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { firestore } from "../lib/firebase";
 import { UserProfile } from "./UserProfile";
@@ -32,6 +32,7 @@ export enum FeedKind {
 type CommonProps = {
   posts: Post[];
   username: string | null | undefined;
+  reachedEnd: boolean;
 };
 
 type FeedProps =
@@ -50,90 +51,10 @@ export const Feed = (feedProps: FeedProps) => {
   }>();
 
   const [createPost, setCreatePost] = useState(false);
-  const [last, setLast] = useState<Post>();
-  const [reachedEnd, setReachedEnd] = useState<boolean>();
-  const [userDoc, setUserDoc] = useState<DocumentData>();
-  const [cursor, setCursor] = useState<FieldValue>();
-
-  const getMorePosts = async (last: Post) => {
-    // setLoading(true);
-    // setCursor(
-    //   typeof last.createdAt === "number"
-    //     ? fromMillis(last.createdAt)
-    //     : last.createdAt
-    // );
-    // await getPosts(cursor, userDoc).then((newPosts) => {
-    //   setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-    //   posts && setPosts(posts.concat(newPosts));
-    //   setLoading(false);
-    // });
-  };
-
-  //  Set cursor
-  // useEffect(() => {
-  //   if (last) {
-  //     setCursor(
-  //       typeof last.createdAt === "number"
-  //         ? fromMillis(last.createdAt)
-  //         : last.createdAt
-  //     );
-  //   }
-  // }, [last]);
-
-  // Set last
-  // useEffect(() => {
-  //   if (posts) {
-  //     setLast(posts[posts.length - 1]);
-  //   }
-  // }, [posts]);
-
-  // Set userDoc
-  // useEffect(() => {
-  //   if (path === username) {
-  //     (async () => {
-  //       await getUserWithUsername(path).then((userDoc) => setUserDoc(userDoc));
-  //     })();
-  //   } else if (path !== undefined) {
-  //     (async () => {
-  //       await getFilteredPosts(path).then((newPosts) => {
-  //         setLoading(true);
-  //         setPosts(newPosts);
-  //         setLoading(false);
-  //       });
-  //     })();
-  //   } else {
-  //     // TODO Duplicate code below, should be extracted
-  //     (async () => {
-  //       await getPosts(undefined, userDoc).then((newPosts) => {
-  //         setLoading(true);
-  //         setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-  //         setPosts(newPosts);
-  //         setLoading(false);
-  //       });
-  //     })();
-  //   }
-  // }, [path, username]);
-
-  // Trigger rerender when username changes
-  // useEffect(() => {
-  //   // When logged out, username === null
-  //   const hasNoUsername = username === undefined;
-  //   if (hasNoUsername) {
-  //     navigate("/signup");
-  //   }
-  //   (async () => {
-  //     await getPosts(undefined, userDoc).then((newPosts) => {
-  //       setLoading(true);
-  //       setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-  //       setPosts(newPosts);
-  //       setLoading(false);
-  //     });
-  //   })();
-  // }, [userDoc, username]);
 
   switch (feedProps.kind) {
     case FeedKind.Public: {
-      const { posts, username, uid } = feedProps;
+      const { posts, username, uid, reachedEnd } = feedProps;
       return (
         <>
           <Navbar noSignIn={false} noProfile={false} />
@@ -203,14 +124,7 @@ export const Feed = (feedProps: FeedProps) => {
                   );
                 })
               : null}
-            {!reachedEnd ? (
-              <button
-                className="Feed__loadMoreButton"
-                onClick={() => last && getMorePosts(last)}
-              >
-                Load more
-              </button>
-            ) : (
+            {reachedEnd && (
               <span className="Feed__footerMessage">
                 This is the end, my friend. (for now)
               </span>
@@ -220,7 +134,7 @@ export const Feed = (feedProps: FeedProps) => {
       );
     }
     case FeedKind.Filtered: {
-      const { posts, username } = feedProps;
+      const { posts, username, reachedEnd } = feedProps;
       const filteredPosts =
         filterKind &&
         filter &&
@@ -263,14 +177,7 @@ export const Feed = (feedProps: FeedProps) => {
                   );
                 })
               : null}
-            {!reachedEnd ? (
-              <button
-                className="Feed__loadMoreButton"
-                onClick={() => last && getMorePosts(last)}
-              >
-                Load more
-              </button>
-            ) : (
+            {reachedEnd && (
               <span className="Feed__footerMessage">
                 This is the end, my friend. (for now)
               </span>
