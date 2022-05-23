@@ -19,7 +19,6 @@ export type Post = {
   genre: string;
   country: string;
   uid: string;
-  // Same as for createdAt
   updatedAt: FieldValue;
   username: string;
 };

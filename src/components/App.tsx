@@ -1,11 +1,12 @@
 import { firestore, fromMillis, postToJSON } from "../lib/firebase";
 import { FieldValue, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
-import { useEffect, useRef, useState } from "react";
+import { ScrollContainer } from "./ScrollContainer";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
 import { Feed, FeedKind, Post } from "./Feed";
 import { UserContext } from "../lib/context";
+import { useEffect, useState } from "react";
 import { useUserData } from "../lib/hooks";
 import { Spinner } from "./Spinner";
 
@@ -17,9 +18,9 @@ const App = () => {
   const [posts, setPosts] = useState<Post[]>();
   const [loadMore, setLoadMore] = useState(false);
   const [cursor, setCursor] = useState<FieldValue>();
-  const scrollContainer = useRef<HTMLDivElement>(null);
   const [reachedEnd, setReachedEnd] = useState(false);
 
+  // TODO Simplify
   useEffect(() => {
     // Listen for any changes to the posts collection
     if (!cursor) {
@@ -56,29 +57,6 @@ const App = () => {
     }
   }, [cursor, loadMore]);
 
-  const handleScroll = () => {
-    if (scrollContainer.current) {
-      const windowHeight = window.innerHeight;
-      const bottomOfWindow = windowHeight + window.scrollY;
-      const bottomOfContent = scrollContainer.current.offsetHeight;
-
-      const isReachingBottom = bottomOfWindow >= bottomOfContent - windowHeight;
-
-      if (isReachingBottom) {
-        setLoadMore(true);
-      } else {
-        setLoadMore(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   // Set cursor
   useEffect(() => {
     if (posts) {
@@ -94,7 +72,7 @@ const App = () => {
   return (
     <UserContext.Provider value={userData}>
       <div className="App">
-        <div ref={scrollContainer} className="App__innerContainer">
+        <ScrollContainer onLoadMore={(bool) => setLoadMore(bool)}>
           {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
           <Routes>
             <Route
@@ -130,7 +108,7 @@ const App = () => {
             />
             <Route path="/signup" element={<UsernameForm />} />
           </Routes>
-        </div>
+        </ScrollContainer>
       </div>
     </UserContext.Provider>
   );

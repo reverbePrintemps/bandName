@@ -4,8 +4,6 @@
 
 # TODO
 
-- [] Load more on scroll
-  - [] Clean Feed
 - [] Sort by latest or most popular
 - [] Implement other login methods
 - [] Introduce clapping animation on clap (inspiration: medium.com)
@@ -51,6 +49,8 @@
 
 # DONE
 
+- [x] Load more on scroll
+  - [x] Clean Feed
 - [x] Link to posts with similar genres
 - [x] Create FeedKind and render different stuff depending
 - [̶x̶]̶ O̶n̶ c̶o̶u̶n̶t̶r̶y̶ p̶a̶t̶h̶,̶ f̶e̶e̶d̶ s̶e̶e̶m̶s̶ t̶o̶ l̶o̶a̶d̶ m̶o̶r̶e̶ c̶o̶n̶t̶e̶n̶t̶ f̶o̶r̶ a̶ s̶e̶c̶o̶n̶d̶.̶ I̶n̶v̶e̶s̶t̶i̶g̶a̶t̶e̶.̶ Edit: went the filtering route.
