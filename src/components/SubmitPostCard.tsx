@@ -4,7 +4,7 @@ import kebabCase from "lodash.kebabcase";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 import { FormEvent } from "react";
-import { Post } from "./Feed";
+import { PostType } from "./FeedContainer";
 
 export type SubmitPostProps = {
   e: FormEvent<HTMLFormElement>;
@@ -35,11 +35,12 @@ export const submitPost = async ({
   }
 
   // const uid = user.uid;
-  const ref = firestore
+  const postRef = firestore
     .collection("users")
     .doc(uid)
     .collection("posts")
     .doc(slug);
+  const postsRef = firestore.collection("posts").doc(slug);
 
   // Tip: give all fields a default value here
   // If post already exists, update it
@@ -52,9 +53,18 @@ export const submitPost = async ({
       createdAt: fromMillis(createdAt),
       updatedAt: serverTimestamp(),
     };
-    await ref.update(data);
+
+    const updatePost = async (data: any) => {
+      const batch = firestore.batch();
+
+      batch.update(postsRef, data);
+      batch.update(postRef, data);
+      await batch.commit();
+    };
+
+    updatePost(data);
   } else {
-    const data: Post = {
+    const data: PostType = {
       title,
       genre,
       country,
@@ -65,7 +75,16 @@ export const submitPost = async ({
       updatedAt: serverTimestamp(),
       heartCount: 0,
     };
-    await ref.set(data);
+
+    const createPost = async (data: any) => {
+      const batch = firestore.batch();
+
+      batch.set(postsRef, data);
+      batch.set(postRef, data);
+      await batch.commit();
+    };
+
+    createPost(data);
   }
 };
 

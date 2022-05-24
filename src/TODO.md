@@ -4,6 +4,7 @@
 
 # TODO
 
+- [] Fix issue with /filtered route where only filters what's currently loaded (when it could get more posts, at least the first 10)
 - [] Sort by latest or most popular
 - [] Implement other login methods
 - [] Introduce clapping animation on clap (inspiration: medium.com)
@@ -46,9 +47,11 @@
 - [] Wrap async stuff in try/catch blocks and handle error cases
 - [] Migrate db schema from hearts to claps
 - [] Ability to see all own clapped posts
+- [] NSFW filter
 
 # DONE
 
+- [x] Implement post sharing
 - [x] Load more on scroll
   - [x] Clean Feed
 - [x] Link to posts with similar genres

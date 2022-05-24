@@ -9,3 +9,11 @@ export const UserContext = createContext<{
   user: null,
   username: null,
 });
+
+export const ShareContext = createContext<{
+  shareUrl: string;
+  updateShareUrl: (shareUrl: string) => void;
+}>({
+  shareUrl: "",
+  updateShareUrl: () => {},
+});

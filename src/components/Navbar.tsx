@@ -30,7 +30,10 @@ export const Navbar = ({ noProfile, noSignIn }: NavBarProps) => {
         </Link>
         {!noProfile ? (
           username ? (
-            <Link className="Navbar__profileContainer" to={`/${username}`}>
+            <Link
+              className="Navbar__profileContainer"
+              to={`/posts/username/${username}`}
+            >
               <div className="Navbar__profile">
                 <img
                   width={50}

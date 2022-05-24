@@ -1,6 +1,6 @@
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { CardButton, CardButtonKind } from "./CardButton";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { CountrySelector } from "./CountrySelector";
 import { Cancel } from "@mui/icons-material";
 import { firestore } from "../lib/firebase";
@@ -9,6 +9,7 @@ import { IconButton } from "@mui/material";
 import { ClapButton } from "./ClapButton";
 import { BasicMenu } from "./BasicMenu";
 import { Link } from "react-router-dom";
+import { ShareContext } from "../lib/context";
 import toast from "react-hot-toast";
 
 import "../styles/Card.css";
@@ -31,22 +32,13 @@ type CommonProps = {
   title: string;
   genre: string;
   country: string;
-  onSubmit: ({
-    e,
-    uid,
-    slug,
-    title,
-    genre,
-    country,
-    username,
-    createdAt,
-  }: onSubmit) => void;
 };
 
 type CardProps =
   | ({
       kind: CardKind.Post;
       isOwner: boolean;
+      // Currently a bug when converting to DocumentReference only
       postRef: firebase.firestore.DocumentReference;
       clapCount: number;
       uid: string;
@@ -58,6 +50,16 @@ type CardProps =
       genrePlaceholder: string;
       countryPlaceholder: string;
       createdAt: FieldValue | number;
+      onSubmit: ({
+        e,
+        uid,
+        slug,
+        title,
+        genre,
+        country,
+        username,
+        createdAt,
+      }: onSubmit) => void;
       onCancelSubmission: () => void;
     } & CommonProps)
   | {
@@ -69,6 +71,7 @@ type CardProps =
 export const Card = (props: CardProps) => {
   const [cardProps, setCardProps] = useState<CardProps>(props);
   const titleRef = useRef<HTMLInputElement>(null);
+  const { updateShareUrl } = useContext(ShareContext);
 
   // Setting focus manually to avoid conflicting with scroll to top
   useEffect(() => {
@@ -96,7 +99,6 @@ export const Card = (props: CardProps) => {
         postRef,
         country,
         username,
-        onSubmit,
         clapCount,
       } = cardProps;
 
@@ -104,41 +106,45 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">{title}</h2>
-            {isOwner && (
-              <BasicMenu
-                onEditPressed={() => {
-                  setCardProps({
-                    ...cardProps,
-                    kind: CardKind.Submit,
-                    titlePlaceholder: title,
-                    genrePlaceholder: genre,
-                    countryPlaceholder: country,
-                    onSubmit,
-                    onCancelSubmission: () => {},
-                    slug,
-                    username,
-                  });
-                }}
-                onDeletePressed={() =>
-                  setCardProps({
-                    kind: CardKind.Delete,
-                    slug: slug,
-                    uid: uid,
-                  })
-                }
-              />
-            )}
+            <BasicMenu
+              isOwner={isOwner}
+              onSharePressed={() =>
+                updateShareUrl(`/${username}/posts/${slug}`)
+              }
+              onEditPressed={() => {
+                setCardProps({
+                  ...cardProps,
+                  kind: CardKind.Submit,
+                  titlePlaceholder: title,
+                  genrePlaceholder: genre,
+                  countryPlaceholder: country,
+                  onSubmit: () => {},
+                  onCancelSubmission: () => {},
+                  slug,
+                  username,
+                });
+              }}
+              onDeletePressed={() =>
+                setCardProps({
+                  kind: CardKind.Delete,
+                  slug: slug,
+                  uid: uid,
+                })
+              }
+            />
           </div>
           <h3 className="Card__genre">
-            <a href={`${process.env.PUBLIC_URL}/genre/${genre}`}>{genre}</a>
+            <a href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}>
+              {genre}
+            </a>
           </h3>
           <h3 className="Card__country">
-            <a href={`${process.env.PUBLIC_URL}/country/${country}`}>
+            <a href={`${process.env.PUBLIC_URL}/posts/country/${country}`}>
               {country}
             </a>
           </h3>
           <div className="Card__footer">
-            <Link className="Card__username" to={`/username/${username}`}>
+            <Link className="Card__username" to={`/posts/username/${username}`}>
               <strong>u/{username}</strong>
             </Link>
             <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
@@ -177,7 +183,6 @@ export const Card = (props: CardProps) => {
                 country,
                 username,
                 createdAt,
-                onSubmit,
               })
             }
           >

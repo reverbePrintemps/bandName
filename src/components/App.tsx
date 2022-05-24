@@ -2,25 +2,37 @@ import { firestore, fromMillis, postToJSON } from "../lib/firebase";
 import { FieldValue, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
 import { ScrollContainer } from "./ScrollContainer";
+import { FeedContainer, FeedKind, PostType } from "./FeedContainer";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
-import { Feed, FeedKind, Post } from "./Feed";
-import { UserContext } from "../lib/context";
+import { ShareContext, UserContext } from "../lib/context";
 import { useEffect, useState } from "react";
+import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { Spinner } from "./Spinner";
+import { Post } from "./Post";
 
 import "../styles/App.css";
 
 const App = () => {
   const userData = useUserData();
   const username = userData.username;
-  const [posts, setPosts] = useState<Post[]>();
+  const [posts, setPosts] = useState<PostType[]>();
   const [loadMore, setLoadMore] = useState(false);
   const [cursor, setCursor] = useState<FieldValue>();
   const [reachedEnd, setReachedEnd] = useState(false);
+  const [shareUrl, updateShareUrl] = useState("");
+  const shareContext = { shareUrl, updateShareUrl };
+  const [showShareDrawer, setShowShareDrawer] = useState(false);
 
-  // TODO Simplify
+  useEffect(() => {
+    // TODO Not gr8
+    if (shareUrl !== "") {
+      setShowShareDrawer(true);
+    }
+  }, [shareUrl]);
+
+  // TODO Simplify and extract to own functions
   useEffect(() => {
     // Listen for any changes to the posts collection
     if (!cursor) {
@@ -71,45 +83,56 @@ const App = () => {
 
   return (
     <UserContext.Provider value={userData}>
-      <div className="App">
-        <ScrollContainer onLoadMore={(bool) => setLoadMore(bool)}>
-          {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
-          <Routes>
-            <Route
-              path="/"
-              element={
-                posts ? (
-                  <Feed
-                    kind={FeedKind.Public}
-                    posts={posts}
-                    uid={userData.user?.uid}
-                    username={username}
-                    reachedEnd={reachedEnd}
-                  />
-                ) : (
-                  <Spinner />
-                )
-              }
-            />
-            <Route
-              path="/:filterKind/:filter"
-              element={
-                posts ? (
-                  <Feed
-                    kind={FeedKind.Filtered}
-                    posts={posts}
-                    username={username}
-                    reachedEnd={reachedEnd}
-                  />
-                ) : (
-                  <Spinner />
-                )
-              }
-            />
-            <Route path="/signup" element={<UsernameForm />} />
-          </Routes>
-        </ScrollContainer>
-      </div>
+      <ShareContext.Provider value={shareContext}>
+        <div className="App">
+          <ScrollContainer onLoadMore={(bool) => setLoadMore(bool)}>
+            {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  posts ? (
+                    <FeedContainer
+                      kind={FeedKind.Public}
+                      posts={posts}
+                      uid={userData.user?.uid}
+                      username={username}
+                      reachedEnd={reachedEnd}
+                    />
+                  ) : (
+                    <Spinner />
+                  )
+                }
+              />
+              <Route
+                path="/posts/:filterKind/:filter"
+                element={
+                  posts ? (
+                    <FeedContainer
+                      kind={FeedKind.Filtered}
+                      posts={posts}
+                      username={username}
+                      reachedEnd={reachedEnd}
+                    />
+                  ) : (
+                    <Spinner />
+                  )
+                }
+              />
+              <Route path="/signup" element={<UsernameForm />} />
+              <Route path="/:usernameParam/posts/:postId" element={<Post />} />
+            </Routes>
+          </ScrollContainer>
+          <ShareDrawer
+            shareUrl={shareUrl}
+            open={showShareDrawer}
+            onClose={() => {
+              updateShareUrl("");
+              setShowShareDrawer(false);
+            }}
+          />
+        </div>
+      </ShareContext.Provider>
     </UserContext.Provider>
   );
 };
