@@ -8,7 +8,6 @@ import firebase from "firebase/compat/app";
 import { IconButton } from "@mui/material";
 import { ClapButton } from "./ClapButton";
 import { BasicMenu } from "./BasicMenu";
-import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import "../styles/Card.css";
@@ -50,7 +49,7 @@ type CardProps =
       postRef: firebase.firestore.DocumentReference;
       clapCount: number;
       uid: string;
-      createdAt: FieldValue | number;
+      createdAt: number;
     } & CommonProps)
   | ({
       kind: CardKind.Submit;
@@ -98,7 +97,12 @@ export const Card = (props: CardProps) => {
         username,
         onSubmit,
         clapCount,
+        createdAt,
       } = cardProps;
+
+      const formattedCreatedAt = new Date(createdAt).toLocaleString("en-US", {
+        dateStyle: "short",
+      });
 
       return (
         <div className="Card">
@@ -138,9 +142,13 @@ export const Card = (props: CardProps) => {
             </a>
           </h3>
           <div className="Card__footer">
-            <Link className="Card__username" to={`/username/${username}`}>
-              <strong>u/{username}</strong>
-            </Link>
+            <p className="Card__postedInfo">
+              by{" "}
+              <a className="Card__username" href={`/username/${username}`}>
+                u/{username}
+              </a>{" "}
+              on {formattedCreatedAt}
+            </p>
             <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
           </div>
         </div>

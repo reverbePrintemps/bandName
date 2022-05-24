@@ -1,19 +1,22 @@
 # Currently broken
 
-- rendering spinner causes jump to top on load more, think of another way to show spinner
+- 404 when on filtered routes
 
 # TODO
 
+- [] Fix filtered routes 404 on production
 - [] Sort by latest or most popular
+- [] Sharing feature
 - [] Implement other login methods
 - [] Introduce clapping animation on clap (inspiration: medium.com)
 - [] Debounce (?) clapping update behavior
 - [] Dark mode
+- [] Update app README
 - [] Fix country selector input bug (try selecting the US flag on mobile)
   - [] Add short names for countries like US, UK, to avoid typing the whole thing
 - [] Enter country name (not flag) in url to filter by country
 - [] Show spinner where relevant (loading page, uploading new post)
-- [] Verify app accessibility (https://reactjs.org/docs/accessibility.html)
+- [] Verify app accessibility (https://reactjs.org/docs/accessibility.html and Firefox Accessibility tab)
   - [] Make countryselector accessible
 - [] Suggest existing genres on typing
 - [] Introduce field validation for genre and country as well
@@ -27,8 +30,6 @@
 - [] Check for existence of band name on input field change (debounce?)
   - [] Prevent submitting existing band name (title)
 - [] Introduce push notification on new post created (PWA? Firebase Cloud Messaging?)
-- [] Update meta information
-- [] Test sharing (Twitter card validator)
 - [] Install CSS classname usage plugin and run it
 - [] Add tooltip to country flag
 - [] Get rid of concept of slug?
@@ -46,9 +47,12 @@
 - [] Wrap async stuff in try/catch blocks and handle error cases
 - [] Migrate db schema from hearts to claps
 - [] Ability to see all own clapped posts
+- [] Add tests
 
 # DONE
 
+- [x] Update meta information
+- [x] Test sharing (Twitter card validator)
 - [x] Load more on scroll
   - [x] Clean Feed
 - [x] Link to posts with similar genres

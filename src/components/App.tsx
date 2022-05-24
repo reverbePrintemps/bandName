@@ -19,16 +19,25 @@ const App = () => {
   const [loadMore, setLoadMore] = useState(false);
   const [cursor, setCursor] = useState<FieldValue>();
   const [reachedEnd, setReachedEnd] = useState(false);
+  console.log("reachedEnd", reachedEnd);
+
+  const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
+    "createdAt"
+  );
+  console.log("orderBy", orderBy);
 
   // TODO Simplify
+
   useEffect(() => {
-    // Listen for any changes to the posts collection
+    // Load further posts on scroll
     if (!cursor) {
+      console.log("here1");
+
       onSnapshot(
         query(
           firestore
             .collectionGroup("posts")
-            .orderBy("createdAt", "desc")
+            .orderBy(orderBy, "desc")
             .limit(POSTS_PER_REQUEST_LIMIT)
         ),
         (querySnapshot) => {
@@ -37,25 +46,28 @@ const App = () => {
         }
       );
     } else {
-      // Load further posts on scroll
-      loadMore &&
+      console.log("here2");
+      !reachedEnd &&
+        loadMore &&
         posts &&
         onSnapshot(
           query(
             firestore
               .collectionGroup("posts")
-              .orderBy("createdAt", "desc")
+              .orderBy(orderBy, "desc")
               .startAfter(cursor)
               .limit(POSTS_PER_REQUEST_LIMIT)
           ),
           (querySnapshot) => {
             const newPosts = querySnapshot.docs.map(postToJSON);
+            console.log("newPosts", newPosts);
+
             setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
             setPosts(posts.concat(newPosts));
           }
         );
     }
-  }, [cursor, loadMore]);
+  }, [loadMore, orderBy, reachedEnd, cursor]);
 
   // Set cursor
   useEffect(() => {
@@ -72,7 +84,10 @@ const App = () => {
   return (
     <UserContext.Provider value={userData}>
       <div className="App">
-        <ScrollContainer onLoadMore={(bool) => setLoadMore(bool)}>
+        <ScrollContainer
+          reachedEnd={reachedEnd}
+          onLoadMore={(bool) => setLoadMore(bool)}
+        >
           {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
           <Routes>
             <Route
@@ -85,6 +100,9 @@ const App = () => {
                     uid={userData.user?.uid}
                     username={username}
                     reachedEnd={reachedEnd}
+                    onSortPressed={(orderBy) => {
+                      setOrderBy(orderBy);
+                    }}
                   />
                 ) : (
                   <Spinner />
@@ -100,6 +118,9 @@ const App = () => {
                     posts={posts}
                     username={username}
                     reachedEnd={reachedEnd}
+                    onSortPressed={(orderBy) => {
+                      setOrderBy(orderBy);
+                    }}
                   />
                 ) : (
                   <Spinner />

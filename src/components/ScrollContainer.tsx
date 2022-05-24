@@ -3,16 +3,18 @@ import "../styles/ScrollContainer.css";
 
 type ScrollContainerProps = {
   children: React.ReactNode;
+  reachedEnd: boolean;
   onLoadMore: (arg: boolean) => void;
 };
 
 export const ScrollContainer = ({
   children,
+  reachedEnd,
   onLoadMore,
 }: ScrollContainerProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleScroll = () => {
+  const handleScroll = (reachedEnd: boolean) => {
     if (ref.current) {
       const windowHeight = window.innerHeight;
       const bottomOfWindow = windowHeight + window.scrollY;
@@ -20,19 +22,18 @@ export const ScrollContainer = ({
 
       const isReachingBottom = bottomOfWindow >= bottomOfContent - windowHeight;
 
-      if (isReachingBottom) {
-        onLoadMore(true);
-      } else {
-        onLoadMore(false);
+      if (!reachedEnd) {
+        if (isReachingBottom) {
+          onLoadMore(true);
+        } else {
+          onLoadMore(false);
+        }
       }
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    window.addEventListener("scroll", () => handleScroll(reachedEnd));
   }, []);
 
   return (

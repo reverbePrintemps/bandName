@@ -17,6 +17,18 @@ export type SubmitPostProps = {
   createdAt: FieldValue | number;
 };
 
+type SubmitPost = {
+  heartCount: number;
+  slug: string;
+  title: string;
+  genre: string;
+  country: string;
+  uid: string;
+  createdAt: FieldValue;
+  updatedAt: FieldValue;
+  username: string;
+};
+
 export const submitPost = async ({
   e,
   uid,
@@ -54,7 +66,7 @@ export const submitPost = async ({
     };
     await ref.update(data);
   } else {
-    const data: Post = {
+    const data: SubmitPost = {
       title,
       genre,
       country,
