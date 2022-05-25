@@ -1,11 +1,9 @@
-import { TelegramShareButton, TelegramIcon } from "react-share";
 import { firestore, postToJSON } from "../lib/firebase";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useUserData } from "../lib/hooks";
-import { ClapButton } from "./ClapButton";
-import { Link } from "react-router-dom";
 import { PostType } from "./FeedContainer";
+import { Card, CardKind } from "./Card";
 
 export const Post = () => {
   const userData = useUserData();
@@ -49,24 +47,18 @@ export const Post = () => {
   const isOwner = userData.username === username;
 
   return (
-    post && (
-      <div className="Card">
-        <div className="Card__header">
-          <h2 className="Card__title">{title}</h2>
-        </div>
-        <h3 className="Card__genre">
-          <a href={`${process.env.PUBLIC_URL}/genre/${genre}`}>{genre}</a>
-        </h3>
-        <h3 className="Card__country">
-          <a href={`${process.env.PUBLIC_URL}/country/${country}`}>{country}</a>
-        </h3>
-        <div className="Card__footer">
-          <Link className="Card__username" to={`/username/${username}`}>
-            <strong>u/{username}</strong>
-          </Link>
-          <ClapButton ownPost={isOwner} postRef={postRef} count={heartCount} />
-        </div>
-      </div>
-    )
+    <Card
+      kind={CardKind.Post}
+      isOwner={isOwner}
+      postRef={postRef}
+      clapCount={heartCount}
+      uid={uid}
+      createdAt={post.createdAt}
+      genre={genre}
+      country={country}
+      title={title}
+      username={username}
+      slug={slug}
+    />
   );
 };

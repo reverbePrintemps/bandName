@@ -13,6 +13,7 @@ import { Spinner } from "./Spinner";
 import { Post } from "./Post";
 
 import "../styles/App.css";
+import { SinglePostPage } from "./SinglePostPage";
 
 const App = () => {
   const userData = useUserData();
@@ -120,7 +121,10 @@ const App = () => {
                 }
               />
               <Route path="/signup" element={<UsernameForm />} />
-              <Route path="/:usernameParam/posts/:postId" element={<Post />} />
+              <Route
+                path="/:usernameParam/posts/:postId"
+                element={<SinglePostPage />}
+              />
             </Routes>
           </ScrollContainer>
           <ShareDrawer

@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# BandName!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## tl;dr
 
-## Available Scripts
+The `BandName!` app is currently published at: https://reverbePrintemps.github.io/bandName
 
-In the project directory, you can run:
+## About
 
-### `npm start`
+Ever stopped mid-sentence because something you just said sounds **absolutely ridiculous**, when out of context?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+That's when you take a moment to shout — or whisper — `BandName!`, before carrying on with the rest of your prose.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+After years of trying to have a centralized database of `BandName!`s and a Google Spreadsheet, a messaging app thread or even a personal notes app weren't cutting it, I've decided to take on the challenge and create an app where anyone, anywhere, can share their `BandName!`s with the world.
 
-### `npm test`
+## Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Design
 
-### `npm run build`
+A blend of custom CSS ([BEM convention](https://en.bem.info/methodology/css/)) with some [Material UI](https://mui.com/) Components and Icons and Google Fonts. No CSS preprocessors nor CSS-IN-JS (yet?) although [Stitches](https://stitches.dev/) and [Emotion](https://emotion.sh/docs/@emotion/css) have piqued my interest.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I had started the project as a [Next.js](https://nextjs.org/) app to learn more about SSR (Server Side Rendering) and ISR (Incremental Static Regeneration) - essentially SSR + hydration - but the Vercel deploy was giving me [the dreaded 504 error](https://stackoverflow.com/questions/68771480/nextjs-vercel-504-error-function-invocation-timeout). Not wanting to upgrade to a paid plan for an app that so far has only 4 users, I decided to start over again with the familiar, tried, tested and loved [create-react-app](https://create-react-app.dev/) + typescript combo. ❤️
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Backend
 
-### `npm run eject`
+[Firestore](https://firebase.google.com/docs/firestore/) 🔥
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Testing
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Currently TBD
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Cypress? RTL? Jest? Something else? We'll cross that bridge when we get there. (soon enough...)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Hosting
 
-## Learn More
+Despite GitHub Pages infamous notoriety (infamy?) with SPAs (Single Page Apps) and React Router — had to use [this icky but lightweight solution](https://github.com/rafgraph/spa-github-pages) to solve the 404 issue on fresh page load - I've still decided to use it because it's simple, works well (despite the aformentioned shenanigans) and lives right beside the code itself.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## What‘s next?
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The BandName app is a playground for me to learn new technologies, practice designing and implementing things, test experimental stuff and iterate over a React/Typescript app while emulating a real world scenario of (almost) daily value creation and code deployment.
+
+On top of the existing features, some things I'd like to introduce next are:
+
+- Sort by latest or most popular
+- Other login methods
+- Dark mode (I know...)
+- Genre suggestiongs on type
+- Offline mode
+- Native push notifications (Firebase Cloud Messaging?)
+- Add more sharing channels (Signal, Twitter...)
+- NSFW mode
+- Lazy load components to reduce bundle size
+- Analytics (maybe...)
+- Emoji reactions?
+
+More broadly, I'd like to:
+
+- Turn the app completely into a PWA (Progressive Web App)
+- Make the app fully accessible
+- Optimize the frontend and firestore code
+- Increase security on the app
+- Above all, make it fun and engaging :)

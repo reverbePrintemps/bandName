@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
+  Typography,
 } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
 
@@ -41,9 +42,16 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
       }}
     >
       <Box role="presentation" onClick={onClose} onKeyDown={onClose}>
+        <Typography padding="24px 24px 8px 24px" variant="h5">
+          Share
+        </Typography>
         <List>
           <Box display="flex" flexDirection="column" justifyContent="flex-end">
-            <ListItem>
+            <ListItem
+              style={{
+                padding: "0",
+              }}
+            >
               <ListItemButton
                 onClick={() =>
                   navigator.clipboard.writeText(
@@ -53,12 +61,18 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
                 style={{ width: "100%" }}
               >
                 <ListItemIcon>
-                  <ContentCopy />
+                  <Box padding="8px">
+                    <ContentCopy />
+                  </Box>
                 </ListItemIcon>
                 <ListItemText>Copy link</ListItemText>
               </ListItemButton>
             </ListItem>
-            <ListItem>
+            <ListItem
+              style={{
+                padding: "0",
+              }}
+            >
               <TelegramShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
                 onClick={click}
@@ -74,7 +88,11 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
                 </ListItemButton>
               </TelegramShareButton>
             </ListItem>
-            <ListItem>
+            <ListItem
+              style={{
+                padding: "0",
+              }}
+            >
               <WhatsappShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
                 onClick={click}
