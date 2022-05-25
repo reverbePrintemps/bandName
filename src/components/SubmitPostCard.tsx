@@ -35,12 +35,11 @@ export const submitPost = async ({
   }
 
   // const uid = user.uid;
-  const postRef = firestore
+  const ref = firestore
     .collection("users")
     .doc(uid)
     .collection("posts")
     .doc(slug);
-  const postsRef = firestore.collection("posts").doc(slug);
 
   // Tip: give all fields a default value here
   // If post already exists, update it
@@ -53,16 +52,7 @@ export const submitPost = async ({
       createdAt: fromMillis(createdAt),
       updatedAt: serverTimestamp(),
     };
-
-    const updatePost = async (data: any) => {
-      const batch = firestore.batch();
-
-      batch.update(postsRef, data);
-      batch.update(postRef, data);
-      await batch.commit();
-    };
-
-    updatePost(data);
+    await ref.update(data);
   } else {
     const data: PostType = {
       title,
@@ -75,16 +65,7 @@ export const submitPost = async ({
       updatedAt: serverTimestamp(),
       heartCount: 0,
     };
-
-    const createPost = async (data: any) => {
-      const batch = firestore.batch();
-
-      batch.set(postsRef, data);
-      batch.set(postRef, data);
-      await batch.commit();
-    };
-
-    createPost(data);
+    await ref.set(data);
   }
 };
 
