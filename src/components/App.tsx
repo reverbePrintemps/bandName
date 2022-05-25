@@ -1,16 +1,15 @@
 import { firestore, fromMillis, postToJSON } from "../lib/firebase";
+import { FeedContainer, FeedKind, PostType } from "./FeedContainer";
 import { FieldValue, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import { ShareContext, UserContext } from "../lib/context";
 import { ScrollContainer } from "./ScrollContainer";
-import { FeedContainer, FeedKind, PostType } from "./FeedContainer";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
-import { ShareContext, UserContext } from "../lib/context";
 import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { Spinner } from "./Spinner";
-import { Post } from "./Post";
 
 import "../styles/App.css";
 import { SinglePostPage } from "./SinglePostPage";
@@ -18,12 +17,12 @@ import { SinglePostPage } from "./SinglePostPage";
 const App = () => {
   const userData = useUserData();
   const username = userData.username;
-  const [posts, setPosts] = useState<PostType[]>();
   const [loadMore, setLoadMore] = useState(false);
+  const [shareUrl, updateShareUrl] = useState("");
+  const [posts, setPosts] = useState<PostType[]>();
+  const shareContext = { shareUrl, updateShareUrl };
   const [cursor, setCursor] = useState<FieldValue>();
   const [reachedEnd, setReachedEnd] = useState(false);
-  const [shareUrl, updateShareUrl] = useState("");
-  const shareContext = { shareUrl, updateShareUrl };
   const [showShareDrawer, setShowShareDrawer] = useState(false);
 
   useEffect(() => {
