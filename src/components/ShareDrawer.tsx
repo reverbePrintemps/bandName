@@ -23,9 +23,6 @@ type ShareDrawerProps = {
 };
 
 export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
-  const click = () => {
-    console.log("click!");
-  };
   return (
     <SwipeableDrawer
       anchor={"bottom"}
@@ -75,7 +72,6 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
             >
               <TelegramShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
-                onClick={click}
                 style={{ width: "100%" }}
               >
                 <ListItemButton>
@@ -95,7 +91,6 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
             >
               <WhatsappShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
-                onClick={click}
                 style={{ width: "100%" }}
               >
                 <ListItemButton>

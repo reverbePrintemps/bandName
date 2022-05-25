@@ -4,6 +4,7 @@ import { FieldValue, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
 import { ShareContext, UserContext } from "../lib/context";
 import { ScrollContainer } from "./ScrollContainer";
+import { SinglePostPage } from "./SinglePostPage";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
 import { useEffect, useState } from "react";
@@ -12,11 +13,9 @@ import { useUserData } from "../lib/hooks";
 import { Spinner } from "./Spinner";
 
 import "../styles/App.css";
-import { SinglePostPage } from "./SinglePostPage";
 
 const App = () => {
   const userData = useUserData();
-  const username = userData.username;
   const [loadMore, setLoadMore] = useState(false);
   const [shareUrl, updateShareUrl] = useState("");
   const [posts, setPosts] = useState<PostType[]>();
@@ -96,7 +95,7 @@ const App = () => {
                       kind={FeedKind.Public}
                       posts={posts}
                       uid={userData.user?.uid}
-                      username={username}
+                      username={userData.username}
                       reachedEnd={reachedEnd}
                     />
                   ) : (
@@ -111,7 +110,7 @@ const App = () => {
                     <FeedContainer
                       kind={FeedKind.Filtered}
                       posts={posts}
-                      username={username}
+                      username={userData.username}
                       reachedEnd={reachedEnd}
                     />
                   ) : (
@@ -119,7 +118,10 @@ const App = () => {
                   )
                 }
               />
-              <Route path="/signup" element={<UsernameForm />} />
+              <Route
+                path="/signup"
+                element={<UsernameForm userData={userData} />}
+              />
               <Route
                 path="/:usernameParam/posts/:postId"
                 element={<SinglePostPage />}

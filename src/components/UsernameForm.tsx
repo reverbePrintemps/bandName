@@ -1,23 +1,37 @@
-import { useState, useEffect, useCallback, useContext } from "react";
 import { DEFAULT_TOAST_DURATION } from "../constants/constants";
+import { useState, useEffect, useCallback } from "react";
 import { UsernameMessage } from "./UsernameMessage";
-import { UserContext } from "../lib/context";
+import { SignInButton } from "./SignInButton";
 import { firestore } from "../lib/firebase";
 import { useNavigate } from "react-router";
 import { debounce } from "@mui/material";
+import { UserData } from "../lib/hooks";
+import { User } from "firebase/auth";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
 
 import "../styles/UsernameForm.css";
 
-export const UsernameForm = () => {
-  const { user } = useContext(UserContext);
+type UsernameFormProps = {
+  userData: UserData;
+};
+
+export const UsernameForm = ({ userData }: UsernameFormProps) => {
+  const user = userData.user;
+  const username = userData.username;
+  const userIsRegistered = username === typeof "string" && username.length > 0;
   const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userIsRegistered) {
+      navigate("/");
+    }
+  }, [navigate, userIsRegistered]);
 
   // Hit the database for username match after each debounced change
   // useCallback is required for debounce to work
@@ -37,11 +51,7 @@ export const UsernameForm = () => {
     checkUsername(formValue);
   }, [formValue]);
 
-  if (!user) {
-    return null;
-  }
-
-  const onSubmit = async (e: { preventDefault: () => void }) => {
+  const onSubmit = async (e: { preventDefault: () => void }, user: User) => {
     e.preventDefault();
 
     // Create refs for both documents
@@ -97,10 +107,12 @@ export const UsernameForm = () => {
     <div className="UsernameForm">
       <Navbar noSignIn noProfile={false} />
       {/* only return if not loading */}
-      {!formLoading ? (
+      {!user ? (
+        <SignInButton />
+      ) : !formLoading ? (
         <>
           <h3 className="UsernameForm__title">Choose Username</h3>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={(e) => onSubmit(e, user)}>
             <input
               className="UsernameForm__input"
               name="username"
