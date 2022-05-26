@@ -21,7 +21,7 @@ const App = () => {
   const [posts, setPosts] = useState<PostType[]>();
   const shareContext = { shareUrl, updateShareUrl };
   const [cursor, setCursor] = useState<FieldValue>();
-  const [reachedEnd, setReachedEnd] = useState(false);
+  const [reachedEndOfPosts, setReachedEndOfPosts] = useState(false);
   const [showShareDrawer, setShowShareDrawer] = useState(false);
 
   useEffect(() => {
@@ -31,10 +31,10 @@ const App = () => {
     }
   }, [shareUrl]);
 
-  // TODO Simplify and extract to own functions
+  // TODO Extract to own functions
   useEffect(() => {
-    // Listen for any changes to the posts collection
     if (!cursor) {
+      // Listen for any changes to the posts collection
       onSnapshot(
         query(
           firestore
@@ -47,30 +47,36 @@ const App = () => {
           setPosts(posts);
         }
       );
-    } else {
-      // Load further posts on scroll
-      loadMore &&
-        posts &&
-        onSnapshot(
-          query(
-            firestore
-              .collectionGroup("posts")
-              .orderBy("createdAt", "desc")
-              .startAfter(cursor)
-              .limit(POSTS_PER_REQUEST_LIMIT)
-          ),
-          (querySnapshot) => {
+    }
+  }, [cursor]);
+
+  useEffect(() => {
+    // Load further posts on scroll
+    if (cursor) {
+      const unsubscribe = onSnapshot(
+        query(
+          firestore
+            .collectionGroup("posts")
+            .orderBy("createdAt", "desc")
+            .startAfter(cursor)
+            .limit(POSTS_PER_REQUEST_LIMIT)
+        ),
+        (querySnapshot) => {
+          if (loadMore && posts) {
             const newPosts = querySnapshot.docs.map(postToJSON);
-            setReachedEnd(newPosts.length < POSTS_PER_REQUEST_LIMIT);
             setPosts(posts.concat(newPosts));
           }
-        );
+        }
+      );
+      // Cleanup so listener can get fresh values for loadMore and posts
+      return unsubscribe;
     }
   }, [cursor, loadMore]);
 
   // Set cursor
   useEffect(() => {
     if (posts) {
+      setReachedEndOfPosts(posts.length < POSTS_PER_REQUEST_LIMIT);
       const last = posts[posts.length - 1];
       setCursor(
         typeof last.createdAt === "number"
@@ -84,7 +90,11 @@ const App = () => {
     <UserContext.Provider value={userData}>
       <ShareContext.Provider value={shareContext}>
         <div className="App">
-          <ScrollContainer onLoadMore={(bool) => setLoadMore(bool)}>
+          <ScrollContainer
+            posts={posts}
+            reachedEndOfPosts={reachedEndOfPosts}
+            onLoadMore={(bool) => setLoadMore(bool)}
+          >
             {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
             <Routes>
               <Route
@@ -96,7 +106,7 @@ const App = () => {
                       posts={posts}
                       uid={userData.user?.uid}
                       username={userData.username}
-                      reachedEnd={reachedEnd}
+                      reachedEnd={reachedEndOfPosts}
                     />
                   ) : (
                     <Spinner />
@@ -111,7 +121,7 @@ const App = () => {
                       kind={FeedKind.Filtered}
                       posts={posts}
                       username={userData.username}
-                      reachedEnd={reachedEnd}
+                      reachedEnd={reachedEndOfPosts}
                     />
                   ) : (
                     <Spinner />
