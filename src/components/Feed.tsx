@@ -1,207 +1,98 @@
-import { submitPost, SubmitPostCard } from "./SubmitPostCard";
-import { FloatingButton } from "./FloatingButton";
-import { FieldValue } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { FeedKind, PostType } from "./FeedContainer";
+import { SubmitPostProps } from "./SubmitPostCard";
 import { firestore } from "../lib/firebase";
-import { UserProfile } from "./UserProfile";
+import { useUserData } from "../lib/hooks";
 import { Card, CardKind } from "./Card";
-import { SortMenu } from "./SortMenu";
-import toast from "react-hot-toast";
-import { Navbar } from "./Navbar";
-import { useState } from "react";
-
-import "../styles/Feed.css";
-
-export type Post = {
-  createdAt: number;
-  heartCount: number;
-  slug: string;
-  title: string;
-  genre: string;
-  country: string;
-  uid: string;
-  updatedAt: FieldValue;
-  username: string;
-};
-
-export enum FeedKind {
-  Public,
-  Filtered,
-}
 
 type CommonProps = {
-  posts: Post[];
-  username: string | null | undefined;
-  reachedEnd: boolean;
-  onSortPressed: (sort: "createdAt" | "heartCount") => void;
+  posts: PostType[];
+  orderBy: "createdAt" | "heartCount";
 };
 
 type FeedProps =
   | ({
       kind: FeedKind.Public;
-      uid: string | undefined;
+      onSubmit: (submitProps: SubmitPostProps) => void;
     } & CommonProps)
   | ({
       kind: FeedKind.Filtered;
     } & CommonProps);
 
 export const Feed = (feedProps: FeedProps) => {
-  const { filterKind, filter } = useParams<{
-    filterKind: "username" | "country" | "genre";
-    filter: string;
-  }>();
-  const [createPost, setCreatePost] = useState(false);
-  // const [sortType, setSortType] = useState("Most recent");
+  const { username } = useUserData();
+  const { posts, orderBy } = feedProps;
 
-  // const sortPosts = (a: Post, b: Post) => {
-  //   switch (sortType) {
-  //     case "Most recent":
-  //       return (
-  //         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  //       );
-  //     case "Most popular":
-  //       return b.heartCount - a.heartCount;
-  //     default:
-  //       return (
-  //         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  //       );
-  //   }
-  // };
+  const sortPosts = (a: PostType, b: PostType) => {
+    switch (orderBy) {
+      case "createdAt":
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      case "heartCount":
+        return b.heartCount - a.heartCount;
+      default:
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+    }
+  };
 
   switch (feedProps.kind) {
     case FeedKind.Public: {
-      const { posts, username, uid, reachedEnd, onSortPressed } = feedProps;
       return (
         <>
-          <Navbar noSignIn={false} noProfile={false} />
-          <SortMenu onSortPressed={onSortPressed} />
-          <div className="Feed">
-            <FloatingButton
-              show={!createPost}
-              onClick={() => {
-                if (username) {
-                  window.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                  });
-                  setCreatePost(true);
-                } else {
-                  toast.error("You must be signed in to create a post.", {
-                    position: "bottom-center",
-                    style: { marginBottom: "72px" },
-                  });
-                }
-              }}
-            />
-            {createPost && uid && username && (
-              <SubmitPostCard
-                uid={uid}
-                username={username}
-                onCancelSubmission={() => setCreatePost(!createPost)}
-                onSubmit={(submitPostProps) => {
-                  toast.promise(submitPost(submitPostProps), {
-                    loading: "Submitting...",
-                    success: "Band name submitted successfully!",
-                    error: "Woops. Something went wrong. Try again.",
-                  });
-                  setCreatePost(false);
-                }}
-              />
-            )}
-            {posts
-              ? posts
-                  // .sort((a, b) => sortPosts(a, b))
-                  .map((post: Post) => {
-                    const isOwner = post.username === username;
-
-                    return (
-                      <Card
-                        // TODO using slug for now but might be cleverer to use id
-                        key={post.slug}
-                        kind={CardKind.Post}
-                        title={post.title}
-                        genre={post.genre}
-                        country={post.country}
-                        username={post.username}
-                        clapCount={post.heartCount}
-                        slug={post.slug}
-                        isOwner={isOwner}
-                        uid={post.uid}
-                        postRef={firestore.doc(
-                          `users/${post.uid}/posts/${post.slug}`
-                        )}
-                        createdAt={post.createdAt}
-                        onSubmit={(submitPostProps) => {
-                          toast.promise(submitPost(submitPostProps), {
-                            loading: "Submitting...",
-                            success: "Band name submitted successfully!",
-                            error: "Woops. Something went wrong. Try again.",
-                          });
-                          setCreatePost(false);
-                        }}
-                      />
-                    );
-                  })
-              : null}
-            {reachedEnd && (
-              <span className="Feed__footerMessage">
-                This is the end, my friend. (for now)
-              </span>
-            )}
-          </div>
+          {posts
+            .sort((a, b) => sortPosts(a, b))
+            .map((post: PostType) => {
+              const isOwner = post.username === username;
+              return (
+                <Card
+                  kind={CardKind.Post}
+                  uid={post.uid}
+                  key={post.slug}
+                  slug={post.slug}
+                  isOwner={isOwner}
+                  title={post.title}
+                  genre={post.genre}
+                  country={post.country}
+                  username={post.username}
+                  createdAt={post.createdAt}
+                  clapCount={post.heartCount}
+                  postRef={firestore.doc(
+                    `users/${post.uid}/posts/${post.slug}`
+                  )}
+                />
+              );
+            })}
         </>
       );
     }
     case FeedKind.Filtered: {
-      const { posts, username, reachedEnd } = feedProps;
-      const filteredPosts =
-        filterKind &&
-        filter &&
-        posts.filter((post) => post[filterKind] === filter);
       return (
         <>
-          <Navbar noSignIn={false} noProfile />
-          {username && <UserProfile username={username} />}
-          <div className="Feed">
-            {filteredPosts
-              ? filteredPosts.map((post: Post) => {
-                  const isOwner = post.username === username;
-
-                  return (
-                    <Card
-                      // TODO using slug for now but might be cleverer to use id
-                      key={post.slug}
-                      kind={CardKind.Post}
-                      uid={post.uid}
-                      title={post.title}
-                      genre={post.genre}
-                      country={post.country}
-                      username={post.username}
-                      clapCount={post.heartCount}
-                      slug={post.slug}
-                      isOwner={isOwner}
-                      postRef={firestore.doc(
-                        `users/${post.uid}/posts/${post.slug}`
-                      )}
-                      onSubmit={(submitPostProps) => {
-                        toast.promise(submitPost(submitPostProps), {
-                          loading: "Submitting...",
-                          success: "Band name submitted successfully!",
-                          error: "Woops. Something went wrong. Try again.",
-                        });
-                        setCreatePost(false);
-                      }}
-                      createdAt={post.createdAt}
-                    />
-                  );
-                })
-              : null}
-            {reachedEnd && (
-              <span className="Feed__footerMessage">
-                This is the end, my friend. (for now)
-              </span>
-            )}
-          </div>
+          {posts
+            .sort((a, b) => sortPosts(a, b))
+            .map((post: PostType) => {
+              const isOwner = post.username === username;
+              return (
+                <Card
+                  kind={CardKind.Post}
+                  uid={post.uid}
+                  key={post.slug}
+                  slug={post.slug}
+                  isOwner={isOwner}
+                  title={post.title}
+                  genre={post.genre}
+                  country={post.country}
+                  username={post.username}
+                  createdAt={post.createdAt}
+                  clapCount={post.heartCount}
+                  postRef={firestore.doc(
+                    `users/${post.uid}/posts/${post.slug}`
+                  )}
+                />
+              );
+            })}
         </>
       );
     }

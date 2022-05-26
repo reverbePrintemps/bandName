@@ -1,13 +1,18 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../lib/firebase";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Auth } from "firebase/auth";
+import { Auth, User } from "firebase/auth";
+
+export type UserData = {
+  user: User | null | undefined;
+  username: string | null;
+};
 
 // Custom hook to read auth record and user profile doc
-export const useUserData = () => {
+export const useUserData = (): UserData => {
   const typeCastAuth = auth as unknown as Auth;
   const [user] = useAuthState(typeCastAuth);
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState<null | string>(null);
 
   useEffect(() => {
     // turn off realtime subscription

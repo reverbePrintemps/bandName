@@ -16,8 +16,12 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
   };
   const handleClose = (menuItem?: string | null) => {
     const orderBy =
-      menuItem && menuItem === "Most popular" ? "heartCount" : "createdAt";
-    onSortPressed(orderBy);
+      menuItem && menuItem === "Most recent"
+        ? "createdAt"
+        : menuItem === "Most popular"
+        ? "heartCount"
+        : undefined;
+    orderBy && onSortPressed(orderBy);
     setAnchorEl(null);
   };
   return (
@@ -25,7 +29,7 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
       <IconButton onClick={handleClick}>
         <Sort />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose}>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose()}>
         <MenuItem onClick={(e) => handleClose(e.currentTarget.textContent)}>
           Most recent
         </MenuItem>

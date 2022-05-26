@@ -4,7 +4,6 @@ import kebabCase from "lodash.kebabcase";
 import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 import { FormEvent } from "react";
-import { Post } from "./Feed";
 
 export type SubmitPostProps = {
   e: FormEvent<HTMLFormElement>;
