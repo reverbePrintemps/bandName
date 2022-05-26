@@ -1,8 +1,8 @@
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
 import { DEFAULT_TOAST_DURATION } from "../constants/constants";
+import { useNavigate } from "react-router";
 import { auth } from "../lib/firebase";
 import "../styles/SignOutButton.css";
+import toast from "react-hot-toast";
 
 export const SignOutButton = () => {
   const navigate = useNavigate();

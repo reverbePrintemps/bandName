@@ -2,17 +2,23 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import { IconButton } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import { MoreVert } from "@mui/icons-material";
+import { MoreVert, Share } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import "../styles/BasicMenu.css";
+
 type BasicMenuProps = {
+  isOwner: boolean;
   onEditPressed: () => void;
+  onSharePressed: () => void;
   onDeletePressed: () => void;
 };
 
 export const BasicMenu = ({
+  isOwner,
   onEditPressed,
+  onSharePressed,
   onDeletePressed,
 }: BasicMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -44,24 +50,37 @@ export const BasicMenu = ({
           "aria-labelledby": "basic-button",
         }}
       >
+        {isOwner && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              onEditPressed();
+            }}
+          >
+            <EditIcon />
+            <p className="BasicMenu__label">Edit</p>
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             handleClose();
-            onEditPressed();
+            onSharePressed();
           }}
         >
-          <EditIcon />
-          Edit
+          <Share />
+          <p className="BasicMenu__label">Share</p>
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onDeletePressed();
-          }}
-        >
-          <DeleteIcon />
-          Delete
-        </MenuItem>
+        {isOwner && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              onDeletePressed();
+            }}
+          >
+            <DeleteIcon />
+            <p className="BasicMenu__label">Delete</p>
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

@@ -1,3 +1,4 @@
+import { DocumentData } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -45,7 +46,7 @@ export async function getUserWithUsername(username: string) {
  * Converts a firestore document to JSON
  * @param  {DocumentSnapshot} doc
  */
-export function postToJSON(doc: { data: () => any }) {
+export function postToJSON(doc: DocumentData) {
   const data = doc.data();
   return {
     ...data,

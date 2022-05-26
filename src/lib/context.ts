@@ -1,11 +1,17 @@
-import { User } from "firebase/auth";
+import { UserData } from "./hooks";
 import { createContext } from "react";
 
-export const UserContext = createContext<{
-  // TODO Not sure if null here is the best option
-  user: User | null | undefined;
-  username: string | null;
-}>({
+export const UserContext = createContext<UserData>({
   user: null,
   username: null,
+});
+
+type ShareContextType = {
+  shareUrl: string;
+  updateShareUrl: (shareUrl: string) => void;
+};
+
+export const ShareContext = createContext<ShareContextType>({
+  shareUrl: "",
+  updateShareUrl: () => {},
 });
