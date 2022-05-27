@@ -55,7 +55,7 @@
 }
 
 .Card__postedInfo {
-  margin: 0;
+  margin: 16px 0 0;
   font-size: 14px;
   color: var(--color-gray);
 }

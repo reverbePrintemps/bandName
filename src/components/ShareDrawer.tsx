@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
+import toast from "react-hot-toast";
 
 type ShareDrawerProps = {
   open: boolean;
@@ -50,11 +51,12 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
               }}
             >
               <ListItemButton
-                onClick={() =>
+                onClick={() => {
                   navigator.clipboard.writeText(
                     `https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`
-                  )
-                }
+                  );
+                  toast.success("Copied to clipboard");
+                }}
                 style={{ width: "100%" }}
               >
                 <ListItemIcon>

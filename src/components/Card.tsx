@@ -3,12 +3,12 @@ import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { CardButton, CardButtonKind } from "./CardButton";
 import { CountrySelector } from "./CountrySelector";
 import { ShareContext } from "../lib/context";
-import { Cancel } from "@mui/icons-material";
+import { Cancel, Info } from "@mui/icons-material";
 import { firestore } from "../lib/firebase";
 import firebase from "firebase/compat/app";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { ClapButton } from "./ClapButton";
-import { BasicMenu } from "./BasicMenu";
+import { OverflowMenu } from "./OverflowMenu";
 import toast from "react-hot-toast";
 
 import "../styles/Card.css";
@@ -102,15 +102,13 @@ export const Card = (props: CardProps) => {
         createdAt,
       } = cardProps;
 
-      const formattedCreatedAt = new Date(createdAt).toLocaleString("en-US", {
-        dateStyle: "short",
-      });
+      const formattedCreatedAt = new Date(createdAt).toLocaleString();
 
       return (
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">{title}</h2>
-            <BasicMenu
+            <OverflowMenu
               isOwner={isOwner}
               onSharePressed={() =>
                 updateShareUrl(`/${username}/posts/${slug}`)
@@ -148,13 +146,24 @@ export const Card = (props: CardProps) => {
             </a>
           </h3>
           <div className="Card__footer">
-            <p className="Card__postedInfo">
-              by{" "}
-              <a className="Card__username" href={`/username/${username}`}>
+            <div className="Card__postedInfo">
+              <a
+                className="Card__username"
+                href={`${process.env.PUBLIC_URL}/posts/username/${username}`}
+              >
                 u/{username}
-              </a>{" "}
-              on {formattedCreatedAt}
-            </p>
+              </a>
+              <Tooltip
+                title={`Posted on ${formattedCreatedAt}`}
+                style={{
+                  marginLeft: "4px",
+                  width: "14px",
+                  height: "auto",
+                }}
+              >
+                <Info />
+              </Tooltip>
+            </div>
             <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
           </div>
         </div>

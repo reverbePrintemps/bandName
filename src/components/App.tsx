@@ -1,16 +1,17 @@
-import { firestore, postToJSON } from "../lib/firebase";
+import { DocumentData, onSnapshot, query } from "firebase/firestore";
 import { FeedContainer, FeedKind, PostType } from "./FeedContainer";
-import { DocumentData, getDocs, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
 import { ShareContext, UserContext } from "../lib/context";
+import { firestore, postToJSON } from "../lib/firebase";
 import { ScrollContainer } from "./ScrollContainer";
-import { SinglePostPage } from "./SinglePostPage";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
 import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { Spinner } from "./Spinner";
+import { Navbar } from "./Navbar";
+import { Post } from "./Post";
 
 import "../styles/App.css";
 
@@ -101,6 +102,11 @@ const App = () => {
     <UserContext.Provider value={userData}>
       <ShareContext.Provider value={shareContext}>
         <div className="App">
+          <Navbar
+            noSignIn={false}
+            noProfile={false}
+            onClick={() => setOrderBy("createdAt")}
+          />
           <ScrollContainer
             posts={mappedPosts}
             reachedEndOfPosts={reachedEndOfPosts}
@@ -147,10 +153,7 @@ const App = () => {
                 path="/signup"
                 element={<UsernameForm userData={userData} />}
               />
-              <Route
-                path="/:usernameParam/posts/:postId"
-                element={<SinglePostPage />}
-              />
+              <Route path="/:usernameParam/posts/:postId" element={<Post />} />
             </Routes>
           </ScrollContainer>
           <ShareDrawer

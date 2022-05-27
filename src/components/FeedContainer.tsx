@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
 import { SortMenu } from "./SortMenu";
 import toast from "react-hot-toast";
-import { Navbar } from "./Navbar";
 import { useState } from "react";
 import { Feed } from "./Feed";
 
@@ -58,7 +57,6 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
       const { uid } = feedProps;
       return (
         <>
-          <Navbar noSignIn={false} noProfile={false} />
           <SortMenu onSortPressed={onSortPressed} />
           <div className="Feed">
             <FloatingButton
@@ -123,7 +121,6 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
         posts.filter((post) => post[filterKind] === filter);
       return (
         <>
-          <Navbar noSignIn={false} noProfile />
           {username === filter && username && (
             <UserProfile username={username} />
           )}

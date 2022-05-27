@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { PostType } from "./FeedContainer";
+
 import "../styles/ScrollContainer.css";
 
 type ScrollContainerProps = {

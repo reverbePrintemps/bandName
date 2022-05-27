@@ -9,7 +9,6 @@ import { UserData } from "../lib/hooks";
 import { User } from "firebase/auth";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
-import { Navbar } from "./Navbar";
 
 import "../styles/UsernameForm.css";
 
@@ -105,7 +104,6 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
 
   return (
     <div className="UsernameForm">
-      <Navbar noSignIn noProfile={false} />
       {/* only return if not loading */}
       {!user ? (
         <SignInButton />

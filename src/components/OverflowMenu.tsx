@@ -8,19 +8,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import "../styles/BasicMenu.css";
 
-type BasicMenuProps = {
+type OverflowMenuProps = {
   isOwner: boolean;
   onEditPressed: () => void;
   onSharePressed: () => void;
   onDeletePressed: () => void;
 };
 
-export const BasicMenu = ({
+export const OverflowMenu = ({
   isOwner,
   onEditPressed,
   onSharePressed,
   onDeletePressed,
-}: BasicMenuProps) => {
+}: OverflowMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

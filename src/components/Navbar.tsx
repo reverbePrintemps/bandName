@@ -10,15 +10,16 @@ import "../styles/Navbar.css";
 type NavBarProps = {
   noProfile: boolean;
   noSignIn: boolean;
+  onClick: () => void;
 };
 
-export const Navbar = ({ noProfile, noSignIn }: NavBarProps) => {
+export const Navbar = ({ noProfile, noSignIn, onClick }: NavBarProps) => {
   const { username } = useContext(UserContext);
 
   return (
     <nav className="Navbar">
       <div className="Navbar__container">
-        <Link to="/">
+        <Link to="/" onClick={onClick}>
           <img
             className="Navbar__logo"
             // Ratio of image is 1,91:1 as per specs
