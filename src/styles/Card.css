@@ -1,9 +1,18 @@
 .Card {
+  display: flex;
   padding: 16px 22px;
-  margin: 16px 0 0;
+  /* Applying margin bottom vs top to avoid slight jitter on card flip */
+  margin: 0 0 16px;
   border-radius: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   background-color: var(--color-white);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  /* TODO Magic number */
+  min-height: 191px;
 }
 
 .Card__formInput {
@@ -16,8 +25,12 @@
 
 .Card__header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+}
+
+.Card__header.m-flexEnd {
+  justify-content: flex-end;
 }
 
 .Card__title {
@@ -52,6 +65,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  margin-top: 16px;
 }
 
 .Card__postedInfo {
@@ -60,7 +74,11 @@
   color: var(--color-gray);
 }
 
-.Card__footer.m-submit {
+.Card__postedDate {
+  border-bottom: 1px solid var(--color-gray);
+}
+
+.Card__footer.m-flexEnd {
   justify-content: flex-end;
 }
 
@@ -68,4 +86,28 @@
   font-family: var(--font-fam-nanum);
   font-size: 20px;
   vertical-align: middle;
+}
+
+/* Hack to autogrow textarea: https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
+
+.Card__descriptionContainer,
+.Card__description {
+  display: grid;
+  font-family: monospace;
+  text-align: center;
+  font-size: 16px;
+}
+.Card__descriptionContainer::after {
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  visibility: hidden;
+}
+.Card__descriptionContainer .Card__description {
+  resize: none;
+  overflow: hidden;
+}
+.Card__descriptionContainer .Card__description,
+.Card__descriptionContainer::after {
+  word-wrap: anywhere;
+  grid-area: 1 / 1 / 2 / 2;
 }

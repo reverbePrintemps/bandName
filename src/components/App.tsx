@@ -1,7 +1,7 @@
 import { DocumentData, onSnapshot, query } from "firebase/firestore";
-import { FeedContainer, FeedKind, PostType } from "./FeedContainer";
-import { POSTS_PER_REQUEST_LIMIT } from "../lib/get-posts";
+import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
+import { FeedContainer, PostType } from "./FeedContainer";
 import { firestore, postToJSON } from "../lib/firebase";
 import { ScrollContainer } from "./ScrollContainer";
 import { Route, Routes } from "react-router-dom";
@@ -9,6 +9,8 @@ import { UsernameForm } from "./UsernameForm";
 import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
+import { createPost } from "../lib/submit";
+import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
 import { Post } from "./Post";
@@ -19,8 +21,7 @@ const App = () => {
   const userData = useUserData();
   const [loadMore, setLoadMore] = useState(false);
   const [shareUrl, updateShareUrl] = useState("");
-  const [posts, setPosts] = useState<DocumentData[]>();
-  const [mappedPosts, setMappedPosts] = useState<PostType[]>();
+  const [posts, setPosts] = useState<PostType[]>();
   const shareContext = { shareUrl, updateShareUrl };
   const [cursor, setCursor] = useState<DocumentData>();
   const [reachedEndOfPosts, setReachedEndOfPosts] = useState(false);
@@ -28,7 +29,6 @@ const App = () => {
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
     "createdAt"
   );
-  const [last, setLast] = useState<DocumentData>();
 
   useEffect(() => {
     // TODO Not gr8
@@ -41,7 +41,7 @@ const App = () => {
   useEffect(() => {
     if (!cursor) {
       // Listen for any changes to the posts collection
-      const unsubscribe = onSnapshot(
+      onSnapshot(
         query(
           firestore
             .collectionGroup("posts")
@@ -49,19 +49,20 @@ const App = () => {
             .limit(POSTS_PER_REQUEST_LIMIT)
         ),
         (querySnapshot) => {
-          const posts = querySnapshot.docs;
+          const posts = querySnapshot.docs.map(postToJSON);
           setReachedEndOfPosts(posts.length < POSTS_PER_REQUEST_LIMIT);
+          setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
           setPosts(posts);
         }
       );
-      return unsubscribe;
     }
   }, [cursor, orderBy]);
 
+  // TODO Extract to own functions
   useEffect(() => {
-    // Load further posts on scroll
-    if (cursor) {
-      const unsubscribe = onSnapshot(
+    // Listen for any changes to the posts collection
+    if (cursor && loadMore) {
+      onSnapshot(
         query(
           firestore
             .collectionGroup("posts")
@@ -70,28 +71,14 @@ const App = () => {
             .limit(POSTS_PER_REQUEST_LIMIT)
         ),
         (querySnapshot) => {
-          if (loadMore && posts) {
-            const newPosts = querySnapshot.docs;
-            setReachedEndOfPosts(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-            setPosts(posts.concat(newPosts));
-          }
+          const newPosts = querySnapshot.docs.map(postToJSON);
+          setReachedEndOfPosts(newPosts.length < POSTS_PER_REQUEST_LIMIT);
+          setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          setPosts(posts ? posts.concat(newPosts) : newPosts);
         }
       );
-      // Cleanup so listener can get fresh values for loadMore and posts
-      return unsubscribe;
     }
-  }, [loadMore, orderBy, cursor]);
-
-  useEffect(() => {
-    if (posts) {
-      setLast(posts[posts.length - 1]);
-      setMappedPosts(posts.map((post) => postToJSON(post)));
-    }
-  }, [posts]);
-
-  useEffect(() => {
-    setCursor(last);
-  }, [last]);
+  }, [loadMore]);
 
   // Reset cursor on orderBy change
   useEffect(() => {
@@ -108,24 +95,32 @@ const App = () => {
             onClick={() => setOrderBy("createdAt")}
           />
           <ScrollContainer
-            posts={mappedPosts}
+            posts={posts}
             reachedEndOfPosts={reachedEndOfPosts}
-            onLoadMore={(bool) => setLoadMore(bool)}
+            onLoadMore={(bool) => {
+              setLoadMore(bool);
+            }}
           >
             {/* When adding routes, don't forget to also add them to usernames collection in the firestore */}
             <Routes>
               <Route
                 path="/"
                 element={
-                  mappedPosts ? (
+                  posts ? (
                     <FeedContainer
-                      kind={FeedKind.Public}
-                      posts={mappedPosts}
+                      posts={posts}
                       uid={userData.user?.uid}
                       username={userData.username}
                       reachedEnd={reachedEndOfPosts}
                       onSortPressed={(orderBy) => setOrderBy(orderBy)}
                       orderBy={orderBy}
+                      onSubmit={(submitPostProps) => {
+                        toast.promise(createPost(submitPostProps), {
+                          loading: "Submitting...",
+                          success: "Band name submitted successfully!",
+                          error: "Woops. Something went wrong. Try again.",
+                        });
+                      }}
                     />
                   ) : (
                     <Spinner />
@@ -135,14 +130,21 @@ const App = () => {
               <Route
                 path="/posts/:filterKind/:filter"
                 element={
-                  mappedPosts ? (
+                  posts ? (
                     <FeedContainer
-                      kind={FeedKind.Filtered}
-                      posts={mappedPosts}
+                      uid={userData.user?.uid}
+                      posts={posts}
                       username={userData.username}
                       reachedEnd={reachedEndOfPosts}
                       onSortPressed={(orderBy) => setOrderBy(orderBy)}
                       orderBy={orderBy}
+                      onSubmit={(submitPostProps) => {
+                        toast.promise(createPost(submitPostProps), {
+                          loading: "Submitting...",
+                          success: "Band name submitted successfully!",
+                          error: "Woops. Something went wrong. Try again.",
+                        });
+                      }}
                     />
                   ) : (
                     <Spinner />

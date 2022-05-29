@@ -31,7 +31,12 @@ export const CountrySelector = ({
 
   return (
     <div className="CountrySelector">
-      <div className="CountrySelector__inputContainer">
+      <div
+        className="CountrySelector__inputContainer"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <input
           className="CountrySelector__input"
           placeholder={placeholder}

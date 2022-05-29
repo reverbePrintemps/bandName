@@ -1,22 +1,30 @@
+import { firestore, increment } from "../lib/firebase";
+import { useEffect, useState } from "react";
+import { useUserData } from "../lib/hooks";
 import firebase from "firebase/compat";
-import { useState } from "react";
-import { firestore, auth, increment } from "../lib/firebase";
+import { User } from "firebase/auth";
+
 import "../styles/ClapButton.css";
 
 // TODO Not a fan of this any
 type ClapButtonProps = {
   ownPost: boolean;
-  postRef: any;
+  postRef: firebase.firestore.DocumentReference;
   count: number;
 };
 
 export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
+  const userData = useUserData();
   const [shrink, setShrink] = useState(false);
   const [clapCount, setClapCount] = useState(count);
-  const currentlySignedInUser = auth.currentUser;
-  const clapRef = auth.currentUser
-    ? postRef.collection("hearts").doc(auth.currentUser.uid)
-    : undefined;
+  const clapRef = postRef.collection("hearts").doc(userData.user?.uid);
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    if (userData.user) {
+      setUser(userData.user);
+    }
+  }, [userData.user]);
 
   // Create a user-to-post relationship
   const addClap = async (id: string) => {
@@ -33,22 +41,23 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
     setShrink(true);
   };
 
-  const handleInteractionEnd = (currentlySignedInUser: firebase.User) => {
+  const handleInteractionEnd = (currentlySignedInUser: User) => {
     addClap(currentlySignedInUser.uid);
     setShrink(false);
     setClapCount(clapCount + 1);
   };
 
-  return !ownPost && currentlySignedInUser ? (
+  return !ownPost && user ? (
     <button
       className={`ClapButton ${shrink ? "m-shrink" : ""}`}
+      onClick={(e) => e.stopPropagation()}
       onMouseDown={handleInteractionStart}
       onTouchStart={handleInteractionStart}
       onMouseUp={() => {
-        handleInteractionEnd(currentlySignedInUser);
+        handleInteractionEnd(user);
       }}
       onTouchEnd={() => {
-        handleInteractionEnd(currentlySignedInUser);
+        handleInteractionEnd(user);
       }}
     >{`${clapCount} 👏`}</button>
   ) : (

@@ -1,14 +1,14 @@
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
-import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { CardButton, CardButtonKind } from "./CardButton";
-import { CountrySelector } from "./CountrySelector";
-import { ShareContext } from "../lib/context";
-import { Cancel, Info } from "@mui/icons-material";
-import { firestore } from "../lib/firebase";
-import firebase from "firebase/compat/app";
 import { IconButton, Tooltip } from "@mui/material";
-import { ClapButton } from "./ClapButton";
+import { CountrySelector } from "./CountrySelector";
 import { OverflowMenu } from "./OverflowMenu";
+import { ShareContext } from "../lib/context";
+import { Cancel } from "@mui/icons-material";
+import firebase from "firebase/compat/app";
+import { deletePost } from "../lib/submit";
+import { ClapButton } from "./ClapButton";
+import CardFlip from "react-card-flip";
 import toast from "react-hot-toast";
 
 import "../styles/Card.css";
@@ -21,57 +21,50 @@ export enum CardKind {
 
 type onSubmit = {
   e: FormEvent<HTMLFormElement>;
-  createdAt: FieldValue | number;
 } & CommonProps;
 
 type CommonProps = {
   uid: string;
-  username: string;
   slug: string;
   title: string;
   genre: string;
   country: string;
+  username: string;
+  description: string;
 };
 
-type CardProps =
-  | ({
-      kind: CardKind.Post;
-      isOwner: boolean;
-      // Currently a bug when converting to DocumentReference only
-      postRef: firebase.firestore.DocumentReference;
-      clapCount: number;
-      uid: string;
-      createdAt: number;
-    } & CommonProps)
-  | ({
-      kind: CardKind.Submit;
-      titlePlaceholder: string;
-      genrePlaceholder: string;
-      countryPlaceholder: string;
-      createdAt: FieldValue | number;
-      onSubmit: ({
-        e,
-        uid,
-        slug,
-        title,
-        genre,
-        country,
-        username,
-        createdAt,
-      }: onSubmit) => void;
-      onCancelSubmission: () => void;
-    } & CommonProps)
-  | {
-      kind: CardKind.Delete;
-      slug: string;
-      uid: string;
-    };
+type CardProps = {
+  kind: CardKind;
+  isOwner: boolean;
+  // Currently a bug when converting to DocumentReference only
+  clapCount: number;
+  createdAt: number | undefined;
+  onSubmit: ({
+    e,
+    uid,
+    slug,
+    title,
+    genre,
+    country,
+    username,
+    description,
+  }: onSubmit) => void;
+  onCancelSubmission: () => void;
+  postRef: firebase.firestore.DocumentReference | undefined;
+} & CommonProps;
 
 export const Card = (props: CardProps) => {
-  const [cardProps, setCardProps] = useState<CardProps>(props);
-  const titleRef = useRef<HTMLInputElement>(null);
   const { updateShareUrl } = useContext(ShareContext);
-
+  const titleRef = useRef<HTMLInputElement>(null);
+  const [replicatedValue, setReplicatedValue] = useState<string>();
+  const [cardKind, setCardKind] = useState<CardKind>(
+    props.kind || CardKind.Post
+  );
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [title, setTitle] = useState(props.title);
+  const [genre, setGenre] = useState(props.genre);
+  const [country, setCountry] = useState(props.country);
+  const [description, setDescription] = useState(props.description);
   // Setting focus manually to avoid conflicting with scroll to top
   useEffect(() => {
     setTimeout(() => {
@@ -79,18 +72,9 @@ export const Card = (props: CardProps) => {
     }, 500);
   }, []);
 
-  // If cardProps changes, update state
-  useEffect(() => {
-    setCardProps(props);
-  }, [props]);
-
-  const deletePost = async (uid: string, slug: string) =>
-    await deleteDoc(doc(firestore, `/users/${uid}/posts`, slug));
-
-  switch (cardProps.kind) {
+  switch (cardKind) {
     case CardKind.Post: {
       const {
-        uid,
         slug,
         title,
         genre,
@@ -100,175 +84,246 @@ export const Card = (props: CardProps) => {
         username,
         clapCount,
         createdAt,
-      } = cardProps;
+        description,
+      } = props;
 
-      const formattedCreatedAt = new Date(createdAt).toLocaleString();
+      const shortDate =
+        createdAt &&
+        new Date(createdAt).toLocaleString("en-US", {
+          dateStyle: "short",
+        });
+      const createdAtTime =
+        createdAt && new Date(createdAt).toLocaleTimeString();
 
       return (
-        <div className="Card">
-          <div className="Card__header">
-            <h2 className="Card__title">{title}</h2>
-            <OverflowMenu
-              isOwner={isOwner}
-              onSharePressed={() =>
-                updateShareUrl(`/${username}/posts/${slug}`)
-              }
-              onEditPressed={() => {
-                setCardProps({
-                  ...cardProps,
-                  kind: CardKind.Submit,
-                  titlePlaceholder: title,
-                  genrePlaceholder: genre,
-                  countryPlaceholder: country,
-                  onSubmit: () => {},
-                  onCancelSubmission: () => {},
-                  slug,
-                  username,
-                });
-              }}
-              onDeletePressed={() =>
-                setCardProps({
-                  kind: CardKind.Delete,
-                  slug: slug,
-                  uid: uid,
-                })
-              }
-            />
-          </div>
-          <h3 className="Card__genre">
-            <a href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}>
-              {genre}
-            </a>
-          </h3>
-          <h3 className="Card__country">
-            <a href={`${process.env.PUBLIC_URL}/posts/country/${country}`}>
-              {country}
-            </a>
-          </h3>
-          <div className="Card__footer">
-            <div className="Card__postedInfo">
-              <a
-                className="Card__username"
-                href={`${process.env.PUBLIC_URL}/posts/username/${username}`}
-              >
-                u/{username}
-              </a>
-              <Tooltip
-                title={`Posted on ${formattedCreatedAt}`}
-                style={{
-                  marginLeft: "4px",
-                  width: "14px",
-                  height: "auto",
-                }}
-              >
-                <Info />
-              </Tooltip>
+        <CardFlip
+          isFlipped={isFlipped}
+          flipDirection="vertical"
+          flipSpeedBackToFront={0.25}
+          flipSpeedFrontToBack={0.25}
+        >
+          <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
+            <div>
+              <div className="Card__header">
+                <h2 className="Card__title">{title}</h2>
+                <OverflowMenu
+                  isOwner={isOwner}
+                  onSharePressed={() =>
+                    updateShareUrl(`/${username}/posts/${slug}`)
+                  }
+                  onEditPressed={() => {
+                    setCardKind(CardKind.Submit);
+                  }}
+                  onDeletePressed={() => {
+                    setCardKind(CardKind.Delete);
+                  }}
+                />
+              </div>
+              <h3 className="Card__genre">
+                <a href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}>
+                  {genre}
+                </a>
+              </h3>
+              <h3 className="Card__country">
+                <a href={`${process.env.PUBLIC_URL}/posts/country/${country}`}>
+                  {country}
+                </a>
+              </h3>
             </div>
-            <ClapButton ownPost={isOwner} postRef={postRef} count={clapCount} />
+            <div className="Card__footer">
+              <div className="Card__postedInfo">
+                <a
+                  className="Card__username"
+                  href={`${process.env.PUBLIC_URL}/posts/username/${username}`}
+                >
+                  u/{username}
+                </a>
+              </div>
+              {postRef && (
+                <ClapButton
+                  ownPost={isOwner}
+                  postRef={postRef}
+                  count={clapCount}
+                />
+              )}
+            </div>
           </div>
-        </div>
+
+          <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
+            <div className="Card__header m-flexEnd">
+              <OverflowMenu
+                isOwner={isOwner}
+                onSharePressed={() =>
+                  updateShareUrl(`/${username}/posts/${slug}`)
+                }
+                onEditPressed={() => {
+                  setCardKind(CardKind.Submit);
+                }}
+                onDeletePressed={() => {
+                  setCardKind(CardKind.Delete);
+                }}
+              />
+            </div>
+            <div className="Card__description">
+              {description ? (
+                description
+              ) : isOwner ? (
+                <p>
+                  You haven't provided a context for this{" "}
+                  <span className="Globals__bandName">BandName!</span> 😕
+                </p>
+              ) : (
+                <p>
+                  No context was provided for this{" "}
+                  <span className="Globals__bandName">BandName!</span> 😕
+                </p>
+              )}
+            </div>
+            <div className="Card__footer">
+              <div className="Card__postedInfo">
+                Posted on{" "}
+                <Tooltip title={`At ${createdAtTime}`}>
+                  <span className="Card__postedDate">{shortDate}</span>
+                </Tooltip>
+              </div>
+            </div>
+          </div>
+        </CardFlip>
       );
     }
     case CardKind.Submit: {
-      const {
-        uid,
-        slug,
-        title,
-        genre,
-        country,
-        username,
-        onSubmit,
-        createdAt,
-        onCancelSubmission,
-        titlePlaceholder,
-        genrePlaceholder,
-        countryPlaceholder,
-      } = cardProps;
+      const titlePlaceholder = "Enter band name";
+      const genrePlaceholder = "Enter genre";
+      const countryPlaceholder = "Country";
+      const descriptionPlaceholder = "";
+      const onCancelSubmission = () => {
+        setCardKind(CardKind.Post);
+      };
+      const { uid, slug, username, onSubmit } = props;
 
       const isValid = title.length > 3 && title.length < 100;
 
       return (
-        <div className="Card">
-          <form
-            onSubmit={(e) =>
-              onSubmit({
-                e,
-                uid,
-                slug,
-                title,
-                genre,
-                country,
-                username,
-                createdAt,
-              })
-            }
-          >
-            <div className="Card__header">
+        <form
+          onSubmit={(e) => {
+            onSubmit({
+              e,
+              uid,
+              slug,
+              title,
+              genre,
+              country,
+              username,
+              description,
+            });
+            setCardKind(CardKind.Post);
+          }}
+        >
+          <CardFlip isFlipped={isFlipped} flipDirection="vertical">
+            <div
+              className="Card"
+              onClick={() => isValid && setIsFlipped(!isFlipped)}
+            >
+              <div className="Card__header">
+                <input
+                  ref={titleRef}
+                  className="Card__formInput Card__title"
+                  onClick={(e) => e.stopPropagation()}
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.currentTarget.value);
+                  }}
+                  placeholder={titlePlaceholder}
+                />
+                <IconButton
+                  className="Card__menuIcon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // TODO Not great, but it works
+                    // cancelSubmission when creating new post and setCardProps for when editing post
+                    onCancelSubmission();
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
+              </div>
               <input
-                ref={titleRef}
-                className="Card__formInput Card__title"
-                value={title}
-                onChange={(e) =>
-                  setCardProps({ ...cardProps, title: e.currentTarget.value })
-                }
-                placeholder={titlePlaceholder}
-              />
-              <IconButton
-                className="Card__menuIcon"
-                onClick={() => {
-                  // TODO Not great, but it works
-                  // cancelSubmission when creating new post and setCardProps for when editing post
-                  onCancelSubmission();
-                  setCardProps({
-                    ...props,
-                  });
+                className="Card__formInput Card__genre"
+                onClick={(e) => {
+                  e.stopPropagation();
                 }}
+                value={genre}
+                onChange={(e) => {
+                  setGenre(e.currentTarget.value);
+                }}
+                placeholder={genrePlaceholder}
+              />
+              <CountrySelector
+                country={country}
+                onChange={(input) => setCountry(input)}
+                placeholder={countryPlaceholder}
+              />
+              <div className="Card__footer m-flexEnd">
+                <CardButton kind={CardButtonKind.Flip} isValid={isValid} />
+              </div>
+            </div>
+
+            <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
+              <div className="Card__header m-flexEnd">
+                <IconButton
+                  className="Card__menuIcon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // TODO Not great, but it works
+                    // cancelSubmission when creating new post and setCardProps for when editing post
+                    onCancelSubmission();
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
+              </div>{" "}
+              <div
+                className="Card__descriptionContainer"
+                data-replicated-value={replicatedValue}
               >
-                <Cancel />
-              </IconButton>
+                <textarea
+                  className="Card__formInput Card__description"
+                  onInput={(e) => setReplicatedValue(e.currentTarget.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.currentTarget.value);
+                  }}
+                  placeholder={
+                    descriptionPlaceholder.length > 0
+                      ? descriptionPlaceholder
+                      : "Enter description"
+                  }
+                />
+              </div>
+              <div className="Card__footer m-flexEnd">
+                <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
+              </div>
             </div>
-            <input
-              className="Card__formInput Card__genre"
-              value={genre}
-              onChange={(e) =>
-                setCardProps({ ...cardProps, genre: e.currentTarget.value })
-              }
-              placeholder={genrePlaceholder}
-            />
-            <CountrySelector
-              country={country}
-              onChange={(input) =>
-                setCardProps({ ...cardProps, country: input })
-              }
-              placeholder={countryPlaceholder}
-            />
-            <div className="Card__footer m-submit">
-              <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
-            </div>
-          </form>
-        </div>
+          </CardFlip>
+        </form>
       );
     }
     case CardKind.Delete: {
-      const { slug, uid } = cardProps;
+      const { slug, uid } = props;
       return (
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">Are you sure?</h2>
-            <IconButton
-              className="Card__menuIcon"
-              onClick={() => {
-                setCardProps({
-                  ...props,
-                });
-              }}
-            >
+            <IconButton className="Card__menuIcon">
               <Cancel />
             </IconButton>
           </div>
           <h3 className="Card__genre">There is no turning back</h3>
           <h3 className="Card__country">🙅</h3>
-          <div className="Card__footer m-submit">
+          <div className="Card__footer m-flexEnd">
             <CardButton
               kind={CardButtonKind.Action}
               label="Delete"

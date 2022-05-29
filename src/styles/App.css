@@ -18,6 +18,7 @@
   --container-max-width: 800px;
 }
 
+/* Defaults */
 /* TODO Cleanup overrides */
 * {
   box-sizing: border-box;
@@ -52,6 +53,15 @@ ul {
 li {
   list-style: none;
 }
+
+/* Globals */
+
+.Globals__bandName {
+  font-family: var(--font-fam-knewave);
+  text-transform: uppercase;
+}
+
+/* App styles */
 
 .App {
   background-color: var(--color-light-gray);

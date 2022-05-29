@@ -41,7 +41,19 @@ export const Post = () => {
   if (!post) {
     return null;
   }
-  const { genre, country, title, username, heartCount, uid, slug } = post;
+  const {
+    uid,
+    slug,
+    genre,
+    title,
+    country,
+    username,
+    onSubmit,
+    createdAt,
+    heartCount,
+    description,
+    onCancelSubmission,
+  } = post;
 
   const postRef = firestore.doc(`users/${uid}/posts/${slug}`);
   const isOwner = userData.username === username;
@@ -49,16 +61,19 @@ export const Post = () => {
   return (
     <Card
       kind={CardKind.Post}
+      uid={uid}
+      slug={slug}
+      genre={genre}
+      title={title}
       isOwner={isOwner}
       postRef={postRef}
-      clapCount={heartCount}
-      uid={uid}
-      createdAt={post.createdAt}
-      genre={genre}
       country={country}
-      title={title}
       username={username}
-      slug={slug}
+      onSubmit={onSubmit}
+      createdAt={createdAt}
+      clapCount={heartCount}
+      description={description}
+      onCancelSubmission={onCancelSubmission}
     />
   );
 };

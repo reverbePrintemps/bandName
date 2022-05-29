@@ -3,13 +3,12 @@
   padding: 12px 16px;
   color: var(--color-white);
   border-radius: 8px;
-}
-
-.CardButton.m-submit {
+  display: flex;
+  align-items: center;
   background: var(--color-black);
 }
 
-.CardButton.m-submit:hover {
+.CardButton:hover {
   background: var(--color-light-gray);
   color: var(--color-black);
 }
@@ -31,4 +30,8 @@
 .CardButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.CardButton__text {
+  margin-left: 8px;
 }

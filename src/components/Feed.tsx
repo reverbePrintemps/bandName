@@ -1,26 +1,23 @@
-import { FeedKind, PostType } from "./FeedContainer";
-import { SubmitPostProps } from "./SubmitPostCard";
+import { EditPostProps } from "../lib/submit";
 import { firestore } from "../lib/firebase";
+import { PostType } from "./FeedContainer";
 import { useUserData } from "../lib/hooks";
 import { Card, CardKind } from "./Card";
 
-type CommonProps = {
+type FeedProps = {
   posts: PostType[];
   orderBy: "createdAt" | "heartCount";
+  onSubmit: (submitProps: EditPostProps) => void;
+  onCancelSubmission: () => void;
 };
 
-type FeedProps =
-  | ({
-      kind: FeedKind.Public;
-      onSubmit: (submitProps: SubmitPostProps) => void;
-    } & CommonProps)
-  | ({
-      kind: FeedKind.Filtered;
-    } & CommonProps);
-
-export const Feed = (feedProps: FeedProps) => {
+export const Feed = ({
+  posts,
+  orderBy,
+  onSubmit,
+  onCancelSubmission,
+}: FeedProps) => {
   const { username } = useUserData();
-  const { posts, orderBy } = feedProps;
 
   const sortPosts = (a: PostType, b: PostType) => {
     switch (orderBy) {
@@ -37,64 +34,32 @@ export const Feed = (feedProps: FeedProps) => {
     }
   };
 
-  switch (feedProps.kind) {
-    case FeedKind.Public: {
-      return (
-        <>
-          {posts
-            .sort((a, b) => sortPosts(a, b))
-            .map((post: PostType) => {
-              const isOwner = post.username === username;
-              return (
-                <Card
-                  kind={CardKind.Post}
-                  uid={post.uid}
-                  key={post.slug}
-                  slug={post.slug}
-                  isOwner={isOwner}
-                  title={post.title}
-                  genre={post.genre}
-                  country={post.country}
-                  username={post.username}
-                  createdAt={post.createdAt}
-                  clapCount={post.heartCount}
-                  postRef={firestore.doc(
-                    `users/${post.uid}/posts/${post.slug}`
-                  )}
-                />
-              );
-            })}
-        </>
-      );
-    }
-    case FeedKind.Filtered: {
-      return (
-        <>
-          {posts
-            .sort((a, b) => sortPosts(a, b))
-            .map((post: PostType) => {
-              const isOwner = post.username === username;
-              return (
-                <Card
-                  kind={CardKind.Post}
-                  uid={post.uid}
-                  key={post.slug}
-                  slug={post.slug}
-                  isOwner={isOwner}
-                  title={post.title}
-                  genre={post.genre}
-                  country={post.country}
-                  username={post.username}
-                  createdAt={post.createdAt}
-                  clapCount={post.heartCount}
-                  postRef={firestore.doc(
-                    `users/${post.uid}/posts/${post.slug}`
-                  )}
-                />
-              );
-            })}
-        </>
-      );
-    }
-  }
+  return (
+    <>
+      {posts
+        .sort((a, b) => sortPosts(a, b))
+        .map((post: PostType) => {
+          const isOwner = post.username === username;
+          return (
+            <Card
+              kind={CardKind.Post}
+              uid={post.uid}
+              key={post.slug}
+              slug={post.slug}
+              isOwner={isOwner}
+              title={post.title}
+              genre={post.genre}
+              country={post.country}
+              username={post.username}
+              createdAt={post.createdAt}
+              clapCount={post.heartCount}
+              description={post.description}
+              postRef={firestore.doc(`users/${post.uid}/posts/${post.slug}`)}
+              onSubmit={onSubmit}
+              onCancelSubmission={onCancelSubmission}
+            />
+          );
+        })}
+    </>
+  );
 };

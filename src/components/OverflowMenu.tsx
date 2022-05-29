@@ -24,9 +24,11 @@ export const OverflowMenu = ({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    event.stopPropagation();
     setAnchorEl(null);
   };
 
@@ -52,8 +54,8 @@ export const OverflowMenu = ({
       >
         {isOwner && (
           <MenuItem
-            onClick={() => {
-              handleClose();
+            onClick={(e) => {
+              handleClose(e);
               onEditPressed();
             }}
           >
@@ -62,8 +64,8 @@ export const OverflowMenu = ({
           </MenuItem>
         )}
         <MenuItem
-          onClick={() => {
-            handleClose();
+          onClick={(e) => {
+            handleClose(e);
             onSharePressed();
           }}
         >
@@ -72,8 +74,8 @@ export const OverflowMenu = ({
         </MenuItem>
         {isOwner && (
           <MenuItem
-            onClick={() => {
-              handleClose();
+            onClick={(e) => {
+              handleClose(e);
               onDeletePressed();
             }}
           >
