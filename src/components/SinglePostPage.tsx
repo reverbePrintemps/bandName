@@ -5,6 +5,8 @@ import { useUserData } from "../lib/hooks";
 import { PostType } from "./FeedContainer";
 import { Card, CardKind } from "./Card";
 
+import "../styles/SinglePostPage.css";
+
 export const Post = () => {
   const userData = useUserData();
   const { usernameParam, postId } = useParams();
@@ -59,21 +61,26 @@ export const Post = () => {
   const isOwner = userData.username === username;
 
   return (
-    <Card
-      kind={CardKind.Post}
-      uid={uid}
-      slug={slug}
-      genre={genre}
-      title={title}
-      isOwner={isOwner}
-      postRef={postRef}
-      country={country}
-      username={username}
-      onSubmit={onSubmit}
-      createdAt={createdAt}
-      clapCount={heartCount}
-      description={description}
-      onCancelSubmission={onCancelSubmission}
-    />
+    <div className="SinglePostPage">
+      <p className="SinglePostPage__title">
+        Someone wants you to behold this beauty 👇
+      </p>
+      <Card
+        kind={CardKind.Post}
+        uid={uid}
+        slug={slug}
+        genre={genre}
+        title={title}
+        isOwner={isOwner}
+        postRef={postRef}
+        country={country}
+        username={username}
+        onSubmit={onSubmit}
+        createdAt={createdAt}
+        clapCount={heartCount}
+        description={description}
+        onCancelSubmission={onCancelSubmission}
+      />
+    </div>
   );
 };

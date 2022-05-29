@@ -13,7 +13,7 @@ import { createPost } from "../lib/submit";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
-import { Post } from "./Post";
+import { Post } from "./SinglePostPage";
 
 import "../styles/App.css";
 
