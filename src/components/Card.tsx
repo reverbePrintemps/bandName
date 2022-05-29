@@ -122,6 +122,7 @@ export const Card = (props: CardProps) => {
               <h3 className="Card__genre">
                 <a
                   href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}
+                  // All e.stopPropagation() are to prevent the card flip
                   onClick={(e) => e.stopPropagation()}
                 >
                   {genre}

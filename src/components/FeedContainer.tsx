@@ -54,6 +54,7 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
     filter &&
     feedProps.posts.filter((post) => post[filterKind] === filter);
   const posts = filter ? filteredPosts : feedProps.posts;
+
   return (
     <>
       {username === filter && username && <UserProfile username={username} />}

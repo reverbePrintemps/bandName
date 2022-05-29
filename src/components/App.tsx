@@ -92,7 +92,12 @@ const App = () => {
           <Navbar
             noSignIn={false}
             noProfile={false}
-            onClick={() => setOrderBy("createdAt")}
+            onClick={() => {
+              // Reset feed
+              setOrderBy("createdAt");
+              setReachedEndOfPosts(false);
+              setCursor(undefined);
+            }}
           />
           <ScrollContainer
             posts={posts}
