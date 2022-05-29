@@ -78,7 +78,7 @@ const App = () => {
         }
       );
     }
-  }, [loadMore]);
+  }, [loadMore, orderBy]);
 
   // Reset cursor on orderBy change
   useEffect(() => {

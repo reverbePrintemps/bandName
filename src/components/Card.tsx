@@ -196,10 +196,7 @@ export const Card = (props: CardProps) => {
       const genrePlaceholder = "Enter genre";
       const countryPlaceholder = "Country";
       const descriptionPlaceholder = "";
-      const onCancelSubmission = () => {
-        setCardKind(CardKind.Post);
-      };
-      const { uid, slug, username, onSubmit } = props;
+      const { uid, slug, username, onSubmit, onCancelSubmission } = props;
 
       const isValid = title.length > 3 && title.length < 100;
 
