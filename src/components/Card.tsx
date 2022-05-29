@@ -120,12 +120,18 @@ export const Card = (props: CardProps) => {
                 />
               </div>
               <h3 className="Card__genre">
-                <a href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}>
+                <a
+                  href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {genre}
                 </a>
               </h3>
               <h3 className="Card__country">
-                <a href={`${process.env.PUBLIC_URL}/posts/country/${country}`}>
+                <a
+                  href={`${process.env.PUBLIC_URL}/posts/country/${country}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {country}
                 </a>
               </h3>
@@ -135,6 +141,7 @@ export const Card = (props: CardProps) => {
                 <a
                   className="Card__username"
                   href={`${process.env.PUBLIC_URL}/posts/username/${username}`}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   u/{username}
                 </a>
@@ -296,7 +303,7 @@ export const Card = (props: CardProps) => {
                   placeholder={
                     descriptionPlaceholder.length > 0
                       ? descriptionPlaceholder
-                      : "Enter description"
+                      : "Enter a description or some context around this BandName!"
                   }
                 />
               </div>
