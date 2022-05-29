@@ -1,5 +1,5 @@
+import { MouseEvent, TouchEvent, useEffect, useState } from "react";
 import { firestore, increment } from "../lib/firebase";
-import { useEffect, useState } from "react";
 import { useUserData } from "../lib/hooks";
 import firebase from "firebase/compat";
 import { User } from "firebase/auth";
@@ -37,11 +37,24 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
     await batch.commit();
   };
 
-  const handleInteractionStart = () => {
+  const handleInteractionStart = (
+    e:
+      | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+      | TouchEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     setShrink(true);
   };
 
-  const handleInteractionEnd = (currentlySignedInUser: User) => {
+  const handleInteractionEnd = (
+    e:
+      | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+      | TouchEvent<HTMLButtonElement>,
+    currentlySignedInUser: User
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     addClap(currentlySignedInUser.uid);
     setShrink(false);
     setClapCount(clapCount + 1);
@@ -50,14 +63,17 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
   return !ownPost && user ? (
     <button
       className={`ClapButton ${shrink ? "m-shrink" : ""}`}
-      onClick={(e) => e.stopPropagation()}
-      onMouseDown={handleInteractionStart}
-      onTouchStart={handleInteractionStart}
-      onMouseUp={() => {
-        handleInteractionEnd(user);
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
       }}
-      onTouchEnd={() => {
-        handleInteractionEnd(user);
+      onMouseDown={(e) => handleInteractionStart(e)}
+      onTouchStart={(e) => handleInteractionStart(e)}
+      onMouseUp={(e) => {
+        handleInteractionEnd(e, user);
+      }}
+      onTouchEnd={(e) => {
+        handleInteractionEnd(e, user);
       }}
     >{`${clapCount} 👏`}</button>
   ) : (
