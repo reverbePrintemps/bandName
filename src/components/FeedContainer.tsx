@@ -105,7 +105,7 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
         )}
         {reachedEnd && (
           <span className="Feed__footerMessage">
-            This is the end, my friend. (for now)
+            This is the end, my friend.
           </span>
         )}
       </div>

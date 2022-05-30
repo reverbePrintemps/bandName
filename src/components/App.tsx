@@ -10,10 +10,11 @@ import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { createPost } from "../lib/submit";
+import { Post } from "./SinglePostPage";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
 import { Navbar } from "./Navbar";
-import { Post } from "./SinglePostPage";
+import { Splash } from "./Splash";
 
 import "../styles/App.css";
 
@@ -88,6 +89,7 @@ const App = () => {
   return (
     <UserContext.Provider value={userData}>
       <ShareContext.Provider value={shareContext}>
+        <Splash />
         <div className="App">
           <Navbar
             noSignIn={false}
