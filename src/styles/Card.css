@@ -25,7 +25,7 @@
 
 .Card__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
@@ -39,6 +39,7 @@
   margin: 0;
   letter-spacing: 1px;
   font-size: 20px;
+  align-self: center;
 }
 
 .Card__menuIcon:hover {
