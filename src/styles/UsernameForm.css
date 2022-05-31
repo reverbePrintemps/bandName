@@ -26,20 +26,20 @@
   align-items: center;
   height: 50px;
   margin: auto 0;
-  background-color: var(--color-black);
+  background-color: var(--main-text);
   font-family: var(--font-fam-knewave);
   letter-spacing: 1px;
   font-size: 16px;
-  color: var(--color-white);
+  color: var(--main-text);
   text-transform: uppercase;
   padding: 8px 16px;
 }
 
 .UsernameForm__button:hover {
-  background-color: var(--color-gray);
+  background-color: var(--secondary-text);
 }
 
 .UsernameForm__button:disabled {
-  background-color: var(--color-gray);
+  background-color: var(--secondary-text);
   cursor: not-allowed;
 }

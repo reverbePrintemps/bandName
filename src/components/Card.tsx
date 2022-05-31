@@ -2,7 +2,7 @@ import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { CardButton, CardButtonKind } from "./CardButton";
 import { IconButton, Tooltip } from "@mui/material";
 import { CountrySelector } from "./CountrySelector";
-import { OverflowMenu } from "./OverflowMenu";
+import { CardOverflowMenu } from "./CardOverflowMenu";
 import { ShareContext } from "../lib/context";
 import { Cancel } from "@mui/icons-material";
 import firebase from "firebase/compat/app";
@@ -106,7 +106,7 @@ export const Card = (props: CardProps) => {
             <div>
               <div className="Card__header">
                 <h2 className="Card__title">{title}</h2>
-                <OverflowMenu
+                <CardOverflowMenu
                   isOwner={isOwner}
                   onSharePressed={() =>
                     updateShareUrl(`/${username}/posts/${slug}`)
@@ -159,7 +159,7 @@ export const Card = (props: CardProps) => {
 
           <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
             <div className="Card__header m-flexEnd">
-              <OverflowMenu
+              <CardOverflowMenu
                 isOwner={isOwner}
                 onSharePressed={() =>
                   updateShareUrl(`/${username}/posts/${slug}`)
@@ -245,7 +245,6 @@ export const Card = (props: CardProps) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     // TODO Not great, but it works
-                    // cancelSubmission when creating new post and setCardProps for when editing post
                     onCancelSubmission();
                   }}
                 >
@@ -322,7 +321,13 @@ export const Card = (props: CardProps) => {
         <div className="Card">
           <div className="Card__header">
             <h2 className="Card__title">Are you sure?</h2>
-            <IconButton className="Card__menuIcon">
+            <IconButton
+              className="Card__menuIcon"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCardKind(CardKind.Post);
+              }}
+            >
               <Cancel />
             </IconButton>
           </div>

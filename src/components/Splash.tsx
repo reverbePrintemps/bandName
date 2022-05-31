@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react";
-
 import "../styles/Splash.css";
 
-export const Splash = () => {
-  const [show, setShow] = useState(true);
+type SplashProps = {
+  show: boolean;
+};
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShow(false);
-    }, 1500);
-  }, []);
+export const Splash = ({ show }: SplashProps) => {
   return (
-    <div className={`Splash ${show ? "m-show" : ""}`}>
+    <div className={`Splash ${show ? "" : "m-hide"}`}>
       <img
         className="Splash__logo"
         src={require("../assets/band-name-logo.png")}

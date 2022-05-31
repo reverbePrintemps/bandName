@@ -10,7 +10,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    {/* TODO Not 100% sure it's necessary */}
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <App />
     </BrowserRouter>

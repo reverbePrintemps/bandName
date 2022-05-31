@@ -34,7 +34,7 @@ export const CardButton = (props: CardButtonProps) => {
         >
           {isValid ? (
             <>
-              <Refresh />
+              <Refresh sx={{ color: "var(--button-text)" }} />
               <span className="CardButton__text">Flip</span>
             </>
           ) : (

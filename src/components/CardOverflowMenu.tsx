@@ -1,27 +1,27 @@
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import { IconButton } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import { MoreVert, Share } from "@mui/icons-material";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import MenuItem from "@mui/material/MenuItem";
+import { IconButton } from "@mui/material";
+import Menu from "@mui/material/Menu";
+import { useState } from "react";
 
-import "../styles/BasicMenu.css";
+import "../styles/CardOverflowMenu.css";
 
-type OverflowMenuProps = {
+type CardOverflowMenuProps = {
   isOwner: boolean;
   onEditPressed: () => void;
   onSharePressed: () => void;
   onDeletePressed: () => void;
 };
 
-export const OverflowMenu = ({
+export const CardOverflowMenu = ({
   isOwner,
   onEditPressed,
   onSharePressed,
   onDeletePressed,
-}: OverflowMenuProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+}: CardOverflowMenuProps) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -40,6 +40,7 @@ export const OverflowMenu = ({
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        style={{ color: "var(--ui)" }}
       >
         <MoreVert />
       </IconButton>
@@ -51,6 +52,12 @@ export const OverflowMenu = ({
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
+        PaperProps={{
+          sx: {
+            backgroundColor: "var(--card-bg)",
+            color: "var(--main-text)",
+          },
+        }}
       >
         {isOwner && (
           <MenuItem
@@ -60,7 +67,7 @@ export const OverflowMenu = ({
             }}
           >
             <EditIcon />
-            <p className="BasicMenu__label">Edit</p>
+            <p className="CardOverflowMenu__label">Edit</p>
           </MenuItem>
         )}
         <MenuItem
@@ -70,7 +77,7 @@ export const OverflowMenu = ({
           }}
         >
           <Share />
-          <p className="BasicMenu__label">Share</p>
+          <p className="CardOverflowMenu__label">Share</p>
         </MenuItem>
         {isOwner && (
           <MenuItem
@@ -80,7 +87,7 @@ export const OverflowMenu = ({
             }}
           >
             <DeleteIcon />
-            <p className="BasicMenu__label">Delete</p>
+            <p className="CardOverflowMenu__label">Delete</p>
           </MenuItem>
         )}
       </Menu>

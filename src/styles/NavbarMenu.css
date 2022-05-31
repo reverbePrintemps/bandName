@@ -1,0 +1,8 @@
+.NavbarMenu {
+  margin: 0;
+  padding-left: 8px;
+}
+
+.NavbarMenu__menuLink {
+  display: flex;
+}

@@ -1,21 +1,15 @@
-import { Link } from "react-router-dom";
-import { SignInButton } from "./SignInButton";
-import { useContext } from "react";
-import { UserContext } from "../lib/context";
 import bandNameLogo from "../assets/band-name-logo.png";
-import avatarImage from "../assets/hacker.png";
+import { NavbarMenu } from "./NavbarMenu";
+import { Link } from "react-router-dom";
 
 import "../styles/Navbar.css";
 
 type NavBarProps = {
-  noProfile: boolean;
-  noSignIn: boolean;
   onClick: () => void;
+  onThemeChange: (theme: "light" | "dark") => void;
 };
 
-export const Navbar = ({ noProfile, noSignIn, onClick }: NavBarProps) => {
-  const { username } = useContext(UserContext);
-
+export const Navbar = ({ onClick, onThemeChange }: NavBarProps) => {
   return (
     <nav className="Navbar">
       <div className="Navbar__container">
@@ -29,27 +23,7 @@ export const Navbar = ({ noProfile, noSignIn, onClick }: NavBarProps) => {
             alt="BandName! logo"
           />
         </Link>
-        {!noProfile ? (
-          username ? (
-            <Link
-              className="Navbar__profileContainer"
-              to={`/posts/username/${username}`}
-            >
-              <div className="Navbar__profile">
-                <img
-                  width={50}
-                  height={50}
-                  className="Navbar__image"
-                  src={avatarImage}
-                  alt="User profile"
-                />
-                <h4 className="Navbar__username">u/{username}</h4>
-              </div>
-            </Link>
-          ) : noSignIn ? null : (
-            <SignInButton />
-          )
-        ) : null}
+        <NavbarMenu onThemeChange={onThemeChange} />
       </div>
     </nav>
   );

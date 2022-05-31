@@ -5,7 +5,7 @@
   margin: 0 0 16px;
   border-radius: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  background-color: var(--color-white);
+  background-color: var(--card-bg);
   width: 100%;
   text-align: left;
   cursor: pointer;
@@ -40,15 +40,16 @@
   letter-spacing: 1px;
   font-size: 20px;
   align-self: center;
+  color: var(--main-text);
 }
 
 .Card__menuIcon:hover {
-  color: var(--color-black);
+  color: var(--main-text);
 }
 
 .Card__genre {
   margin: 0;
-  color: var(--color-gray);
+  color: var(--secondary-text);
   font-family: var(--font-fam-inter);
   text-transform: lowercase;
   line-height: 1;
@@ -72,11 +73,11 @@
 .Card__postedInfo {
   margin: 16px 0 0;
   font-size: 14px;
-  color: var(--color-gray);
+  color: var(--secondary-text);
 }
 
 .Card__postedDate {
-  border-bottom: 1px solid var(--color-gray);
+  border-bottom: 1px solid var(--secondary-text);
 }
 
 .Card__footer.m-flexEnd {
@@ -111,4 +112,8 @@
 .Card__descriptionContainer::after {
   word-wrap: anywhere;
   grid-area: 1 / 1 / 2 / 2;
+}
+
+.Card__description {
+  color: var(--main-text);
 }

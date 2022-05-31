@@ -26,10 +26,20 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
   };
   return (
     <div className="SortMenu">
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={handleClick} style={{ color: "var(--ui)" }}>
         <Sort />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose()}>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => handleClose()}
+        PaperProps={{
+          sx: {
+            backgroundColor: "var(--card-bg)",
+            color: "var(--main-text)",
+          },
+        }}
+      >
         <MenuItem onClick={(e) => handleClose(e.currentTarget.textContent)}>
           Most recent
         </MenuItem>

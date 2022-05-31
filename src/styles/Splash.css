@@ -2,17 +2,18 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: var(--color-black);
-  opacity: 0;
+  background-color: var(--main-text);
   position: fixed;
   z-index: 100;
-  transition: all 0.5s;
-  visibility: hidden;
-}
-
-.Splash.m-show {
+  /* Need to use both opacity and visibility to "unmount" splash screen after transition */
   opacity: 1;
   visibility: visible;
+}
+
+.Splash.m-hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
 }
 
 .Splash__logo {

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { createPost } from "../lib/submit";
+import { updateTheme } from "../lib/theme";
 import { Post } from "./SinglePostPage";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
@@ -22,14 +23,27 @@ const App = () => {
   const userData = useUserData();
   const [loadMore, setLoadMore] = useState(false);
   const [shareUrl, updateShareUrl] = useState("");
-  const [posts, setPosts] = useState<PostType[]>();
   const shareContext = { shareUrl, updateShareUrl };
+  const [posts, setPosts] = useState<PostType[]>();
   const [cursor, setCursor] = useState<DocumentData>();
   const [reachedEndOfPosts, setReachedEndOfPosts] = useState(false);
   const [showShareDrawer, setShowShareDrawer] = useState(false);
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
     "createdAt"
   );
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [showSplash, setShowSplash] = useState(true);
+  const [body, setBody] = useState<HTMLBodyElement | null>(null);
+
+  useEffect(() => {
+    setBody(window.document.querySelector("body"));
+  }, []);
+
+  useEffect(() => {
+    if (body) {
+      updateTheme(body, theme);
+    }
+  }, [theme, body]);
 
   useEffect(() => {
     // TODO Not gr8
@@ -86,19 +100,26 @@ const App = () => {
     setCursor(undefined);
   }, [orderBy]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 1500);
+  }, []);
+
   return (
     <UserContext.Provider value={userData}>
       <ShareContext.Provider value={shareContext}>
-        <Splash />
+        <Splash show={showSplash} />
         <div className="App">
           <Navbar
-            noSignIn={false}
-            noProfile={false}
             onClick={() => {
               // Reset feed
               setOrderBy("createdAt");
               setReachedEndOfPosts(false);
               setCursor(undefined);
+            }}
+            onThemeChange={(theme) => {
+              setTheme(theme);
             }}
           />
           <ScrollContainer

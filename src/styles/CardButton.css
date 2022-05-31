@@ -1,25 +1,25 @@
 .CardButton {
   font-size: 16px;
   padding: 12px 16px;
-  color: var(--color-white);
   border-radius: 8px;
   display: flex;
   align-items: center;
-  background: var(--color-black);
+  background: var(--button-bg);
 }
 
 .CardButton:hover {
-  background: var(--color-light-gray);
-  color: var(--color-black);
+  background: var(--secondary-text);
+  color: var(--main-text);
 }
 
 .CardButton.m-delete {
-  background: var(--color-red);
+  background: var(--warning-bg);
+  color: var(--warning-text);
   border: none;
 }
 
 .CardButton.m-delete:hover {
-  background: var(--color-red-dark);
+  background: var(--warning-bg-hover);
 }
 
 .CardButton:hover {
@@ -34,4 +34,5 @@
 
 .CardButton__text {
   margin-left: 8px;
+  color: var(--button-text);
 }

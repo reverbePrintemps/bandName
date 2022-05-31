@@ -19,18 +19,19 @@ type UsernameFormProps = {
 export const UsernameForm = ({ userData }: UsernameFormProps) => {
   const user = userData.user;
   const username = userData.username;
-  const userIsRegistered = username === typeof "string" && username.length > 0;
   const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [usernameLoading, setUsernameLoading] = useState(false);
-  const [formLoading, setFormLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState<boolean>();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userIsRegistered =
+      typeof username === "string" && username.length > 0;
     if (userIsRegistered) {
       navigate("/");
     }
-  }, [navigate, userIsRegistered]);
+  }, [username]);
 
   // Hit the database for username match after each debounced change
   // useCallback is required for debounce to work
@@ -107,7 +108,7 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
       {/* only return if not loading */}
       {!user ? (
         <SignInButton />
-      ) : !formLoading ? (
+      ) : !formLoading && !username ? (
         <>
           <h3 className="UsernameForm__title">Choose Username</h3>
           <form onSubmit={(e) => onSubmit(e, user)}>

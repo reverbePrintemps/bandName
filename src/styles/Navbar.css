@@ -3,12 +3,11 @@
   justify-content: space-between;
   width: 100%;
   background: #181818;
-  color: var(--color-white);
+  color: var(--main-text);
   position: fixed;
   top: 0;
   left: 0;
   font-weight: bold;
-  border-bottom: 1px solid var(--color-gray);
   z-index: 99;
 }
 
@@ -20,11 +19,8 @@
   display: flex;
   justify-content: space-between;
 }
-.Navbar__profileContainer {
-  display: flex;
-}
 
-.Navbar__profile {
+.Navbar__menu {
   margin: auto 0;
   font-family: var(--font-fam-nanum);
   text-align: center;
@@ -42,7 +38,7 @@
 }
 
 .Navbar__logo {
-  background-color: var(--color-black);
+  background-color: var(--main-text);
   width: var(--navbar-height);
   object-fit: cover;
 }
