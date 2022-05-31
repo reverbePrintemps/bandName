@@ -34,7 +34,7 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
         open={open}
         onClose={() => handleClose()}
         PaperProps={{
-          sx: {
+          style: {
             backgroundColor: "var(--card-bg)",
             color: "var(--main-text)",
           },

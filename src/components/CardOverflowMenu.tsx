@@ -53,7 +53,7 @@ export const CardOverflowMenu = ({
           "aria-labelledby": "basic-button",
         }}
         PaperProps={{
-          sx: {
+          style: {
             backgroundColor: "var(--card-bg)",
             color: "var(--main-text)",
           },

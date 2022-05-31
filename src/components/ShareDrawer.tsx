@@ -36,6 +36,8 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
           maxWidth: "calc(var(--container-max-width) - 32px)",
           margin: "auto",
           borderRadius: "8px",
+          backgroundColor: "var(--card-bg)",
+          color: "var(--main-text)",
         },
       }}
     >
@@ -61,7 +63,11 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
               >
                 <ListItemIcon>
                   <Box padding="8px">
-                    <ContentCopy />
+                    <ContentCopy
+                      style={{
+                        color: "var(--ui)",
+                      }}
+                    />
                   </Box>
                 </ListItemIcon>
                 <ListItemText>Copy link</ListItemText>
