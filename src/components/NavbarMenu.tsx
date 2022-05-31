@@ -1,5 +1,5 @@
 import { AccountCircle, DarkMode, LightMode } from "@mui/icons-material";
-import { IconButton, Menu, MenuItem, MenuList } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { UserContext } from "../lib/context";

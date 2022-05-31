@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { Feed } from "./Feed";
 
-import "../styles/Feed.css";
+import "../styles/FeedContainer.css";
 
 export type PostType = {
   uid: string;
@@ -58,7 +58,12 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
   return (
     <>
       {username === filter && username && <UserProfile username={username} />}
-      <SortMenu onSortPressed={onSortPressed} />
+      <div className="FeedContainer__feedHeader">
+        <p className="FeedContainer__feedTitle">
+          {orderBy === "createdAt" ? "Latest" : "Most popular"}
+        </p>
+        <SortMenu onSortPressed={onSortPressed} />
+      </div>
       <div className="Feed">
         <FloatingButton
           show={!showCreatePost}
@@ -104,7 +109,7 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
           />
         )}
         {reachedEnd && (
-          <span className="Feed__footerMessage">
+          <span className="FeedContainer__footerMessage">
             This is the end, my friend.
           </span>
         )}

@@ -28,7 +28,7 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
     <SwipeableDrawer
       anchor={"bottom"}
       open={open}
-      // TODO Not sure what this is usefol for
+      // TODO Not sure what this is useful for
       onOpen={() => {}}
       onClose={onClose}
       PaperProps={{

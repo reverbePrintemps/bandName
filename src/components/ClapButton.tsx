@@ -6,7 +6,6 @@ import { User } from "firebase/auth";
 
 import "../styles/ClapButton.css";
 
-// TODO Not a fan of this any
 type ClapButtonProps = {
   ownPost: boolean;
   postRef: firebase.firestore.DocumentReference;

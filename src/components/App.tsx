@@ -73,7 +73,6 @@ const App = () => {
     }
   }, [cursor, orderBy]);
 
-  // TODO Extract to own functions
   useEffect(() => {
     // Listen for any changes to the posts collection
     if (cursor && loadMore) {

@@ -16,6 +16,7 @@ import "../styles/Card.css";
 export enum CardKind {
   Post = "post",
   Submit = "submit",
+  Edit = "edit",
   Delete = "delete",
 }
 
@@ -112,7 +113,7 @@ export const Card = (props: CardProps) => {
                     updateShareUrl(`/${username}/posts/${slug}`)
                   }
                   onEditPressed={() => {
-                    setCardKind(CardKind.Submit);
+                    setCardKind(CardKind.Edit);
                   }}
                   onDeletePressed={() => {
                     setCardKind(CardKind.Delete);
@@ -165,7 +166,7 @@ export const Card = (props: CardProps) => {
                   updateShareUrl(`/${username}/posts/${slug}`)
                 }
                 onEditPressed={() => {
-                  setCardKind(CardKind.Submit);
+                  setCardKind(CardKind.Edit);
                 }}
                 onDeletePressed={() => {
                   setCardKind(CardKind.Delete);
@@ -244,7 +245,6 @@ export const Card = (props: CardProps) => {
                   className="Card__menuIcon"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // TODO Not great, but it works
                     onCancelSubmission();
                   }}
                 >
@@ -278,9 +278,120 @@ export const Card = (props: CardProps) => {
                   className="Card__menuIcon"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // TODO Not great, but it works
-                    // cancelSubmission when creating new post and setCardProps for when editing post
                     onCancelSubmission();
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
+              </div>{" "}
+              <div
+                className="Card__descriptionContainer"
+                data-replicated-value={replicatedValue}
+              >
+                <textarea
+                  className="Card__formInput Card__description"
+                  onInput={(e) => setReplicatedValue(e.currentTarget.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.currentTarget.value);
+                  }}
+                  placeholder={
+                    descriptionPlaceholder.length > 0
+                      ? descriptionPlaceholder
+                      : "Enter a description or some context around this BandName!"
+                  }
+                />
+              </div>
+              <div className="Card__footer m-flexEnd">
+                <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
+              </div>
+            </div>
+          </CardFlip>
+        </form>
+      );
+    }
+    case CardKind.Edit: {
+      const titlePlaceholder = "Enter band name";
+      const genrePlaceholder = "Enter genre";
+      const countryPlaceholder = "Country";
+      const descriptionPlaceholder = "";
+      const { uid, slug, username, onSubmit } = props;
+
+      const isValid = title.length > 3 && title.length < 100;
+
+      return (
+        <form
+          onSubmit={(e) => {
+            onSubmit({
+              e,
+              uid,
+              slug,
+              title,
+              genre,
+              country,
+              username,
+              description,
+            });
+            setCardKind(CardKind.Post);
+          }}
+        >
+          <CardFlip isFlipped={isFlipped} flipDirection="vertical">
+            <div
+              className="Card"
+              onClick={() => isValid && setIsFlipped(!isFlipped)}
+            >
+              <div className="Card__header">
+                <input
+                  ref={titleRef}
+                  className="Card__formInput Card__title"
+                  onClick={(e) => e.stopPropagation()}
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.currentTarget.value);
+                  }}
+                  placeholder={titlePlaceholder}
+                />
+                <IconButton
+                  className="Card__menuIcon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCardKind(CardKind.Post);
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
+              </div>
+              <input
+                className="Card__formInput Card__genre"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                value={genre}
+                onChange={(e) => {
+                  setGenre(e.currentTarget.value);
+                }}
+                placeholder={genrePlaceholder}
+              />
+              <CountrySelector
+                country={country}
+                onChange={(input) => setCountry(input)}
+                placeholder={countryPlaceholder}
+              />
+              <div className="Card__footer m-flexEnd">
+                <CardButton kind={CardButtonKind.Flip} isValid={isValid} />
+              </div>
+            </div>
+
+            <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
+              <div className="Card__header m-flexEnd">
+                <IconButton
+                  className="Card__menuIcon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCardKind(CardKind.Post);
                   }}
                 >
                   <Cancel />

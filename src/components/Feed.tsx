@@ -4,6 +4,8 @@ import { PostType } from "./FeedContainer";
 import { useUserData } from "../lib/hooks";
 import { Card, CardKind } from "./Card";
 
+import "../styles/Feed.css";
+
 type FeedProps = {
   posts: PostType[];
   orderBy: "createdAt" | "heartCount";

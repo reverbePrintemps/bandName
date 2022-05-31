@@ -1,0 +1,20 @@
+.FeedContainer__feedHeader {
+  display: flex;
+  margin-top: 16px;
+  justify-content: space-between;
+}
+
+.FeedContainer__feedTitle {
+  margin: auto 0;
+  font-size: 18px;
+  font-family: monospace;
+  text-transform: uppercase;
+  color: var(--main-text);
+}
+
+.FeedContainer__footerMessage {
+  font-size: 20px;
+  font-family: var(--font-fam-nanum);
+  margin: 22px auto;
+  color: var(--secondary-text);
+}
