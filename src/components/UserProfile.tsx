@@ -1,5 +1,5 @@
+import { AccountCircle } from "@mui/icons-material";
 import { SignOutButton } from "./SignOutButton";
-import avatarImage from "../assets/hacker.png";
 import "../styles/UserProfile.css";
 
 type UserProfileProps = {
@@ -9,7 +9,7 @@ type UserProfileProps = {
 export const UserProfile = ({ username }: UserProfileProps) => {
   return (
     <div className="UserProfile">
-      <img width={50} height={50} src={avatarImage} alt="Profile" />
+      <AccountCircle />
       <h1 className="UserProfile__username">{`u/${username}`}</h1>
       {username && (
         <div className="UserProfile__signOut">

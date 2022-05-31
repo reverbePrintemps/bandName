@@ -21,7 +21,8 @@ export const updateTheme = (body: HTMLElement, theme: "light" | "dark") => {
       body.style.setProperty("--secondary-text", "#999");
       body.style.setProperty("--warning-bg", "#df3b3b");
       body.style.setProperty("--warning-bg-hover", "#b01b1b");
-      body.style.setProperty("--button-bg", "#666");
+      body.style.setProperty("--button-bg", "#ddd");
+      body.style.setProperty("--button-text", "#000");
       break;
   }
 };

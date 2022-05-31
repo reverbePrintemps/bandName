@@ -2,12 +2,17 @@
   padding-top: 16px;
   text-align: center;
   font-family: var(--font-fam-nanum);
+  color: var(--main-text);
+  text-align: right;
 }
 
 .UserProfile__username {
+  font-size: 22px;
   margin: 0;
 }
 
 .UserProfile__signOut {
-  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
 }

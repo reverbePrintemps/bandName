@@ -26,13 +26,12 @@
   align-items: center;
   height: 50px;
   margin: auto 0;
-  background-color: var(--main-text);
-  font-family: var(--font-fam-knewave);
-  letter-spacing: 1px;
+  background-color: var(--button-bg);
+  font-family: monospace;
   font-size: 16px;
-  color: var(--main-text);
+  color: var(--button-text);
   text-transform: uppercase;
-  padding: 8px 16px;
+  padding: 0 16px;
 }
 
 .UsernameForm__button:hover {

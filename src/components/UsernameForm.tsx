@@ -66,22 +66,23 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
     });
     batch.set(usernameDoc, { uid: user.uid });
 
-    try {
-      await batch.commit().then(() => {
-        toast.success("Account created successfully! Redirecting...");
-        setFormLoading(true);
+    toast
+      .promise(batch.commit(), {
+        loading: "Discombobulating 1s and 0s...",
+        success: "Account created successfully! Get crackin' 🤘",
+        error:
+          "Woops, there was an error while creating your account. Please try again later.",
+      })
+      .then(() => {
         setTimeout(() => {
           navigate("/");
         }, DEFAULT_TOAST_DURATION);
+      })
+      .catch((error) => {
+        // TODO handle error
+        setFormLoading(false);
+        console.log(error);
       });
-    } catch (error) {
-      // TODO handle error
-      toast.error(
-        "There was an error while creating your account. Please try again later."
-      );
-      setFormLoading(false);
-      console.log(error);
-    }
   };
 
   const onChange = (e: { target: { value: string } }) => {
