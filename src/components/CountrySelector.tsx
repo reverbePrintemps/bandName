@@ -62,9 +62,11 @@ export const CountrySelector = ({
       ></span>
       {showDropDown && (
         <ul className="CountrySelector__dropdown">
-          {COUNTRY_FLAGS.filter(
-            (country) =>
-              country.name.toUpperCase().indexOf(input.toUpperCase()) > -1
+          {COUNTRY_FLAGS.filter((country) =>
+            country.short_name
+              ? country.short_name.toUpperCase().indexOf(input.toUpperCase()) >
+                -1
+              : country.name.toUpperCase().indexOf(input.toUpperCase()) > -1
           ).map((item) => (
             <li
               className="CountrySelector__country"
