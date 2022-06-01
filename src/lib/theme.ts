@@ -12,7 +12,7 @@ export const updateTheme = (body: HTMLElement, theme: "light" | "dark") => {
       body.style.setProperty("--warning-bg", "#df3b3b");
       body.style.setProperty("--warning-bg-hover", "#b01b1b");
       body.style.setProperty("--button-bg", "#181818");
-      body.style.setProperty("--button-text", "#ccc");
+      body.style.setProperty("--button-text", "#eef0f1");
       break;
     case "dark":
       body.style.setProperty("--app-bg", "#222");
