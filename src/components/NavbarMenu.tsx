@@ -19,11 +19,9 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    event.stopPropagation();
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -61,7 +59,7 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
           },
         }}
       >
-        <MenuItem sx={{ color: "var(--main-text" }}>
+        <MenuItem sx={{ color: "var(--main-text" }} onClick={handleClose}>
           {username ? (
             <Link
               className="NavbarMenu__menuLink"
@@ -77,7 +75,12 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
             </Link>
           )}
         </MenuItem>
-        <MenuItem onClick={() => setIsLightTheme(!isLightTheme)}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            setIsLightTheme(!isLightTheme);
+          }}
+        >
           {isLightTheme ? (
             <>
               <DarkMode />
