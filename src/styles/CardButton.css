@@ -14,7 +14,8 @@
 
 .CardButton.m-delete {
   background: var(--warning-bg);
-  color: var(--warning-text);
+  /* Fixed color regardless of theme */
+  color: #eef0f1;
   border: none;
 }
 

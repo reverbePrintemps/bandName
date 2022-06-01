@@ -3,6 +3,7 @@ import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
 import { FeedContainer, PostType } from "./FeedContainer";
 import { firestore, postToJSON } from "../lib/firebase";
+import { getFromLocalStorage } from "../lib/storage";
 import { ScrollContainer } from "./ScrollContainer";
 import { Route, Routes } from "react-router-dom";
 import { UsernameForm } from "./UsernameForm";
@@ -31,7 +32,7 @@ const App = () => {
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
     "createdAt"
   );
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState(getFromLocalStorage("theme"));
   const [showSplash, setShowSplash] = useState(true);
   const [body, setBody] = useState<HTMLBodyElement | null>(null);
 
@@ -111,6 +112,7 @@ const App = () => {
         <Splash show={showSplash} />
         <div className="App">
           <Navbar
+            theme={theme}
             onClick={() => {
               // Reset feed
               setOrderBy("createdAt");

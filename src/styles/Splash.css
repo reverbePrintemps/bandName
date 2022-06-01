@@ -2,7 +2,7 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: var(--main-text);
+  background-color: #181818;
   position: fixed;
   z-index: 100;
   /* Need to use both opacity and visibility to "unmount" splash screen after transition */

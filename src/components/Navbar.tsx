@@ -5,11 +5,12 @@ import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
 type NavBarProps = {
+  theme: "light" | "dark";
   onClick: () => void;
   onThemeChange: (theme: "light" | "dark") => void;
 };
 
-export const Navbar = ({ onClick, onThemeChange }: NavBarProps) => {
+export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
   return (
     <nav className="Navbar">
       <div className="Navbar__container">
@@ -23,7 +24,7 @@ export const Navbar = ({ onClick, onThemeChange }: NavBarProps) => {
             alt="BandName! logo"
           />
         </Link>
-        <NavbarMenu onThemeChange={onThemeChange} />
+        <NavbarMenu theme={theme} onThemeChange={onThemeChange} />
       </div>
     </nav>
   );

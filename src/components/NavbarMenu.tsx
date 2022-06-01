@@ -8,13 +8,14 @@ import { Link } from "react-router-dom";
 import "../styles/NavbarMenu.css";
 
 type NavbarMenuProps = {
+  theme: "light" | "dark";
   onThemeChange: (theme: "light" | "dark") => void;
 };
 
-export const NavbarMenu = ({ onThemeChange }: NavbarMenuProps) => {
+export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
   const { username } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isLightTheme, setIsLightTheme] = useState(true);
+  const [isLightTheme, setIsLightTheme] = useState<boolean>(theme === "light");
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +37,6 @@ export const NavbarMenu = ({ onThemeChange }: NavbarMenuProps) => {
 
   return (
     <div className="Navbar__menu">
-      {/* <GlobalStyles styles={{ ul: { backgroundColor: "var(--test)" } }} /> */}
       <IconButton
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -44,7 +44,7 @@ export const NavbarMenu = ({ onThemeChange }: NavbarMenuProps) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <MenuIcon style={{ color: "var(--ui-fixed)" }} />
+        <MenuIcon style={{ color: "#ccc" }} />
       </IconButton>
       <Menu
         id="basic-menu"
