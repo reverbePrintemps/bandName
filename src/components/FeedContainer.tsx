@@ -1,3 +1,4 @@
+import { Box, Typography } from "@mui/material";
 import { FieldValue } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
@@ -52,9 +53,18 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
       {username === filter && username && <UserProfile username={username} />}
       <div className="FeedContainer">
         <div className="FeedContainer__feedHeader">
-          <p className="FeedContainer__feedTitle">
-            {orderBy === "createdAt" ? "Latest" : "Most popular"}
-          </p>
+          <Box margin="auto 0">
+            <Typography
+              fontStyle={{
+                fontFamily: "monospace",
+                textTransform: "uppercase",
+                fontSize: "20px",
+                color: "var(--main-text)",
+              }}
+            >
+              {orderBy === "createdAt" ? "Latest" : "Most popular"}
+            </Typography>
+          </Box>
           <SortMenu onSortPressed={onSortPressed} />
         </div>
         {posts.length > 0 ? (

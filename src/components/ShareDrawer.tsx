@@ -1,3 +1,5 @@
+import { ContentCopy } from "@mui/icons-material";
+import toast from "react-hot-toast";
 import {
   TelegramShareButton,
   TelegramIcon,
@@ -14,8 +16,6 @@ import {
   SwipeableDrawer,
   Typography,
 } from "@mui/material";
-import { ContentCopy } from "@mui/icons-material";
-import toast from "react-hot-toast";
 
 type ShareDrawerProps = {
   open: boolean;
@@ -42,7 +42,14 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
       }}
     >
       <Box role="presentation" onClick={onClose} onKeyDown={onClose}>
-        <Typography padding="24px 24px 8px 24px" variant="h5">
+        <Typography
+          padding="24px 24px 8px 24px"
+          fontStyle={{
+            fontFamily: "monospace",
+            textTransform: "uppercase",
+            fontSize: "20px",
+          }}
+        >
           Share
         </Typography>
         <List>

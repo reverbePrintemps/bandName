@@ -1,5 +1,6 @@
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import { EmailSignInForm } from "./EmailSignInForm";
+import { Box, Typography } from "@mui/material";
 import { UsernameForm } from "./UsernameForm";
 import { useUserData } from "../lib/hooks";
 import { useNavigate } from "react-router";
@@ -18,10 +19,30 @@ export const Login = () => {
       <div className="Login__methods">
         {!userData.user ? (
           <>
-            <h2>With Google</h2>
-            <GoogleSignInButton />
-            <h2>or email</h2>
-            <EmailSignInForm />
+            <Typography
+              fontStyle={{
+                fontFamily: "monospace",
+                textTransform: "uppercase",
+                fontSize: "20px",
+              }}
+            >
+              With Google
+            </Typography>
+            <Box marginTop="16px">
+              <GoogleSignInButton />
+            </Box>
+            <Box marginTop="16px">
+              <Typography
+                fontStyle={{
+                  fontFamily: "monospace",
+                  textTransform: "uppercase",
+                  fontSize: "20px",
+                }}
+              >
+                or email
+              </Typography>
+              <EmailSignInForm />
+            </Box>
           </>
         ) : !userData.username ? (
           <UsernameForm userData={userData} />
