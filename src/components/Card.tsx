@@ -301,7 +301,7 @@ export const Card = (props: CardProps) => {
                   placeholder={
                     descriptionPlaceholder.length > 0
                       ? descriptionPlaceholder
-                      : "Enter a description or some context around this BandName!"
+                      : "Provide some context around this BandName!"
                   }
                 />
               </div>
@@ -414,7 +414,7 @@ export const Card = (props: CardProps) => {
                   placeholder={
                     descriptionPlaceholder.length > 0
                       ? descriptionPlaceholder
-                      : "Enter a description or some context around this BandName!"
+                      : "Provide some context around this BandName!"
                   }
                 />
               </div>

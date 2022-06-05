@@ -37,7 +37,10 @@
 }
 
 .Navbar__logo {
-  background-color: var(--main-text);
   width: var(--navbar-height);
   object-fit: cover;
+}
+
+.Navbar__logo:hover {
+  opacity: 0.8;
 }

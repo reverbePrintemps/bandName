@@ -1,6 +1,12 @@
+.FeedContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 16px 0 0;
+}
+
 .FeedContainer__feedHeader {
   display: flex;
-  margin-top: 16px;
   justify-content: space-between;
 }
 
@@ -12,9 +18,17 @@
   color: var(--main-text);
 }
 
-.FeedContainer__footerMessage {
+.FeedContainer__footerMessage,
+.FeedContainer__emptyFeed {
   font-size: 20px;
   font-family: var(--font-fam-nanum);
-  margin: 22px auto;
   color: var(--secondary-text);
+}
+
+.FeedContainer__footerMessage {
+  margin: 22px auto;
+}
+
+.FeedContainer__emptyFeed {
+  margin: auto;
 }

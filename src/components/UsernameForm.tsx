@@ -1,14 +1,21 @@
 import { DEFAULT_TOAST_DURATION } from "../constants/constants";
+import { GoogleSignInButton } from "./GoogleSignInButton";
 import { useState, useEffect, useCallback } from "react";
 import { UsernameMessage } from "./UsernameMessage";
-import { SignInButton } from "./SignInButton";
+import { CustomButton } from "./CustomButton";
 import { firestore } from "../lib/firebase";
 import { useNavigate } from "react-router";
-import { debounce } from "@mui/material";
 import { UserData } from "../lib/hooks";
 import { User } from "firebase/auth";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
+import {
+  debounce,
+  FilledInput,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+} from "@mui/material";
 
 import "../styles/UsernameForm.css";
 
@@ -31,7 +38,7 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
     if (userIsRegistered) {
       navigate("/");
     }
-  }, [username]);
+  }, [username, navigate]);
 
   // Hit the database for username match after each debounced change
   // useCallback is required for debounce to work
@@ -49,7 +56,7 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
 
   useEffect(() => {
     checkUsername(formValue);
-  }, [formValue]);
+  }, [formValue, checkUsername]);
 
   const onSubmit = async (e: { preventDefault: () => void }, user: User) => {
     e.preventDefault();
@@ -108,30 +115,37 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
     <div className="UsernameForm">
       {/* only return if not loading */}
       {!user ? (
-        <SignInButton />
+        <GoogleSignInButton />
       ) : !formLoading && !username ? (
         <>
-          <h3 className="UsernameForm__title">Choose Username</h3>
+          <h2 className="UsernameForm__title">Choose Username</h2>
           <form onSubmit={(e) => onSubmit(e, user)}>
-            <input
-              className="UsernameForm__input"
-              name="username"
-              placeholder="myusername"
-              value={formValue}
-              onChange={onChange}
-            />
-            <UsernameMessage
-              username={formValue}
-              isValid={isValid}
-              loading={usernameLoading}
-            />
-            <button
-              className="UsernameForm__button"
+            <FormControl>
+              <InputLabel
+                htmlFor="username"
+                style={{ color: "var(--secondary-text)" }}
+              >
+                Username
+              </InputLabel>
+              <FilledInput
+                id="username"
+                name="username"
+                value={formValue}
+                onChange={onChange}
+              />
+              <FormHelperText>
+                <UsernameMessage
+                  username={formValue}
+                  isValid={isValid}
+                  loading={usernameLoading}
+                />
+              </FormHelperText>
+            </FormControl>
+            <CustomButton
               type="submit"
+              label="Create Account"
               disabled={!isValid}
-            >
-              Create account
-            </button>
+            />
           </form>
         </>
       ) : (

@@ -1,8 +1,10 @@
-.ScrollContainer {
+.MainContainer {
   display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: var(--container-max-width);
-  min-height: 100vh;
+  min-height: 100%;
   margin: 0 auto;
   padding: var(--navbar-height) 16px 16px;
-  flex-direction: column;
+  font-family: monospace;
 }

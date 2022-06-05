@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PostType } from "./FeedContainer";
 
-import "../styles/ScrollContainer.css";
+import "../styles/MainContainer.css";
 
 type ScrollContainerProps = {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ type ScrollContainerProps = {
   onLoadMore: (arg: boolean) => void;
 };
 
-export const ScrollContainer = ({
+export const MainContainer = ({
   children,
   posts,
   reachedEndOfPosts,
@@ -23,15 +23,21 @@ export const ScrollContainer = ({
   );
   const [bottomOfContent, setBottomOfContent] = useState<number>();
   const [isReachingBottom, setIsReachingBottom] = useState<boolean>();
+  const onLoadMoreCallback = useCallback(
+    (bool: boolean) => {
+      onLoadMore(bool);
+    },
+    [onLoadMore]
+  );
 
   // If is reaching bottom, load more posts
   useEffect(() => {
     if (isReachingBottom && !reachedEndOfPosts) {
-      onLoadMore(true);
+      onLoadMoreCallback(true);
     } else {
-      onLoadMore(false);
+      onLoadMoreCallback(false);
     }
-  }, [isReachingBottom, reachedEndOfPosts]);
+  }, [isReachingBottom, reachedEndOfPosts, onLoadMoreCallback]);
 
   // If posts are loaded, signal is reaching bottom
   useEffect(() => {
@@ -65,7 +71,7 @@ export const ScrollContainer = ({
   });
 
   return (
-    <div ref={scrollContainerRef} className="ScrollContainer">
+    <div ref={scrollContainerRef} className="MainContainer">
       {children}
     </div>
   );

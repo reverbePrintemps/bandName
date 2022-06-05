@@ -69,7 +69,7 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
               <p className="NavbarMenu">My Profile</p>
             </Link>
           ) : (
-            <Link className="NavbarMenu__menuLink" to={`/signup`}>
+            <Link className="NavbarMenu__menuLink" to={`/login`}>
               <AccountCircle />
               <p className="NavbarMenu">Sign in</p>
             </Link>

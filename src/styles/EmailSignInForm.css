@@ -1,0 +1,10 @@
+.EmailSignInForm {
+  display: flex;
+  flex-direction: column;
+  /* TODO Achtung magic number */
+  max-width: 350px;
+}
+
+.EmailSignInForm__submitButton {
+  margin-top: 16px;
+}

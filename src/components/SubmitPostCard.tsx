@@ -1,5 +1,4 @@
 import { CreatePostProps } from "../lib/submit";
-import { AuthCheck } from "./AuthCheck";
 import { Card, CardKind } from "./Card";
 
 type SubmitPostCardProps = {
@@ -24,23 +23,21 @@ export const SubmitPostCard = ({
   onCancelSubmission,
 }: SubmitPostCardProps) => {
   return (
-    <AuthCheck>
-      <Card
-        kind={CardKind.Submit}
-        uid={uid}
-        slug={""}
-        title={""}
-        genre={""}
-        country={""}
-        clapCount={0}
-        isOwner={false}
-        description={""}
-        username={username}
-        onSubmit={onSubmit}
-        createdAt={undefined}
-        onCancelSubmission={onCancelSubmission}
-        postRef={undefined}
-      />
-    </AuthCheck>
+    <Card
+      kind={CardKind.Submit}
+      uid={uid}
+      slug={""}
+      title={""}
+      genre={""}
+      country={""}
+      clapCount={0}
+      isOwner={false}
+      description={""}
+      username={username}
+      onSubmit={onSubmit}
+      createdAt={undefined}
+      onCancelSubmission={onCancelSubmission}
+      postRef={undefined}
+    />
   );
 };

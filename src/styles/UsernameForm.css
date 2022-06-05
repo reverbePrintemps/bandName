@@ -1,44 +1,7 @@
 .UsernameForm {
-  padding-top: 16px;
-}
-
-.UsernameForm__title {
-  font-family: var(--font-fam-knewave);
-  text-transform: uppercase;
-  margin: 0;
-  letter-spacing: 1px;
-  font-size: 20px;
-}
-
-.UsernameForm__input {
-  font-size: 22px;
-  cursor: pointer;
-  min-width: 65px;
   margin-top: 16px;
 }
 
-.UsernameForm__input::placeholder {
-  font-size: 16px;
-}
-
-.UsernameForm__button {
-  display: flex;
-  align-items: center;
-  height: 50px;
-  margin: auto 0;
-  background-color: var(--button-bg);
-  font-family: monospace;
-  font-size: 16px;
-  color: var(--button-text);
+.UsernameForm__title {
   text-transform: uppercase;
-  padding: 0 16px;
-}
-
-.UsernameForm__button:hover {
-  background-color: var(--secondary-text);
-}
-
-.UsernameForm__button:disabled {
-  background-color: var(--secondary-text);
-  cursor: not-allowed;
 }

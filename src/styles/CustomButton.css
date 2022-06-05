@@ -1,6 +1,7 @@
-.SignInButton {
+.CustomButton {
   display: flex;
   align-items: center;
+  width: max-content;
   height: 50px;
   margin: auto 0;
   background-color: var(--button-bg);
@@ -11,15 +12,15 @@
   padding: 0 16px;
 }
 
-.SignInButton:hover {
+.CustomButton:hover {
   background-color: var(--secondary-text);
 }
 
-.SignInButton:disabled {
+.CustomButton:disabled {
   background-color: var(--secondary-text);
   cursor: not-allowed;
 }
 
-.SignInButton__text {
-  padding-left: 8px;
+.CustomButton__icon {
+  margin-right: 8px;
 }
