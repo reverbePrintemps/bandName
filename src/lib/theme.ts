@@ -13,6 +13,7 @@ export const updateTheme = (body: HTMLElement, theme: "light" | "dark") => {
       body.style.setProperty("--warning-bg-hover", "#b01b1b");
       body.style.setProperty("--button-bg", "#181818");
       body.style.setProperty("--button-text", "#eef0f1");
+      body.style.setProperty("--cardbutton-bg", "#ddd");
       break;
     case "dark":
       body.style.setProperty("--app-bg", "#222");
@@ -24,6 +25,7 @@ export const updateTheme = (body: HTMLElement, theme: "light" | "dark") => {
       body.style.setProperty("--warning-bg-hover", "#b01b1b");
       body.style.setProperty("--button-bg", "#ddd");
       body.style.setProperty("--button-text", "#000");
+      body.style.setProperty("--cardbutton-bg", "#222");
       break;
   }
 };

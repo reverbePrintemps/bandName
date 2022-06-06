@@ -1,4 +1,3 @@
-import { DocumentData, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
 import { FeedContainer, PostType } from "./FeedContainer";
@@ -16,6 +15,12 @@ import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
 import { Splash } from "./Splash";
 import { Login } from "./Login";
+import {
+  DocumentData,
+  onSnapshot,
+  query,
+  QueryDocumentSnapshot,
+} from "firebase/firestore";
 
 import "../styles/App.css";
 
@@ -26,6 +31,7 @@ const App = () => {
   const shareContext = { shareUrl, updateShareUrl };
   const [posts, setPosts] = useState<PostType[]>();
   const [cursor, setCursor] = useState<DocumentData>();
+  const [last, setLast] = useState<QueryDocumentSnapshot<DocumentData>>();
   const [reachedEndOfPosts, setReachedEndOfPosts] = useState(false);
   const [showShareDrawer, setShowShareDrawer] = useState(false);
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
@@ -68,7 +74,7 @@ const App = () => {
         (querySnapshot) => {
           const posts = querySnapshot.docs.map(postToJSON) as PostType[];
           setReachedEndOfPosts(posts.length < POSTS_PER_REQUEST_LIMIT);
-          setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          setLast(querySnapshot.docs[querySnapshot.docs.length - 1]);
           setPosts(posts);
         },
         (error) => {
@@ -94,8 +100,8 @@ const App = () => {
         (querySnapshot) => {
           const newPosts = querySnapshot.docs.map(postToJSON) as PostType[];
           setReachedEndOfPosts(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-          setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          setPosts(posts ? posts.concat(newPosts) : newPosts);
+          setLast(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          setPosts((posts) => (posts ? posts.concat(newPosts) : newPosts));
         },
         (error) => {
           console.log("Error getting posts: ", error);
@@ -103,7 +109,7 @@ const App = () => {
         }
       );
     }
-  }, [loadMore, orderBy]);
+  }, [loadMore, orderBy, cursor]);
 
   // Reset cursor on orderBy change
   useEffect(() => {
@@ -121,6 +127,10 @@ const App = () => {
       setLoadingPosts(false);
     }
   }, [posts]);
+
+  useEffect(() => {
+    setCursor(last);
+  }, [last]);
 
   return (
     <UserContext.Provider value={userData}>

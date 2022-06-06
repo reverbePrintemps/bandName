@@ -3,6 +3,7 @@ import { firestore, increment } from "../lib/firebase";
 import { useUserData } from "../lib/hooks";
 import firebase from "firebase/compat";
 import { User } from "firebase/auth";
+import toast from "react-hot-toast";
 
 import "../styles/ClapButton.css";
 
@@ -76,6 +77,15 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
       }}
     >{`${clapCount} 👏`}</button>
   ) : (
-    <p className="ClapButton__count">{`${count} 👏`}</p>
+    <button
+      className="ClapButton m-disabled"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        !user
+          ? toast.error("You must be signed in to clap.")
+          : toast.error("You can't clap your own posts! Nice try though. 🤦‍♀️");
+      }}
+    >{`${count} 👏`}</button>
   );
 };

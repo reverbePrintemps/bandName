@@ -23,7 +23,6 @@ export const Login = () => {
               fontStyle={{
                 fontFamily: "monospace",
                 textTransform: "uppercase",
-                fontSize: "20px",
               }}
             >
               With Google
@@ -36,7 +35,6 @@ export const Login = () => {
                 fontStyle={{
                   fontFamily: "monospace",
                   textTransform: "uppercase",
-                  fontSize: "20px",
                 }}
               >
                 or email

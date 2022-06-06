@@ -15,7 +15,7 @@
 }
 
 .CustomButton:disabled {
-  background-color: var(--secondary-text);
+  opacity: 0.5;
   cursor: not-allowed;
 }
 

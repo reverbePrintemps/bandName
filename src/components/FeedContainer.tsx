@@ -58,7 +58,6 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
               fontStyle={{
                 fontFamily: "monospace",
                 textTransform: "uppercase",
-                fontSize: "20px",
                 color: "var(--main-text)",
               }}
             >
