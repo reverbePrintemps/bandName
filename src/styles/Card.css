@@ -15,14 +15,6 @@
   min-height: 191px;
 }
 
-.Card__formInput {
-  background: none;
-  padding: 0;
-  outline: none;
-  border: none;
-  width: 100%;
-}
-
 .Card__header {
   display: flex;
   align-items: flex-start;
@@ -39,7 +31,6 @@
   margin: 0;
   letter-spacing: 1px;
   font-size: 20px;
-  align-self: center;
   color: var(--main-text);
 }
 
@@ -52,7 +43,6 @@
   color: var(--secondary-text);
   font-family: var(--font-fam-inter);
   text-transform: lowercase;
-  line-height: 1;
   font-size: 20px;
   font-weight: 100;
 }
@@ -60,7 +50,6 @@
 .Card__country {
   margin: 12px 0 0;
   font-size: 24px;
-  line-height: 1;
 }
 
 .Card__footer {
@@ -90,30 +79,8 @@
   vertical-align: middle;
 }
 
-/* Hack to autogrow textarea: https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
-
-.Card__descriptionContainer,
 .Card__description {
-  display: grid;
   font-family: monospace;
   text-align: center;
-  font-size: 16px;
-}
-.Card__descriptionContainer::after {
-  content: attr(data-replicated-value) " ";
-  white-space: pre-wrap;
-  visibility: hidden;
-}
-.Card__descriptionContainer .Card__description {
-  resize: none;
-  overflow: hidden;
-}
-.Card__descriptionContainer .Card__description,
-.Card__descriptionContainer::after {
-  word-wrap: anywhere;
-  grid-area: 1 / 1 / 2 / 2;
-}
-
-.Card__description {
-  color: var(--main-text);
+  color: var(--secondary-text);
 }

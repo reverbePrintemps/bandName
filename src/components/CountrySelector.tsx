@@ -1,4 +1,5 @@
 import { COUNTRY_FLAGS } from "../constants/constants";
+import { AutogrowingInput } from "./AutogrowingInput";
 import { useEffect, useRef, useState } from "react";
 
 import "../styles/CountrySelector.css";
@@ -31,29 +32,8 @@ export const CountrySelector = ({
 
   return (
     <div className="CountrySelector">
-      <div
-        className="CountrySelector__inputContainer"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <input
-          className="CountrySelector__input"
-          placeholder={placeholder}
-          value={country}
-          onChange={(e) => {
-            setInput(e.currentTarget.value);
-          }}
-          style={{ width: `${inputWidth}px` }}
-          onFocus={() => setShowDropDown(true)}
-          onBlur={() => setShowDropDown(false)}
-          // Prevent password managers autocomplete
-          autoComplete="off"
-          data-lpignore="true"
-          data-form-type="other"
-        />
-        <span className="CountrySelector__dropdownArrow">^</span>
-      </div>
+      <AutogrowingInput placeholder={placeholder} />
+      <span className="CountrySelector__dropdownArrow">^</span>
       {/* Hack to grow input along with content */}
       <span
         className="CountrySelector__input CountrySelector__span"

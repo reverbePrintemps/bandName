@@ -120,7 +120,7 @@ const App = () => {
     setTimeout(() => {
       setShowSplash(false);
     }, 1500);
-  }, []);
+  });
 
   useEffect(() => {
     if (posts) {

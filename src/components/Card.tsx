@@ -1,8 +1,9 @@
-import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { CardButton, CardButtonKind } from "./CardButton";
+import { FormEvent, useContext, useState } from "react";
+import { CardOverflowMenu } from "./CardOverflowMenu";
+import { AutogrowingInput } from "./AutogrowingInput";
 import { IconButton, Tooltip } from "@mui/material";
 import { CountrySelector } from "./CountrySelector";
-import { CardOverflowMenu } from "./CardOverflowMenu";
 import { ShareContext } from "../lib/context";
 import { Cancel } from "@mui/icons-material";
 import firebase from "firebase/compat/app";
@@ -56,22 +57,26 @@ type CardProps = {
 
 export const Card = (props: CardProps) => {
   const { updateShareUrl } = useContext(ShareContext);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const [replicatedValue, setReplicatedValue] = useState<string>();
   const [cardKind, setCardKind] = useState<CardKind>(
     props.kind || CardKind.Post
   );
   const [isFlipped, setIsFlipped] = useState(false);
-  const [title, setTitle] = useState(props.title);
-  const [genre, setGenre] = useState(props.genre);
   const [country, setCountry] = useState(props.country);
-  const [description, setDescription] = useState(props.description);
-  // Setting focus manually to avoid conflicting with scroll to top
-  useEffect(() => {
-    setTimeout(() => {
-      titleRef.current?.focus();
-    }, 500);
-  }, []);
+  const [isValid, setIsValid] = useState(false);
+
+  const shortDate =
+    props.createdAt &&
+    new Date(props.createdAt).toLocaleString("en-US", {
+      dateStyle: "short",
+    });
+  const createdAtTime =
+    props.createdAt && new Date(props.createdAt).toLocaleTimeString();
+
+  const handleInput = (input: string) => {
+    if (input.length > 3 && input.length < 100) {
+      setIsValid(true);
+    }
+  };
 
   switch (cardKind) {
     case CardKind.Post: {
@@ -84,17 +89,8 @@ export const Card = (props: CardProps) => {
         country,
         username,
         clapCount,
-        createdAt,
         description,
       } = props;
-
-      const shortDate =
-        createdAt &&
-        new Date(createdAt).toLocaleString("en-US", {
-          dateStyle: "short",
-        });
-      const createdAtTime =
-        createdAt && new Date(createdAt).toLocaleTimeString();
 
       return (
         <CardFlip
@@ -201,13 +197,16 @@ export const Card = (props: CardProps) => {
       );
     }
     case CardKind.Submit: {
-      const titlePlaceholder = "Enter band name";
-      const genrePlaceholder = "Enter genre";
-      const countryPlaceholder = "Country";
-      const descriptionPlaceholder = "";
-      const { uid, slug, username, onSubmit, onCancelSubmission } = props;
-
-      const isValid = title.length > 3 && title.length < 100;
+      const {
+        uid,
+        slug,
+        username,
+        onSubmit,
+        onCancelSubmission,
+        description,
+        title,
+        genre,
+      } = props;
 
       return (
         <form
@@ -231,15 +230,11 @@ export const Card = (props: CardProps) => {
               onClick={() => isValid && setIsFlipped(!isFlipped)}
             >
               <div className="Card__header">
-                <input
-                  ref={titleRef}
-                  className="Card__formInput Card__title"
-                  onClick={(e) => e.stopPropagation()}
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.currentTarget.value);
-                  }}
-                  placeholder={titlePlaceholder}
+                <AutogrowingInput
+                  autofocus
+                  className="Card__title"
+                  placeholder="Enter band name"
+                  onInput={handleInput}
                 />
                 <IconButton
                   className="Card__menuIcon"
@@ -251,21 +246,14 @@ export const Card = (props: CardProps) => {
                   <Cancel />
                 </IconButton>
               </div>
-              <input
-                className="Card__formInput Card__genre"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                value={genre}
-                onChange={(e) => {
-                  setGenre(e.currentTarget.value);
-                }}
-                placeholder={genrePlaceholder}
+              <AutogrowingInput
+                className="Card__genre"
+                placeholder="Enter genre"
               />
               <CountrySelector
                 country={country}
                 onChange={(input) => setCountry(input)}
-                placeholder={countryPlaceholder}
+                placeholder={"Country"}
               />
               <div className="Card__footer m-flexEnd">
                 <CardButton kind={CardButtonKind.Flip} isValid={isValid} />
@@ -283,28 +271,12 @@ export const Card = (props: CardProps) => {
                 >
                   <Cancel />
                 </IconButton>
-              </div>{" "}
-              <div
-                className="Card__descriptionContainer"
-                data-replicated-value={replicatedValue}
-              >
-                <textarea
-                  className="Card__formInput Card__description"
-                  onInput={(e) => setReplicatedValue(e.currentTarget.value)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  value={description}
-                  onChange={(e) => {
-                    setDescription(e.currentTarget.value);
-                  }}
-                  placeholder={
-                    descriptionPlaceholder.length > 0
-                      ? descriptionPlaceholder
-                      : "Provide some context around this BandName!"
-                  }
-                />
               </div>
+              <AutogrowingInput
+                className="Card__description"
+                placeholder="Provide some context around this BandName!"
+                rows={2}
+              />
               <div className="Card__footer m-flexEnd">
                 <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
               </div>
@@ -314,13 +286,9 @@ export const Card = (props: CardProps) => {
       );
     }
     case CardKind.Edit: {
-      const titlePlaceholder = "Enter band name";
-      const genrePlaceholder = "Enter genre";
       const countryPlaceholder = "Country";
-      const descriptionPlaceholder = "";
-      const { uid, slug, username, onSubmit } = props;
-
-      const isValid = title.length > 3 && title.length < 100;
+      const { uid, slug, username, onSubmit, description, title, genre } =
+        props;
 
       return (
         <form
@@ -344,15 +312,10 @@ export const Card = (props: CardProps) => {
               onClick={() => isValid && setIsFlipped(!isFlipped)}
             >
               <div className="Card__header">
-                <input
-                  ref={titleRef}
-                  className="Card__formInput Card__title"
-                  onClick={(e) => e.stopPropagation()}
+                <AutogrowingInput
+                  className="Card__title"
                   value={title}
-                  onChange={(e) => {
-                    setTitle(e.currentTarget.value);
-                  }}
-                  placeholder={titlePlaceholder}
+                  onInput={handleInput}
                 />
                 <IconButton
                   className="Card__menuIcon"
@@ -364,17 +327,7 @@ export const Card = (props: CardProps) => {
                   <Cancel />
                 </IconButton>
               </div>
-              <input
-                className="Card__formInput Card__genre"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                value={genre}
-                onChange={(e) => {
-                  setGenre(e.currentTarget.value);
-                }}
-                placeholder={genrePlaceholder}
-              />
+              <AutogrowingInput className="Card__genre" value={genre} />
               <CountrySelector
                 country={country}
                 onChange={(input) => setCountry(input)}
@@ -396,29 +349,18 @@ export const Card = (props: CardProps) => {
                 >
                   <Cancel />
                 </IconButton>
-              </div>{" "}
-              <div
-                className="Card__descriptionContainer"
-                data-replicated-value={replicatedValue}
-              >
-                <textarea
-                  className="Card__formInput Card__description"
-                  onInput={(e) => setReplicatedValue(e.currentTarget.value)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  value={description}
-                  onChange={(e) => {
-                    setDescription(e.currentTarget.value);
-                  }}
-                  placeholder={
-                    descriptionPlaceholder.length > 0
-                      ? descriptionPlaceholder
-                      : "Provide some context around this BandName!"
-                  }
-                />
               </div>
-              <div className="Card__footer m-flexEnd">
+              <AutogrowingInput
+                className="Card__description"
+                value={description}
+              />
+              <div className="Card__footer">
+                <div className="Card__postedInfo">
+                  Posted on{" "}
+                  <Tooltip title={`At ${createdAtTime}`}>
+                    <span className="Card__postedDate">{shortDate}</span>
+                  </Tooltip>
+                </div>
                 <CardButton kind={CardButtonKind.Submit} isValid={isValid} />
               </div>
             </div>

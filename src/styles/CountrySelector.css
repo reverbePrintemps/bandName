@@ -4,20 +4,6 @@
   margin: 12px 0 0;
 }
 
-.CountrySelector__input {
-  font-size: 22px;
-  display: inline;
-  border: none;
-  background: none;
-  cursor: pointer;
-  min-width: 65px;
-}
-
-.CountrySelector__input::placeholder {
-  font-size: 16px;
-  color: var(--secondary-text);
-}
-
 .CountrySelector__dropdownArrow {
   display: inline-block;
   scale: -1;
