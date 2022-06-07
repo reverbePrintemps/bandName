@@ -64,6 +64,12 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
             <Link
               className="NavbarMenu__menuLink"
               to={`/posts/username/${username}`}
+              onClick={() =>
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                })
+              }
             >
               <AccountCircle />
               <p className="NavbarMenu">My Profile</p>

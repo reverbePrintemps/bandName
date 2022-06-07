@@ -140,10 +140,6 @@ const App = () => {
           <Navbar
             theme={theme}
             onClick={() => {
-              // Reset feed
-              setOrderBy("createdAt");
-              setReachedEndOfPosts(false);
-              setCursor(undefined);
               window.scrollTo({
                 top: 0,
                 behavior: "smooth",
