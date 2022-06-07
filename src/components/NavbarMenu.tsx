@@ -1,6 +1,6 @@
 import { AccountCircle, DarkMode, LightMode } from "@mui/icons-material";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { UserContext } from "../lib/context";
 import { Link } from "react-router-dom";
@@ -16,6 +16,12 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
   const { username } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLightTheme, setIsLightTheme] = useState<boolean>(theme === "light");
+  const onThemeChangeCallback = useCallback(
+    (isLightTheme: "light" | "dark") => {
+      onThemeChange(isLightTheme);
+    },
+    [onThemeChange]
+  );
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,11 +33,11 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
 
   useEffect(() => {
     if (isLightTheme) {
-      onThemeChange("light");
+      onThemeChangeCallback("light");
     } else {
-      onThemeChange("dark");
+      onThemeChangeCallback("dark");
     }
-  }, [isLightTheme]);
+  }, [isLightTheme, onThemeChangeCallback]);
 
   return (
     <div className="Navbar__menu">
