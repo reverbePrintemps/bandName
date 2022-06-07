@@ -8,9 +8,9 @@ import { useUserData } from "../lib/hooks";
 import { Card, CardKind } from "./Card";
 import { User } from "firebase/auth";
 import toast from "react-hot-toast";
+import { Spinner } from "./Spinner";
 
 import "../styles/Feed.css";
-import { Spinner } from "./Spinner";
 
 type FeedProps = {
   posts: PostType[];

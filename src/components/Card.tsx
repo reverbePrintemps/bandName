@@ -1,5 +1,5 @@
 import { CardButton, CardButtonKind } from "./CardButton";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { CardOverflowMenu } from "./CardOverflowMenu";
 import { AutogrowingInput } from "./AutogrowingInput";
 import { IconButton, Tooltip } from "@mui/material";
@@ -61,8 +61,11 @@ export const Card = (props: CardProps) => {
     props.kind || CardKind.Post
   );
   const [isFlipped, setIsFlipped] = useState(false);
-  const [country, setCountry] = useState(props.country);
   const [isValid, setIsValid] = useState(false);
+  const [title, setTitle] = useState(props.title);
+  const [genre, setGenre] = useState(props.genre);
+  const [country, setCountry] = useState(props.country);
+  const [description, setDescription] = useState(props.description);
 
   const shortDate =
     props.createdAt &&
@@ -72,11 +75,11 @@ export const Card = (props: CardProps) => {
   const createdAtTime =
     props.createdAt && new Date(props.createdAt).toLocaleTimeString();
 
-  const handleInput = (input: string) => {
-    if (input.length > 3 && input.length < 100) {
+  useEffect(() => {
+    if (title.length > 3 && title.length < 100) {
       setIsValid(true);
     }
-  };
+  }, [title]);
 
   switch (cardKind) {
     case CardKind.Post: {
@@ -197,16 +200,7 @@ export const Card = (props: CardProps) => {
       );
     }
     case CardKind.Submit: {
-      const {
-        uid,
-        slug,
-        username,
-        onSubmit,
-        onCancelSubmission,
-        description,
-        title,
-        genre,
-      } = props;
+      const { uid, slug, username, onSubmit, onCancelSubmission } = props;
 
       return (
         <form
@@ -231,10 +225,10 @@ export const Card = (props: CardProps) => {
             >
               <div className="Card__header">
                 <AutogrowingInput
-                  autofocus
+                  autoFocus
                   className="Card__title"
                   placeholder="Enter band name"
-                  onInput={handleInput}
+                  onInput={(title) => setTitle(title)}
                 />
                 <IconButton
                   className="Card__menuIcon"
@@ -249,11 +243,11 @@ export const Card = (props: CardProps) => {
               <AutogrowingInput
                 className="Card__genre"
                 placeholder="Enter genre"
+                onInput={(genre) => setGenre(genre)}
               />
               <CountrySelector
-                country={country}
-                onChange={(input) => setCountry(input)}
-                placeholder={"Country"}
+                placeholder="Country"
+                onInput={(country) => setCountry(country)}
               />
               <div className="Card__footer m-flexEnd">
                 <CardButton kind={CardButtonKind.Flip} isValid={isValid} />
@@ -275,6 +269,7 @@ export const Card = (props: CardProps) => {
               <AutogrowingInput
                 className="Card__description"
                 placeholder="Provide some context around this BandName!"
+                onInput={(description) => setDescription(description)}
                 rows={2}
               />
               <div className="Card__footer m-flexEnd">
@@ -286,9 +281,7 @@ export const Card = (props: CardProps) => {
       );
     }
     case CardKind.Edit: {
-      const countryPlaceholder = "Country";
-      const { uid, slug, username, onSubmit, description, title, genre } =
-        props;
+      const { uid, slug, username, onSubmit } = props;
 
       return (
         <form
@@ -314,8 +307,9 @@ export const Card = (props: CardProps) => {
               <div className="Card__header">
                 <AutogrowingInput
                   className="Card__title"
+                  placeholder="Enter band name"
                   value={title}
-                  onInput={handleInput}
+                  onInput={(title) => setTitle(title)}
                 />
                 <IconButton
                   className="Card__menuIcon"
@@ -327,11 +321,16 @@ export const Card = (props: CardProps) => {
                   <Cancel />
                 </IconButton>
               </div>
-              <AutogrowingInput className="Card__genre" value={genre} />
+              <AutogrowingInput
+                className="Card__genre"
+                placeholder="Genre"
+                value={genre}
+                onInput={(genre) => setGenre(genre)}
+              />
               <CountrySelector
-                country={country}
-                onChange={(input) => setCountry(input)}
-                placeholder={countryPlaceholder}
+                placeholder="Country"
+                countryFlag={country}
+                onInput={(country) => setCountry(country)}
               />
               <div className="Card__footer m-flexEnd">
                 <CardButton kind={CardButtonKind.Flip} isValid={isValid} />
@@ -352,7 +351,10 @@ export const Card = (props: CardProps) => {
               </div>
               <AutogrowingInput
                 className="Card__description"
+                placeholder="Provide some context around this BandName!"
                 value={description}
+                onInput={(description) => setDescription(description)}
+                rows={2}
               />
               <div className="Card__footer">
                 <div className="Card__postedInfo">
