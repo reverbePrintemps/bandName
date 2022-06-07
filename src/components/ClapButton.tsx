@@ -1,4 +1,10 @@
-import { MouseEvent, TouchEvent, useEffect, useState } from "react";
+import {
+  MouseEvent,
+  TouchEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { firestore, increment } from "../lib/firebase";
 import { useUserData } from "../lib/hooks";
 import firebase from "firebase/compat";
@@ -6,6 +12,7 @@ import { User } from "firebase/auth";
 import toast from "react-hot-toast";
 
 import "../styles/ClapButton.css";
+import { debounce } from "@mui/material";
 
 type ClapButtonProps = {
   ownPost: boolean;
@@ -26,16 +33,18 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
     }
   }, [userData.user]);
 
-  // Create a user-to-post relationship
-  const addClap = async (id: string) => {
-    const uid = id;
-    const batch = firestore.batch();
+  const addClap = useCallback(
+    debounce(async (id: string) => {
+      const uid = id;
+      const batch = firestore.batch();
 
-    batch.update(postRef, { heartCount: increment(1) });
-    batch.set(clapRef, { uid });
+      batch.update(postRef, { heartCount: increment(1) });
+      batch.set(clapRef, { uid });
 
-    await batch.commit();
-  };
+      await batch.commit();
+    }, 500),
+    []
+  );
 
   const handleInteractionStart = (
     e:

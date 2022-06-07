@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { COUNTRY_FLAGS } from "../constants/constants";
 
 import "../styles/CountrySelector.css";
@@ -13,6 +14,7 @@ export const CountrySelector = ({
   countryFlag,
   onInput,
 }: CountrySelectorProps) => {
+  const [input, setInput] = useState<number>();
   return (
     <>
       <input
@@ -28,7 +30,11 @@ export const CountrySelector = ({
           e.stopPropagation();
         }}
         value={countryFlag}
-        onInput={(e) => onInput(e.currentTarget.value)}
+        onInput={(e) => {
+          setInput(e.currentTarget.value.length);
+          onInput(e.currentTarget.value);
+        }}
+        size={input}
       />
       <datalist id="countries">
         {COUNTRY_FLAGS.map((country) => {
