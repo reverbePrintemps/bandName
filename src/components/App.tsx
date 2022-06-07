@@ -144,6 +144,10 @@ const App = () => {
               setOrderBy("createdAt");
               setReachedEndOfPosts(false);
               setCursor(undefined);
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
             }}
             onThemeChange={(theme) => {
               setTheme(theme);
