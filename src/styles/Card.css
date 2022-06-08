@@ -34,8 +34,8 @@
   color: var(--main-text);
 }
 
-.Card__menuIcon:hover {
-  color: var(--main-text);
+.Card .Card__menuIcon {
+  color: var(--secondary-text);
 }
 
 .Card__genre {

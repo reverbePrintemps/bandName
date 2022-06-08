@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+
 import "../styles/CustomButton.css";
 
 type CustomButtonProps = {
@@ -32,15 +33,7 @@ export const CustomButton = ({
           height={22}
         />
       )}
-      <Typography
-        fontStyle={{
-          fontFamily: "monospace",
-          textTransform: "uppercase",
-          fontSize: "16px",
-        }}
-      >
-        {label}
-      </Typography>
+      <Typography className="CustomButton__label">{label}</Typography>
     </button>
   );
 };

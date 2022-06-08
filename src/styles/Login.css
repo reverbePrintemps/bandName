@@ -15,3 +15,8 @@
 .Login__methods {
   text-align: left;
 }
+
+.Login .Login__methodTitle {
+  font-family: monospace;
+  text-transform: uppercase;
+}

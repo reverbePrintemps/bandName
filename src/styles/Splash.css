@@ -4,7 +4,7 @@
   height: 100vh;
   background-color: #181818;
   position: fixed;
-  z-index: 100;
+  z-index: 2;
   /* Need to use both opacity and visibility to "unmount" splash screen after transition */
   opacity: 1;
   visibility: visible;

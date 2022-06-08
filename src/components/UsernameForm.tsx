@@ -121,10 +121,7 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
           <h2 className="UsernameForm__title">Choose Username</h2>
           <form onSubmit={(e) => onSubmit(e, user)}>
             <FormControl>
-              <InputLabel
-                htmlFor="username"
-                style={{ color: "var(--secondary-text)" }}
-              >
+              <InputLabel htmlFor="username" className="UsernameForm__label">
                 Username
               </InputLabel>
               <FilledInput

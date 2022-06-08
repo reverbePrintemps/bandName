@@ -33,14 +33,14 @@ export const CardOverflowMenu = ({
   };
 
   return (
-    <>
+    <div className="CardOverflowMenu">
       <IconButton
         id="basic-button"
+        className="CardOverflowMenu__button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        style={{ color: "var(--ui)" }}
       >
         <MoreVert />
       </IconButton>
@@ -91,6 +91,6 @@ export const CardOverflowMenu = ({
           </MenuItem>
         )}
       </Menu>
-    </>
+    </div>
   );
 };

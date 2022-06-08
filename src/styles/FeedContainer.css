@@ -10,6 +10,12 @@
   justify-content: space-between;
 }
 
+.FeedContainer .FeedContainer__orderBy {
+  font-family: monospace;
+  text-transform: uppercase;
+  color: var(--main-text);
+}
+
 .FeedContainer__footerMessage,
 .FeedContainer__emptyFeed {
   font-size: 20px;

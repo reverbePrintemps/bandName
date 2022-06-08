@@ -5,6 +5,18 @@
   max-width: 350px;
 }
 
+.EmailSignInForm .EmailSignInForm__inputContainer {
+  margin-top: 16px;
+}
+
+.EmailSignInForm .EmailSignInForm__inputLabel {
+  color: var(--secondary-text);
+}
+
+.EmailSignInForm .EmailSignInForm__input {
+  color: var(--main-text);
+}
+
 .EmailSignInForm__submitButton {
   margin-top: 16px;
 }

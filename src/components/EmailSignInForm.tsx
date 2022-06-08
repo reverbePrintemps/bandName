@@ -87,33 +87,30 @@ export const EmailSignInForm = () => {
 
   return (
     <form className="EmailSignInForm" onSubmit={(e) => handleSubmit(e)}>
-      <FormControl style={{ marginTop: "16px" }}>
-        <InputLabel htmlFor="email" style={{ color: "var(--secondary-text)" }}>
+      <FormControl className="EmailSignInForm__inputContainer">
+        <InputLabel htmlFor="email" className="EmailSignInForm__inputLabel">
           Email address
         </InputLabel>
         <FilledInput
           id="email"
+          className="EmailSignInForm__input"
           name="email"
           type="email"
           value={formValues.email}
           onChange={handleInputChange}
-          style={{ color: "var(--main-text)" }}
         />
       </FormControl>
-      <FormControl style={{ marginTop: "16px" }}>
-        <InputLabel
-          htmlFor="password"
-          style={{ color: "var(--secondary-text)" }}
-        >
+      <FormControl className="EmailSignInForm__inputContainer">
+        <InputLabel htmlFor="password" className="EmailSignInForm__inputLabel">
           Password
         </InputLabel>
         <FilledInput
           id="password"
+          className="EmailSignInForm__input"
           name="password"
           type="password"
           value={formValues.password}
           onChange={handleInputChange}
-          style={{ color: "var(--main-text)" }}
         />
       </FormControl>
       <div className="EmailSignInForm__submitButton">

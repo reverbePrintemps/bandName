@@ -19,6 +19,12 @@
   cursor: not-allowed;
 }
 
+.CustomButton .CustomButton__label {
+  font-family: monospace;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
 .CustomButton__icon {
   margin-right: 8px;
 }

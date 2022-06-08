@@ -26,7 +26,7 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
   };
   return (
     <div className="SortMenu">
-      <IconButton onClick={handleClick} style={{ color: "var(--ui)" }}>
+      <IconButton onClick={handleClick} className="SortMenu__icon">
         <Sort />
       </IconButton>
       <Menu

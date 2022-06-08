@@ -19,26 +19,12 @@ export const Login = () => {
       <div className="Login__methods">
         {!userData.user ? (
           <>
-            <Typography
-              fontStyle={{
-                fontFamily: "monospace",
-                textTransform: "uppercase",
-              }}
-            >
-              With Google
-            </Typography>
+            <Typography className="Login__methodTitle">With Google</Typography>
             <Box marginTop="16px">
               <GoogleSignInButton />
             </Box>
             <Box marginTop="16px">
-              <Typography
-                fontStyle={{
-                  fontFamily: "monospace",
-                  textTransform: "uppercase",
-                }}
-              >
-                or email
-              </Typography>
+              <Typography className="Login__methodTitle">or email</Typography>
               <EmailSignInForm />
             </Box>
           </>

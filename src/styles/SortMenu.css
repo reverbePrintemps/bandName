@@ -1,3 +1,7 @@
 .SortMenu {
   align-self: end;
 }
+
+.SortMenu .SortMenu__icon {
+  color: var(--ui);
+}

@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   font-weight: bold;
-  z-index: 99;
+  z-index: 1;
 }
 
 .Navbar__container {
@@ -17,23 +17,6 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
-}
-
-.Navbar__menu {
-  margin: auto 0;
-  font-family: var(--font-fam-nanum);
-  text-align: center;
-}
-
-.Navbar__username {
-  margin: 0;
-}
-
-.Navbar__image {
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
 }
 
 .Navbar__logo {

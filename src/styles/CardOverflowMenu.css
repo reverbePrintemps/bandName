@@ -1,3 +1,7 @@
+.CardOverflowMenu .CardOverflowMenu__button {
+  color: var(--ui);
+}
+
 .CardOverflowMenu__label {
   margin: 0;
   padding-left: 8px;

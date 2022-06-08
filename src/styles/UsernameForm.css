@@ -5,3 +5,7 @@
 .UsernameForm__title {
   text-transform: uppercase;
 }
+
+.UsernameForm .UsernameForm__label {
+  color: var(--secondary-text);
+}

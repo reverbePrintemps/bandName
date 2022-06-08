@@ -1,6 +1,10 @@
 .NavbarMenu {
-  margin: 0;
+  margin: auto 0;
   padding-left: 8px;
+}
+
+.NavbarMenu .NavbarMenu__icon {
+  color: #ccc;
 }
 
 .NavbarMenu__menuLink {

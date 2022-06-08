@@ -54,13 +54,7 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
       <div className="FeedContainer">
         <div className="FeedContainer__feedHeader">
           <Box margin="auto 0">
-            <Typography
-              fontStyle={{
-                fontFamily: "monospace",
-                textTransform: "uppercase",
-                color: "var(--main-text)",
-              }}
-            >
+            <Typography className="FeedContainer__orderBy">
               {orderBy === "createdAt" ? "Latest" : "Most popular"}
             </Typography>
           </Box>

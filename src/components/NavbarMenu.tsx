@@ -40,7 +40,7 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
   }, [isLightTheme, onThemeChangeCallback]);
 
   return (
-    <div className="Navbar__menu">
+    <div className="NavbarMenu">
       <IconButton
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -48,7 +48,7 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <MenuIcon style={{ color: "#ccc" }} />
+        <MenuIcon className="NavbarMenu__icon" />
       </IconButton>
       <Menu
         id="basic-menu"

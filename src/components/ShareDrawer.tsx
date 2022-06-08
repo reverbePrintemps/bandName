@@ -17,6 +17,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import "../styles/ShareDrawer.css";
+
 type ShareDrawerProps = {
   open: boolean;
   onClose: () => void;
@@ -26,6 +28,7 @@ type ShareDrawerProps = {
 export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
   return (
     <SwipeableDrawer
+      className="ShareDrawer"
       anchor={"bottom"}
       open={open}
       // TODO Not sure what this is useful for
@@ -42,23 +45,10 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
       }}
     >
       <Box role="presentation" onClick={onClose} onKeyDown={onClose}>
-        <Typography
-          padding="24px 24px 8px 24px"
-          fontStyle={{
-            fontFamily: "monospace",
-            textTransform: "uppercase",
-            fontSize: "20px",
-          }}
-        >
-          Share
-        </Typography>
+        <Typography className="ShareDrawer__title">Share</Typography>
         <List>
           <Box display="flex" flexDirection="column" justifyContent="flex-end">
-            <ListItem
-              style={{
-                padding: "0",
-              }}
-            >
+            <ListItem className="ShareDrawer__listItem">
               <ListItemButton
                 onClick={() => {
                   navigator.clipboard.writeText(
@@ -66,28 +56,18 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
                   );
                   toast.success("Copied to clipboard");
                 }}
-                style={{ width: "100%" }}
               >
                 <ListItemIcon>
                   <Box padding="8px">
-                    <ContentCopy
-                      style={{
-                        color: "var(--ui)",
-                      }}
-                    />
+                    <ContentCopy className="ShareDrawer__copyIcon" />
                   </Box>
                 </ListItemIcon>
                 <ListItemText>Copy link</ListItemText>
               </ListItemButton>
             </ListItem>
-            <ListItem
-              style={{
-                padding: "0",
-              }}
-            >
+            <ListItem className="ShareDrawer__listItem">
               <TelegramShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
-                style={{ width: "100%" }}
               >
                 <ListItemButton>
                   <ListItemIcon>
@@ -99,14 +79,9 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
                 </ListItemButton>
               </TelegramShareButton>
             </ListItem>
-            <ListItem
-              style={{
-                padding: "0",
-              }}
-            >
+            <ListItem className="ShareDrawer__listItem">
               <WhatsappShareButton
                 url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
-                style={{ width: "100%" }}
               >
                 <ListItemButton>
                   <ListItemIcon>
