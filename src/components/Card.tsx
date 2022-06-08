@@ -83,6 +83,8 @@ export const Card = (props: CardProps) => {
     }
   }, [title]);
 
+  const genrePlaceholder = "Enter genre";
+
   switch (cardKind) {
     case CardKind.Post: {
       const {
@@ -105,40 +107,39 @@ export const Card = (props: CardProps) => {
           flipSpeedFrontToBack={0.25}
         >
           <div className="Card" onClick={() => setIsFlipped(!isFlipped)}>
-            <div>
-              <div className="Card__header">
-                <h2 className="Card__title">{title}</h2>
-                <CardOverflowMenu
-                  isOwner={isOwner}
-                  onSharePressed={() =>
-                    updateShareUrl(`/${username}/posts/${slug}`)
-                  }
-                  onEditPressed={() => {
-                    setCardKind(CardKind.Edit);
-                  }}
-                  onDeletePressed={() => {
-                    setCardKind(CardKind.Delete);
-                  }}
-                />
-              </div>
-              <h3 className="Card__genre">
-                <a
-                  href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}
-                  // All e.stopPropagation() are to prevent the card flip
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {genre}
-                </a>
-              </h3>
-              <h3 className="Card__country">
-                <a
-                  href={`${process.env.PUBLIC_URL}/posts/country/${country}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {country}
-                </a>
-              </h3>
+            <div className="Card__header">
+              <h2 className="Card__title">{title}</h2>
+              <CardOverflowMenu
+                isOwner={isOwner}
+                onSharePressed={() =>
+                  updateShareUrl(`/${username}/posts/${slug}`)
+                }
+                onEditPressed={() => {
+                  setCardKind(CardKind.Edit);
+                }}
+                onDeletePressed={() => {
+                  setCardKind(CardKind.Delete);
+                }}
+              />
             </div>
+            <h3 className="Card__genre">
+              <a
+                href={`${process.env.PUBLIC_URL}/posts/genre/${genre}`}
+                // All e.stopPropagation() are to prevent the card flip
+                onClick={(e) => e.stopPropagation()}
+              >
+                {genre}
+              </a>
+            </h3>
+            <h3 className="Card__country">
+              <a
+                href={`${process.env.PUBLIC_URL}/posts/country/${country}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {country}
+              </a>
+            </h3>
+
             <div className="Card__footer">
               <div className="Card__postedInfo">
                 <a
@@ -244,8 +245,9 @@ export const Card = (props: CardProps) => {
               </div>
               <AutogrowingInput
                 className="Card__genre"
-                placeholder="Enter genre"
+                placeholder={genrePlaceholder}
                 onInput={(genre) => setGenre(genre)}
+                cols={genrePlaceholder.length}
               />
               <CountrySelector
                 placeholder="Country"
@@ -325,9 +327,10 @@ export const Card = (props: CardProps) => {
               </div>
               <AutogrowingInput
                 className="Card__genre"
-                placeholder="Genre"
+                placeholder={genrePlaceholder}
                 value={genre}
                 onInput={(genre) => setGenre(genre)}
+                cols={genrePlaceholder.length}
               />
               <CountrySelector
                 placeholder="Country"

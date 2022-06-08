@@ -1,3 +1,8 @@
+/* Wrapping in a flex container seems to allow for initial length to be reduced */
+.AutogrowingInput__container {
+  display: flex;
+}
+
 /* Hack to autogrow textarea: https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
 
 .AutogrowingInput,

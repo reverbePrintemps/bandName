@@ -42,32 +42,34 @@ export const AutogrowingInput = ({
   }, [autoFocus]);
 
   return (
-    <div
-      className={`AutogrowingInput ${className}`}
-      data-replicated-value={inputValue}
-    >
-      <textarea
-        ref={titleRef}
-        rows={rows ?? 1}
-        // 20 Is the default
-        cols={cols ?? 20}
-        className={`AutogrowingInput__textarea ${className}`}
-        onInput={(e) => {
-          onInput && onInput(e.currentTarget.value);
-          setInputValue(e.currentTarget.value);
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          value && setInputValue(value);
-        }}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        value={inputValue}
-        placeholder={placeholder}
-        autoComplete={passwordManager === "disable" ? "off" : undefined}
-        data-lpignore={passwordManager === "disable" ? "true" : undefined}
-        data-form-type={passwordManager === "disable" ? "other" : undefined}
-      />
+    <div className="AutogrowingInput__container">
+      <div
+        className={`AutogrowingInput ${className}`}
+        data-replicated-value={inputValue}
+      >
+        <textarea
+          ref={titleRef}
+          rows={rows ?? 1}
+          // 20 Is the default
+          cols={cols ?? 20}
+          className={`AutogrowingInput__textarea ${className}`}
+          onInput={(e) => {
+            onInput && onInput(e.currentTarget.value);
+            setInputValue(e.currentTarget.value);
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            value && setInputValue(value);
+          }}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          value={inputValue}
+          placeholder={placeholder}
+          autoComplete={passwordManager === "disable" ? "off" : undefined}
+          data-lpignore={passwordManager === "disable" ? "true" : undefined}
+          data-form-type={passwordManager === "disable" ? "other" : undefined}
+        />
+      </div>
     </div>
   );
 };

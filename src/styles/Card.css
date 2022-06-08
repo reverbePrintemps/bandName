@@ -32,6 +32,7 @@
   letter-spacing: 1px;
   font-size: 20px;
   color: var(--main-text);
+  word-wrap: anywhere;
 }
 
 .Card .Card__menuIcon {
@@ -45,6 +46,7 @@
   text-transform: lowercase;
   font-size: 20px;
   font-weight: 100;
+  word-wrap: anywhere;
 }
 
 .Card__country {
@@ -84,4 +86,5 @@
   font-size: 16px;
   text-align: center;
   color: var(--secondary-text);
+  width: 100%;
 }

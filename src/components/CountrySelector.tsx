@@ -25,12 +25,13 @@ export const CountrySelector = ({
   );
 
   useEffect(() => {
-    setValue(value);
-    if (value) {
-      setInputSize(value.length);
+    if (value && value.length > 0) {
       onInputCallback(value);
+      setInputSize(value.length);
+    } else if (placeholder) {
+      setInputSize(placeholder.length);
     }
-  }, [value, onInputCallback]);
+  }, [value, onInputCallback, placeholder]);
 
   return (
     <>
@@ -55,11 +56,20 @@ export const CountrySelector = ({
                   .toUpperCase()
                   .indexOf(e.target.value.toUpperCase()) > -1
             );
-            setValue(bestMatch[0].flag);
+            setValue(bestMatch[0] ? bestMatch[0].flag : "");
           }
         }}
         value={value}
         size={inputSize}
+        onInput={(e) => {
+          setValue(e.currentTarget.value);
+          // Duplicating this in the onInput to avoid glitchy behavior
+          if (e.currentTarget.value.length > 0) {
+            setInputSize(e.currentTarget.value.length);
+          } else if (placeholder) {
+            setInputSize(placeholder.length);
+          }
+        }}
       />
       <datalist id="countries">
         {COUNTRY_FLAGS.map((country) => {
