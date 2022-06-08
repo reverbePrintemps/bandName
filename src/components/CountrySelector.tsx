@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { COUNTRY_FLAGS } from "../constants/constants";
 
 import "../styles/CountrySelector.css";
@@ -14,7 +14,24 @@ export const CountrySelector = ({
   countryFlag,
   onInput,
 }: CountrySelectorProps) => {
-  const [input, setInput] = useState<number>();
+  const [inputSize, setInputSize] = useState<number>();
+  const [value, setValue] = useState<string | undefined>(countryFlag);
+
+  const onInputCallback = useCallback(
+    (country: string) => {
+      onInput(country);
+    },
+    [onInput]
+  );
+
+  useEffect(() => {
+    setValue(value);
+    if (value) {
+      setInputSize(value.length);
+      onInputCallback(value);
+    }
+  }, [value, onInputCallback]);
+
   return (
     <>
       <input
@@ -29,19 +46,31 @@ export const CountrySelector = ({
         onClick={(e) => {
           e.stopPropagation();
         }}
-        value={countryFlag}
-        onInput={(e) => {
-          setInput(e.currentTarget.value.length);
-          onInput(e.currentTarget.value);
+        onBlur={(e) => {
+          // Select the first item in the list
+          if (e.target.value !== "") {
+            const bestMatch = COUNTRY_FLAGS.filter(
+              (country) =>
+                (`${country.name} ${country.short_name}` || country.name)
+                  .toUpperCase()
+                  .indexOf(e.target.value.toUpperCase()) > -1
+            );
+            setValue(bestMatch[0].flag);
+          }
         }}
-        size={input}
+        value={value}
+        size={inputSize}
       />
       <datalist id="countries">
         {COUNTRY_FLAGS.map((country) => {
           return (
             <option
               key={country.name}
-              label={country.name}
+              label={
+                country.short_name
+                  ? `${country.name} ${country.short_name}`
+                  : country.name
+              }
               value={country.flag}
             />
           );

@@ -78,6 +78,8 @@ export const Card = (props: CardProps) => {
   useEffect(() => {
     if (title.length > 3 && title.length < 100) {
       setIsValid(true);
+    } else {
+      setIsValid(false);
     }
   }, [title]);
 
