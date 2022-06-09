@@ -18,7 +18,7 @@ export const MainContainer = ({
 }: ScrollContainerProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  const [bottomOfScrollPosition, setBottomOfWindow] = useState(
+  const [bottomOfScrollPosition, setBottomOfScrollPosition] = useState(
     windowHeight + window.scrollY
   );
   const [bottomOfContent, setBottomOfContent] = useState<number>();
@@ -57,7 +57,7 @@ export const MainContainer = ({
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
-      setBottomOfWindow(windowHeight + window.scrollY);
+      setBottomOfScrollPosition(windowHeight + window.scrollY);
     }
   };
 
