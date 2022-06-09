@@ -1,10 +1,11 @@
+import { DocumentData, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
 import { FeedContainer, PostType } from "./FeedContainer";
 import { firestore, postToJSON } from "../lib/firebase";
 import { getFromLocalStorage } from "../lib/storage";
-import { MainContainer } from "./MainContainer";
 import { Route, Routes } from "react-router-dom";
+import { MainContainer } from "./MainContainer";
 import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
@@ -15,12 +16,6 @@ import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
 import { Splash } from "./Splash";
 import { Login } from "./Login";
-import {
-  DocumentData,
-  onSnapshot,
-  query,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
 
 import "../styles/App.css";
 
@@ -31,7 +26,6 @@ const App = () => {
   const shareContext = { shareUrl, updateShareUrl };
   const [posts, setPosts] = useState<PostType[]>();
   const [cursor, setCursor] = useState<DocumentData>();
-  const [last, setLast] = useState<QueryDocumentSnapshot<DocumentData>>();
   const [reachedEndOfPosts, setReachedEndOfPosts] = useState(false);
   const [showShareDrawer, setShowShareDrawer] = useState(false);
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
@@ -59,34 +53,31 @@ const App = () => {
     }
   }, [shareUrl]);
 
-  // TODO Extract to own functions
-  useEffect(() => {
-    if (!cursor) {
-      setLoadingPosts(true);
-      // Listen for any changes to the posts collection
-      onSnapshot(
-        query(
-          firestore
-            .collectionGroup("posts")
-            .orderBy(orderBy, "desc")
-            .limit(POSTS_PER_REQUEST_LIMIT)
-        ),
-        (querySnapshot) => {
-          const posts = querySnapshot.docs.map(postToJSON) as PostType[];
-          setReachedEndOfPosts(posts.length < POSTS_PER_REQUEST_LIMIT);
-          setLast(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          setPosts(posts);
-        },
-        (error) => {
-          console.log("Error getting posts: ", error);
-          toast.error(error.message);
-        }
-      );
-    }
-  }, [cursor, orderBy]);
-
+  // TODO: Would love to use only one useEffect and one onSnapshot() listener but I have not yet been able to. **Believe me**, I've tried.
   useEffect(() => {
     // Listen for any changes to the posts collection
+    onSnapshot(
+      query(
+        firestore
+          .collectionGroup("posts")
+          .orderBy(orderBy, "desc")
+          .limit(POSTS_PER_REQUEST_LIMIT)
+      ),
+      (querySnapshot) => {
+        const initialPosts = querySnapshot.docs.map(postToJSON) as PostType[];
+        setReachedEndOfPosts(initialPosts.length < POSTS_PER_REQUEST_LIMIT);
+        setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
+        setPosts(initialPosts);
+      },
+      (error) => {
+        console.log("Error getting posts: ", error);
+        toast.error(error.message);
+      }
+    );
+  }, [orderBy]);
+
+  useEffect(() => {
+    // Listen for changes to the posts collection
     if (cursor && loadMore) {
       setLoadingPosts(true);
       onSnapshot(
@@ -100,8 +91,8 @@ const App = () => {
         (querySnapshot) => {
           const newPosts = querySnapshot.docs.map(postToJSON) as PostType[];
           setReachedEndOfPosts(newPosts.length < POSTS_PER_REQUEST_LIMIT);
-          setLast(querySnapshot.docs[querySnapshot.docs.length - 1]);
-          setPosts((posts) => (posts ? posts.concat(newPosts) : newPosts));
+          setCursor(querySnapshot.docs[querySnapshot.docs.length - 1]);
+          setPosts(posts ? posts.concat(newPosts) : newPosts);
         },
         (error) => {
           console.log("Error getting posts: ", error);
@@ -109,7 +100,7 @@ const App = () => {
         }
       );
     }
-  }, [loadMore, orderBy, cursor]);
+  }, [loadMore, cursor, orderBy, posts]);
 
   // Reset cursor on orderBy change
   useEffect(() => {
@@ -127,10 +118,6 @@ const App = () => {
       setLoadingPosts(false);
     }
   }, [posts]);
-
-  useEffect(() => {
-    setCursor(last);
-  }, [last]);
 
   return (
     <UserContext.Provider value={userData}>
