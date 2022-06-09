@@ -1,3 +1,8 @@
+import { useUserData } from "../lib/hooks";
+import { debounce } from "@mui/material";
+import firebase from "firebase/compat";
+import { User } from "firebase/auth";
+import toast from "react-hot-toast";
 import {
   MouseEvent,
   TouchEvent,
@@ -5,14 +10,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { firestore, increment } from "../lib/firebase";
-import { useUserData } from "../lib/hooks";
-import firebase from "firebase/compat";
-import { User } from "firebase/auth";
-import toast from "react-hot-toast";
 
 import "../styles/ClapButton.css";
-import { debounce } from "@mui/material";
 
 type ClapButtonProps = {
   ownPost: boolean;
@@ -24,7 +23,6 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
   const userData = useUserData();
   const [shrink, setShrink] = useState(false);
   const [clapCount, setClapCount] = useState(count);
-  const clapRef = postRef.collection("hearts").doc(userData.user?.uid);
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -34,16 +32,10 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
   }, [userData.user]);
 
   const addClap = useCallback(
-    debounce(async (id: string) => {
-      const uid = id;
-      const batch = firestore.batch();
-
-      batch.update(postRef, { heartCount: increment(1) });
-      batch.set(clapRef, { uid });
-
-      await batch.commit();
+    debounce(async () => {
+      postRef.update({ heartCount: clapCount + 1 });
     }, 500),
-    []
+    [clapCount, postRef]
   );
 
   const handleInteractionStart = (
@@ -59,12 +51,11 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
   const handleInteractionEnd = (
     e:
       | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-      | TouchEvent<HTMLButtonElement>,
-    currentlySignedInUser: User
+      | TouchEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    addClap(currentlySignedInUser.uid);
+    addClap();
     setShrink(false);
     setClapCount(clapCount + 1);
   };
@@ -79,10 +70,10 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
       onMouseDown={(e) => handleInteractionStart(e)}
       onTouchStart={(e) => handleInteractionStart(e)}
       onMouseUp={(e) => {
-        handleInteractionEnd(e, user);
+        handleInteractionEnd(e);
       }}
       onTouchEnd={(e) => {
-        handleInteractionEnd(e, user);
+        handleInteractionEnd(e);
       }}
     >{`${clapCount} 👏`}</button>
   ) : (
