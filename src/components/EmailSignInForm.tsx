@@ -1,14 +1,21 @@
-import { FormControl, FilledInput, InputLabel } from "@mui/material";
 import { DEFAULT_TOAST_DURATION } from "../constants/constants";
 import React, { useEffect, useState } from "react";
 import { CustomButton } from "./CustomButton";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   AuthError,
+  getAuth,
 } from "firebase/auth";
+import {
+  Link as MuiLink,
+  FormControl,
+  FilledInput,
+  InputLabel,
+  Box,
+} from "@mui/material";
 
 import "../styles/EmailSignInForm.css";
 
@@ -86,36 +93,46 @@ export const EmailSignInForm = () => {
   };
 
   return (
-    <form className="EmailSignInForm" onSubmit={(e) => handleSubmit(e)}>
-      <FormControl className="EmailSignInForm__inputContainer">
-        <InputLabel htmlFor="email" className="EmailSignInForm__inputLabel">
-          Email address
-        </InputLabel>
-        <FilledInput
-          id="email"
-          className="EmailSignInForm__input"
-          name="email"
-          type="email"
-          value={formValues.email}
-          onChange={handleInputChange}
-        />
-      </FormControl>
-      <FormControl className="EmailSignInForm__inputContainer">
-        <InputLabel htmlFor="password" className="EmailSignInForm__inputLabel">
-          Password
-        </InputLabel>
-        <FilledInput
-          id="password"
-          className="EmailSignInForm__input"
-          name="password"
-          type="password"
-          value={formValues.password}
-          onChange={handleInputChange}
-        />
-      </FormControl>
-      <div className="EmailSignInForm__submitButton">
-        <CustomButton type="submit" label="Submit" disabled={!isValid} />
-      </div>
-    </form>
+    <div>
+      <form className="EmailSignInForm" onSubmit={(e) => handleSubmit(e)}>
+        <FormControl className="EmailSignInForm__inputContainer">
+          <InputLabel htmlFor="email" className="EmailSignInForm__inputLabel">
+            Email address
+          </InputLabel>
+          <FilledInput
+            id="email"
+            className="EmailSignInForm__input"
+            name="email"
+            type="email"
+            value={formValues.email}
+            onChange={handleInputChange}
+          />
+        </FormControl>
+        <FormControl className="EmailSignInForm__inputContainer">
+          <InputLabel
+            htmlFor="password"
+            className="EmailSignInForm__inputLabel"
+          >
+            Password
+          </InputLabel>
+          <FilledInput
+            id="password"
+            className="EmailSignInForm__input"
+            name="password"
+            type="password"
+            value={formValues.password}
+            onChange={handleInputChange}
+          />
+        </FormControl>
+        <div className="EmailSignInForm__submitButton">
+          <CustomButton type="submit" label="Submit" disabled={!isValid} />
+        </div>
+      </form>
+      <Box className="EmailSignInForm__passwordReset">
+        <Link to="/password_reset">
+          <MuiLink>Forgot password?</MuiLink>
+        </Link>
+      </Box>
+    </div>
   );
 };

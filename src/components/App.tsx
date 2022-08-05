@@ -2,6 +2,7 @@ import { DocumentData, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
 import { FeedContainer, PostType } from "./FeedContainer";
+import { PasswordResetForm } from "./PasswordResetForm";
 import { firestore, postToJSON } from "../lib/firebase";
 import { getFromLocalStorage } from "../lib/storage";
 import { Route, Routes } from "react-router-dom";
@@ -179,6 +180,7 @@ const App = () => {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/:usernameParam/posts/:postId" element={<Post />} />
+              <Route path="/password_reset" element={<PasswordResetForm />} />
               <Route path="*" element={<Custom404 />} />
             </Routes>
           </MainContainer>

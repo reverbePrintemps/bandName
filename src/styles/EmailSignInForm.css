@@ -20,3 +20,7 @@
 .EmailSignInForm__submitButton {
   margin-top: 16px;
 }
+
+.EmailSignInForm__passwordReset {
+  margin-top: 16px;
+}
