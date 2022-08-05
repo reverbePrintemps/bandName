@@ -52,7 +52,7 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
               <ListItemButton
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`
+                    `https://bandname.app${process.env.PUBLIC_URL}${shareUrl}`
                   );
                   toast.success("Copied to clipboard");
                 }}
@@ -67,7 +67,7 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
             </ListItem>
             <ListItem className="ShareDrawer__listItem">
               <TelegramShareButton
-                url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
+                url={`https://bandname.app${process.env.PUBLIC_URL}${shareUrl}`}
               >
                 <ListItemButton>
                   <ListItemIcon>
@@ -81,7 +81,7 @@ export const ShareDrawer = ({ open, onClose, shareUrl }: ShareDrawerProps) => {
             </ListItem>
             <ListItem className="ShareDrawer__listItem">
               <WhatsappShareButton
-                url={`https://reverbeprintemps.github.io${process.env.PUBLIC_URL}${shareUrl}`}
+                url={`https://bandname.app${process.env.PUBLIC_URL}${shareUrl}`}
               >
                 <ListItemButton>
                   <ListItemIcon>
