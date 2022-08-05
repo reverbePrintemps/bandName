@@ -2,7 +2,7 @@
 
 ## tl;dr
 
-The `BandName!` app is currently published at: https://reverbePrintemps.github.io/bandName
+The `BandName!` app is currently published at: https://bandname.app
 
 ## About
 
