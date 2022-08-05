@@ -1,4 +1,4 @@
-import { AccountCircle, DarkMode, LightMode } from "@mui/icons-material";
+import { AccountCircle, DarkMode, Info, LightMode } from "@mui/icons-material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -66,6 +66,12 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
         }}
       >
         <MenuItem sx={{ color: "var(--main-text" }} onClick={handleClose}>
+          <Link className="NavbarMenu__menuLink" to="/about">
+            <Info />
+            <p className="NavbarMenu">About</p>
+          </Link>
+        </MenuItem>
+        <MenuItem sx={{ color: "var(--main-text" }} onClick={handleClose}>
           {username ? (
             <Link
               className="NavbarMenu__menuLink"
@@ -81,7 +87,7 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
               <p className="NavbarMenu">My Profile</p>
             </Link>
           ) : (
-            <Link className="NavbarMenu__menuLink" to={`/login`}>
+            <Link className="NavbarMenu__menuLink" to="/login">
               <AccountCircle />
               <p className="NavbarMenu">Sign in</p>
             </Link>

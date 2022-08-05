@@ -1,0 +1,28 @@
+.About {
+  display: flex;
+  flex-direction: column;
+  margin: 16px auto 0;
+  width: 100%;
+  color: var(--main-text);
+  font-family: var(--font-fam-nanum);
+}
+
+.About__title {
+  text-align: center;
+  text-transform: uppercase;
+  font-family: var(--font-fam-knewave);
+}
+
+.About__hi {
+  font-family: monospace;
+  text-transform: uppercase;
+}
+
+.About__body {
+  font-size: 22px;
+}
+
+.About__body .Globals__bandName {
+  font-size: 16px;
+  vertical-align: top;
+}

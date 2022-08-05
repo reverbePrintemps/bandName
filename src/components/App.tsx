@@ -16,6 +16,7 @@ import { Custom404 } from "./Custom404";
 import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
 import { Splash } from "./Splash";
+import { About } from "./About";
 import { Login } from "./Login";
 
 import "../styles/App.css";
@@ -181,6 +182,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/:usernameParam/posts/:postId" element={<Post />} />
               <Route path="/password_reset" element={<PasswordResetForm />} />
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<Custom404 />} />
             </Routes>
           </MainContainer>
