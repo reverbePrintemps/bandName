@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
 type NavBarProps = {
-  theme: "light" | "dark";
+  theme: string;
   onClick: () => void;
   onThemeChange: (theme: "light" | "dark") => void;
 };

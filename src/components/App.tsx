@@ -1,10 +1,10 @@
 import { DocumentData, onSnapshot, query } from "firebase/firestore";
 import { POSTS_PER_REQUEST_LIMIT } from "../constants/constants";
 import { ShareContext, UserContext } from "../lib/context";
+import { getThemeFromLocalStorage } from "../lib/storage";
 import { FeedContainer, PostType } from "./FeedContainer";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { firestore, postToJSON } from "../lib/firebase";
-import { getFromLocalStorage } from "../lib/storage";
 import { Route, Routes } from "react-router-dom";
 import { MainContainer } from "./MainContainer";
 import { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ const App = () => {
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
     "createdAt"
   );
-  const [theme, setTheme] = useState(getFromLocalStorage("theme"));
+  const [theme, setTheme] = useState(getThemeFromLocalStorage());
   const [showSplash, setShowSplash] = useState(true);
   const [body, setBody] = useState<HTMLBodyElement | null>(null);
   const [loadingPosts, setLoadingPosts] = useState(false);

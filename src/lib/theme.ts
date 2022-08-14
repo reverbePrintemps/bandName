@@ -1,9 +1,10 @@
 import { updateLocalStorage } from "./storage";
 
-export const updateTheme = (body: HTMLElement, theme: "light" | "dark") => {
+export const updateTheme = (body: HTMLElement, theme: string) => {
   updateLocalStorage("theme", theme);
   switch (theme) {
     case "light":
+    default:
       body.style.setProperty("--app-bg", "#ddd");
       body.style.setProperty("--card-bg", "#eef0f1");
       body.style.setProperty("--ui", "#181818");

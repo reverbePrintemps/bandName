@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import "../styles/NavbarMenu.css";
 
 type NavbarMenuProps = {
-  theme: "light" | "dark";
+  theme: string;
   onThemeChange: (theme: "light" | "dark") => void;
 };
 

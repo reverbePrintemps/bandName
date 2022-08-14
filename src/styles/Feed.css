@@ -3,15 +3,3 @@
   flex-direction: column;
   margin-top: 16px;
 }
-
-.Feed__loadMoreButton {
-  background-color: var(--main-text);
-  font-family: var(--font-fam-knewave);
-  font-size: 20px;
-  color: var(--main-text);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 8px 22px;
-  margin-top: 16px;
-  max-width: max-content;
-}
