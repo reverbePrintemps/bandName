@@ -2,6 +2,7 @@ import { CardButton, CardButtonKind } from "./CardButton";
 import { useCallback, useEffect, useState } from "react";
 import { useUserData } from "../lib/hooks";
 import { debounce } from "@mui/material";
+import { Link } from "react-router-dom";
 import firebase from "firebase/compat";
 import { User } from "firebase/auth";
 import toast from "react-hot-toast";
@@ -52,7 +53,19 @@ export const ClapButton = ({ ownPost, postRef, count }: ClapButtonProps) => {
         e.preventDefault();
         e.stopPropagation();
         !user
-          ? toast.error("You must be signed in to clap.")
+          ? toast.error(() => (
+              <span>
+                You must be signed in to clap.
+                <br />
+                <Link
+                  to="/login"
+                  style={{ color: "blue", textDecoration: "underline" }}
+                  onClick={(t) => toast.dismiss(t.currentTarget.id)}
+                >
+                  Sign in
+                </Link>
+              </span>
+            ))
           : toast.error("You can't clap your own posts! Nice try though. 🤦‍♀️");
       }}
     >

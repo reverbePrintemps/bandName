@@ -38,7 +38,7 @@
 .CommentsSection__inputContainer {
   display: flex;
   padding: 12px 16px;
-  background-color: var(--card-bg);
+  background-color: var(--comment-input-bg);
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -58,7 +58,7 @@
 .CommentsSection__button {
   margin-left: 16px;
   padding: 8px;
-  background-color: var(--button-bg);
+  background-color: var(--comment-button-bg);
   font-size: 16px;
   font-family: monospace;
   text-transform: uppercase;
@@ -68,4 +68,5 @@
   border: none;
   cursor: not-allowed;
   background-color: var(--cardbutton-bg);
+  opacity: 0.6;
 }

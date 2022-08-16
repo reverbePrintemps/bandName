@@ -12,9 +12,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <App />
+      {/* Doesn't show anything but needs to live somewhere in the app */}
+      <Toaster />
     </BrowserRouter>
-    {/* Doesn't show anything but needs to live somewhere in the app */}
-    <Toaster />
   </React.StrictMode>
 );
 

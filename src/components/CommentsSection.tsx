@@ -6,6 +6,7 @@ import { UserProfile } from "./UserProfile";
 import firebase from "firebase/compat/app";
 import { useUserData } from "../lib/hooks";
 import { timeAgo } from "../lib/timeAgo";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import "../styles/CommentsSection.css";
@@ -18,7 +19,7 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
   const [comments, setComments] = useState<DocumentData[]>([]);
   const [comment, setComment] = useState("");
   const [commentCount, setCommentCount] = useState(0);
-  const [isValid, setIsValid] = useState(false);
+  const [canComment, setCanComment] = useState(false);
   const userData = useUserData();
 
   useEffect(() => {
@@ -37,10 +38,10 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
   }, [postRef]);
 
   useEffect(() => {
-    if (comment.length > 0) {
-      setIsValid(true);
+    if (userData.username && comment.length > 0) {
+      setCanComment(true);
     } else {
-      setIsValid(false);
+      setCanComment(false);
     }
   }, [comment]);
 
@@ -88,11 +89,30 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Add a comment..."
+          onClick={() => {
+            if (!userData.username) {
+              toast.error(() => (
+                <span>
+                  You must be signed in to comment.
+                  <br />
+                  <Link
+                    to="/login"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                    onClick={(t) => toast.dismiss(t.currentTarget.id)}
+                  >
+                    Sign in
+                  </Link>
+                </span>
+              ));
+            }
+          }}
         />
         <button
-          className={`CommentsSection__button ${isValid ? "" : "m-disabled"}`}
+          className={`CommentsSection__button ${
+            canComment ? "" : "m-disabled"
+          }`}
           onClick={handleSubmit}
-          disabled={!isValid}
+          disabled={!canComment}
         >
           Post
         </button>

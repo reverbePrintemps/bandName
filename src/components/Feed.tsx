@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { PostType } from "./FeedContainer";
 import { useUserData } from "../lib/hooks";
 import { Card, CardKind } from "./Card";
+import { Link } from "react-router-dom";
 import { User } from "firebase/auth";
 import toast from "react-hot-toast";
 import { Spinner } from "./Spinner";
@@ -56,10 +57,21 @@ export const Feed = ({ posts, orderBy, loadingPosts }: FeedProps) => {
             });
             setShowCreatePost(true);
           } else {
-            toast.error("You must be signed in to create a post.", {
-              position: "bottom-center",
-              style: { marginBottom: "72px" },
-            });
+            toast.error(
+              () => (
+                <span>
+                  You must be signed in to create a post.{" "}
+                  <Link
+                    to="/login"
+                    style={{ color: "blue", textDecoration: "underline" }}
+                    onClick={(t) => toast.dismiss(t.currentTarget.id)}
+                  >
+                    Sign in
+                  </Link>
+                </span>
+              ),
+              { position: "bottom-center", style: { marginBottom: "72px" } }
+            );
           }
         }}
       />
