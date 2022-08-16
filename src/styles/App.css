@@ -7,6 +7,7 @@
   --font-fam-inter: "Inter", "Verdana", sans-serif;
   --font-fam-nanum: "Nanum Pen Script", "Verdana", sans-serif;
   --navbar-height: 85px;
+  --comment-box-height: 72px;
   --container-max-width: 800px;
 }
 

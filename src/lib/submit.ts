@@ -1,5 +1,5 @@
-import { firestore, serverTimestamp } from "../lib/firebase";
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
+import { firestore, serverTimestamp } from "../lib/firebase";
 import kebabCase from "lodash.kebabcase";
 import { FormEvent } from "react";
 
@@ -68,16 +68,16 @@ export type CreatePostProps = {
 };
 
 type CreatePostData = {
-  heartCount: number;
+  uid: string;
   slug: string;
   title: string;
   genre: string;
   country: string;
-  uid: string;
+  username: string;
+  heartCount: number;
   description: string;
   createdAt: FieldValue;
   updatedAt: FieldValue;
-  username: string;
 };
 
 export const createPost = async ({

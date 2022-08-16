@@ -120,12 +120,13 @@ export const UsernameForm = ({ userData }: UsernameFormProps) => {
         <>
           <h2 className="UsernameForm__title">Choose Username</h2>
           <form onSubmit={(e) => onSubmit(e, user)}>
-            <FormControl>
+            <FormControl className="UsernameForm__inputContainer">
               <InputLabel htmlFor="username" className="UsernameForm__label">
                 Username
               </InputLabel>
               <FilledInput
                 id="username"
+                className="UsernameForm__input"
                 name="username"
                 value={formValue}
                 onChange={onChange}

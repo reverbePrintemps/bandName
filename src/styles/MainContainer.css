@@ -5,5 +5,5 @@
   max-width: var(--container-max-width);
   min-height: 100%;
   margin: 0 auto;
-  padding: var(--navbar-height) 16px 16px;
+  padding: var(--navbar-height) 16px var(--comment-box-height);
 }

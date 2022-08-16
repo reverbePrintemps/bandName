@@ -1,3 +1,7 @@
+.FeedContainer__userProfile {
+  margin-top: 16px;
+}
+
 .FeedContainer {
   display: flex;
   flex-direction: column;

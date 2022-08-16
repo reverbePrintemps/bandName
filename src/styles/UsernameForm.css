@@ -3,9 +3,19 @@
 }
 
 .UsernameForm__title {
+  font-family: monospace;
+  font-size: 16px;
   text-transform: uppercase;
+}
+
+.UsernameForm .UsernameForm__inputContainer {
+  margin-top: 16px;
 }
 
 .UsernameForm .UsernameForm__label {
   color: var(--secondary-text);
+}
+
+.UsernameForm .UsernameForm__input {
+  color: var(--main-text);
 }

@@ -75,6 +75,10 @@
   justify-content: flex-end;
 }
 
+.Card__buttonsContainer {
+  display: flex;
+}
+
 .Card__username {
   font-family: var(--font-fam-nanum);
   font-size: 20px;

@@ -1,9 +1,15 @@
-import { AccountCircle, DarkMode, Info, LightMode } from "@mui/icons-material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { UserContext } from "../lib/context";
 import { Link } from "react-router-dom";
+import {
+  AccountCircle,
+  DarkMode,
+  Home,
+  Info,
+  LightMode,
+} from "@mui/icons-material";
 
 import "../styles/NavbarMenu.css";
 
@@ -22,6 +28,8 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
     },
     [onThemeChange]
   );
+
+  const isHome = window.location.pathname === "/";
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -65,6 +73,21 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
           },
         }}
       >
+        <MenuItem sx={{ color: "var(--main-text" }} onClick={handleClose}>
+          <Link
+            className="NavbarMenu__menuLink"
+            to="/"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              })
+            }
+          >
+            <Home />
+            <p className="NavbarMenu">{isHome ? "Scroll to top" : "Home"}</p>
+          </Link>
+        </MenuItem>
         <MenuItem sx={{ color: "var(--main-text" }} onClick={handleClose}>
           <Link className="NavbarMenu__menuLink" to="/about">
             <Info />

@@ -1,12 +1,24 @@
 .UserProfile {
-  padding-top: 16px;
+  display: flex;
   text-align: center;
   font-family: var(--font-fam-nanum);
   color: var(--main-text);
 }
 
+.UserProfile.m-column {
+  flex-direction: column;
+}
+
+.UserProfile__icon.m-column {
+  width: 100%;
+}
+
 .UserProfile__username {
   font-size: 22px;
+  margin: 0 0 0 8px;
+}
+
+.UserProfile__username.m-column {
   margin: 0;
 }
 

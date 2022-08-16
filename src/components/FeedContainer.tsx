@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { FieldValue } from "firebase/firestore";
+import { SignOutButton } from "./SignOutButton";
 import { useParams } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
 import { SortMenu } from "./SortMenu";
@@ -50,7 +51,12 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
 
   return (
     <>
-      {username === filter && username && <UserProfile username={username} />}
+      {username === filter && username && (
+        <div className="FeedContainer__userProfile">
+          <UserProfile username={username} direction="column" />
+          <SignOutButton username={username} />
+        </div>
+      )}
       <div className="FeedContainer">
         <div className="FeedContainer__feedHeader">
           <Box margin="auto 0">

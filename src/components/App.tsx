@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { updateTheme } from "../lib/theme";
-import { Post } from "./SinglePostPage";
+import { SinglePostPage } from "./SinglePostPage";
 import { Custom404 } from "./Custom404";
 import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
@@ -180,7 +180,10 @@ const App = () => {
                 }
               />
               <Route path="/login" element={<Login />} />
-              <Route path="/:usernameParam/posts/:postId" element={<Post />} />
+              <Route
+                path="/:usernameParam/posts/:postId"
+                element={<SinglePostPage />}
+              />
               <Route path="/password_reset" element={<PasswordResetForm />} />
               <Route path="/about" element={<About />} />
               <Route path="*" element={<Custom404 />} />

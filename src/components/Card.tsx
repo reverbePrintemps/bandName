@@ -1,9 +1,10 @@
-import { CardButton, CardButtonKind } from "./CardButton";
 import { FormEvent, useContext, useEffect, useState } from "react";
+import { CardButton, CardButtonKind } from "./CardButton";
 import { CardOverflowMenu } from "./CardOverflowMenu";
 import { AutogrowingInput } from "./AutogrowingInput";
 import { IconButton, Tooltip } from "@mui/material";
 import { CountrySelector } from "./CountrySelector";
+import { CommentButton } from "./CommentButton";
 import { ShareContext } from "../lib/context";
 import { Cancel } from "@mui/icons-material";
 import firebase from "firebase/compat/app";
@@ -38,7 +39,6 @@ type CommonProps = {
 type CardProps = {
   kind: CardKind;
   isOwner: boolean;
-  // Currently a bug when converting to DocumentReference only
   clapCount: number;
   createdAt: number | undefined;
   onSubmit: ({
@@ -52,6 +52,7 @@ type CardProps = {
     description,
   }: onSubmit) => void;
   onCancelSubmission: () => void;
+  // Currently a bug when converting to DocumentReference only
   postRef: firebase.firestore.DocumentReference | undefined;
 } & CommonProps;
 
@@ -139,7 +140,6 @@ export const Card = (props: CardProps) => {
                 {country}
               </a>
             </h3>
-
             <div className="Card__footer">
               <div className="Card__postedInfo">
                 <a
@@ -150,13 +150,18 @@ export const Card = (props: CardProps) => {
                   u/{username}
                 </a>
               </div>
-              {postRef && (
-                <ClapButton
-                  ownPost={isOwner}
-                  postRef={postRef}
-                  count={clapCount}
-                />
-              )}
+              <div className="Card__buttonsContainer">
+                {postRef && (
+                  <>
+                    <CommentButton postRef={postRef} username={username} />
+                    <ClapButton
+                      ownPost={isOwner}
+                      postRef={postRef}
+                      count={clapCount}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -395,8 +400,7 @@ export const Card = (props: CardProps) => {
           <h3 className="Card__country">🙅</h3>
           <div className="Card__footer m-flexEnd">
             <CardButton
-              kind={CardButtonKind.Action}
-              label="Delete"
+              kind={CardButtonKind.Delete}
               onClick={() => {
                 toast.promise(deletePost(uid, slug), {
                   loading: "Deleting...",

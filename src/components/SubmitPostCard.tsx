@@ -33,11 +33,11 @@ export const SubmitPostCard = ({
       clapCount={0}
       isOwner={false}
       description={""}
+      postRef={undefined}
       username={username}
       onSubmit={onSubmit}
       createdAt={undefined}
       onCancelSubmission={onCancelSubmission}
-      postRef={undefined}
     />
   );
 };

@@ -1,5 +1,7 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { firestore, postToJSON } from "../lib/firebase";
-import { useParams } from "react-router-dom";
+import { onSnapshot, query } from "firebase/firestore";
+import { CommentsSection } from "./CommentsSection";
 import { useEffect, useState } from "react";
 import { useUserData } from "../lib/hooks";
 import { PostType } from "./FeedContainer";
@@ -7,42 +9,31 @@ import { Card, CardKind } from "./Card";
 
 import "../styles/SinglePostPage.css";
 
-export const Post = () => {
+export const SinglePostPage = () => {
   const userData = useUserData();
   const { usernameParam, postId } = useParams();
   const [post, setPost] = useState<PostType>();
-  const [userId, setUserId] = useState<string>();
-
-  // TODO Extract to own function
-  useEffect(() => {
-    (async () => {
-      firestore
-        .collection("usernames")
-        .doc(usernameParam)
-        .get()
-        .then((doc) => {
-          setUserId(doc.data()?.uid);
-        });
-    })();
-  }, [usernameParam]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      firestore
-        .collection("users")
-        .doc(userId)
-        .collection("posts")
-        .doc(postId)
-        .get()
-        .then((doc) => {
-          setPost(postToJSON(doc));
-        });
-    })();
-  }, [postId, userId]);
+    onSnapshot(
+      query(
+        firestore.collectionGroup("posts").where("slug", "==", postId).limit(1)
+      ),
+      (snapshot) => {
+        if (snapshot.docs.length === 0) {
+          navigate("/");
+        }
+        const post = postToJSON(snapshot.docs[0]);
+        setPost(post);
+      }
+    );
+  }, [postId]);
 
   if (!post) {
     return null;
   }
+
   const {
     uid,
     slug,
@@ -62,9 +53,6 @@ export const Post = () => {
 
   return (
     <div className="SinglePostPage">
-      <p className="SinglePostPage__title">
-        Someone wants you to behold this beauty 👇
-      </p>
       <Card
         kind={CardKind.Post}
         uid={uid}
@@ -81,6 +69,7 @@ export const Post = () => {
         description={description}
         onCancelSubmission={onCancelSubmission}
       />
+      <CommentsSection postRef={postRef} />
     </div>
   );
 };
