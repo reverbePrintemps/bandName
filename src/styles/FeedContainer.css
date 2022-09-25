@@ -12,11 +12,23 @@
 .FeedContainer__feedHeader {
   display: flex;
   justify-content: space-between;
+  color: var(--main-text);
+  align-items: center;
+}
+
+.FeedContainer__feedHeaderToggle {
+  display: flex;
+  align-items: center;
+  margin-left: -12px;
+}
+
+.FeedContainer__feedHeaderRight {
+  display: flex;
+  align-items: center;
 }
 
 .FeedContainer .FeedContainer__orderBy {
   font-family: monospace;
-  text-transform: uppercase;
   color: var(--main-text);
 }
 

@@ -1,4 +1,7 @@
+import { DarkMode, LightMode } from "@mui/icons-material";
+import { useCallback, useEffect, useState } from "react";
 import bandNameLogo from "../assets/band-name-logo.png";
+import { IconButton, Tooltip } from "@mui/material";
 import { NavbarMenu } from "./NavbarMenu";
 import { Link } from "react-router-dom";
 
@@ -11,6 +14,21 @@ type NavBarProps = {
 };
 
 export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
+  const [isLightTheme, setIsLightTheme] = useState<boolean>(theme === "light");
+
+  const onThemeChangeCallback = useCallback(
+    (isLightTheme: "light" | "dark") => {
+      onThemeChange(isLightTheme);
+    },
+    [onThemeChange]
+  );
+  useEffect(() => {
+    if (isLightTheme) {
+      onThemeChangeCallback("light");
+    } else {
+      onThemeChangeCallback("dark");
+    }
+  }, [isLightTheme, onThemeChangeCallback]);
   return (
     <nav className="Navbar">
       <div className="Navbar__container">
@@ -24,7 +42,17 @@ export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
             alt="BandName! logo"
           />
         </Link>
-        <NavbarMenu theme={theme} onThemeChange={onThemeChange} />
+        <div className="Navbar__right">
+          <Tooltip title={isLightTheme ? "Dark Theme" : "Light Theme"}>
+            <IconButton
+              style={{ color: "#ccc" }}
+              onClick={() => setIsLightTheme(!isLightTheme)}
+            >
+              {isLightTheme ? <DarkMode /> : <LightMode />}
+            </IconButton>
+          </Tooltip>
+          <NavbarMenu />
+        </div>
       </div>
     </nav>
   );

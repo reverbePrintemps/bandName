@@ -4,4 +4,5 @@
 
 .SortMenu .SortMenu__icon {
   color: var(--ui);
+  margin-right: -8px;
 }

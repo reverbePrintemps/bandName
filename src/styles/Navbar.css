@@ -27,3 +27,8 @@
 .Navbar__logo:hover {
   opacity: 0.8;
 }
+
+.Navbar__right {
+  display: flex;
+  align-items: center;
+}

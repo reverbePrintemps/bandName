@@ -1,17 +1,21 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import { Sort, ToggleOff, ToggleOn } from "@mui/icons-material";
+import {
+  FormControl,
+  FormLabel,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { Sort } from "@mui/icons-material";
 import { useState } from "react";
 
 import "../styles/SortMenu.css";
 
 type SortMenuProps = {
   onSortPressed: (sort: "createdAt" | "heartCount") => void;
-  onFilterPressed: (toggleNsfwOn: boolean) => void;
 };
 
-export const SortMenu = ({ onFilterPressed, onSortPressed }: SortMenuProps) => {
+export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [nsfwFilter, setNsfwFilter] = useState(true);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,16 +52,6 @@ export const SortMenu = ({ onFilterPressed, onSortPressed }: SortMenuProps) => {
           }}
         >
           Sort by Most Popular
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setNsfwFilter(!nsfwFilter);
-            onFilterPressed(!nsfwFilter);
-            setAnchorEl(null);
-          }}
-        >
-          <IconButton>{nsfwFilter ? <ToggleOff /> : <ToggleOn />}</IconButton>
-          {nsfwFilter ? "NSFW Filter On" : "NSFW Filter Off"}
         </MenuItem>
       </Menu>
     </div>

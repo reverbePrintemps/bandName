@@ -1,4 +1,12 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { FieldValue } from "firebase/firestore";
 import { SignOutButton } from "./SignOutButton";
 import { useParams } from "react-router-dom";
@@ -7,6 +15,8 @@ import { SortMenu } from "./SortMenu";
 import { Feed } from "./Feed";
 
 import "../styles/FeedContainer.css";
+import { ToggleOff, ToggleOn } from "@mui/icons-material";
+import { useState } from "react";
 
 export type PostType = {
   uid: string;
@@ -44,6 +54,7 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
     filterKind: "username" | "country" | "genre";
     filter: string;
   }>();
+  const [nsfwFilter, setNsfwFilter] = useState(true);
   const {
     username,
     reachedEnd,
@@ -66,15 +77,37 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
       )}
       <div className="FeedContainer">
         <div className="FeedContainer__feedHeader">
-          <Box margin="auto 0">
-            <Typography className="FeedContainer__orderBy">
-              {orderBy === "createdAt" ? "Latest" : "Most popular"}
-            </Typography>
-          </Box>
-          <SortMenu
-            onFilterPressed={onFilterPressed}
-            onSortPressed={onSortPressed}
-          />
+          <FormControl>
+            <FormLabel style={{ color: "var(--ui)", fontFamily: "monospace" }}>
+              NSFW Filter
+            </FormLabel>
+            <Box className="FeedContainer__feedHeaderToggle">
+              <Switch
+                onClick={() => {
+                  setNsfwFilter(!nsfwFilter);
+                  onFilterPressed(!nsfwFilter);
+                }}
+                checked={nsfwFilter}
+              />
+            </Box>
+          </FormControl>
+          <FormControl>
+            <FormLabel
+              style={{
+                textAlign: "right",
+                color: "var(--ui)",
+                fontFamily: "monospace",
+              }}
+            >
+              Sort By
+            </FormLabel>
+            <Box className="FeedContainer__feedHeaderRight">
+              <Typography className="FeedContainer__orderBy">
+                {orderBy === "createdAt" ? "Latest" : "Most popular"}
+              </Typography>
+              <SortMenu onSortPressed={onSortPressed} />
+            </Box>
+          </FormControl>
         </div>
         {posts.length > 0 ? (
           <>

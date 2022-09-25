@@ -1,6 +1,7 @@
 .NavbarMenu {
   margin: auto 0;
   padding-left: 8px;
+  margin-right: -8px;
 }
 
 .NavbarMenu .NavbarMenu__icon {

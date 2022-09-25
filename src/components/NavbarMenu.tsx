@@ -1,33 +1,15 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { AccountCircle, Home, Info } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useContext, useState } from "react";
 import { UserContext } from "../lib/context";
 import { Link } from "react-router-dom";
-import {
-  AccountCircle,
-  DarkMode,
-  Home,
-  Info,
-  LightMode,
-} from "@mui/icons-material";
 
 import "../styles/NavbarMenu.css";
 
-type NavbarMenuProps = {
-  theme: string;
-  onThemeChange: (theme: "light" | "dark") => void;
-};
-
-export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
+export const NavbarMenu = () => {
   const { username } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isLightTheme, setIsLightTheme] = useState<boolean>(theme === "light");
-  const onThemeChangeCallback = useCallback(
-    (isLightTheme: "light" | "dark") => {
-      onThemeChange(isLightTheme);
-    },
-    [onThemeChange]
-  );
 
   const isHome = window.location.pathname === "/";
 
@@ -38,14 +20,6 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    if (isLightTheme) {
-      onThemeChangeCallback("light");
-    } else {
-      onThemeChangeCallback("dark");
-    }
-  }, [isLightTheme, onThemeChangeCallback]);
 
   return (
     <div className="NavbarMenu">
@@ -114,24 +88,6 @@ export const NavbarMenu = ({ theme, onThemeChange }: NavbarMenuProps) => {
               <AccountCircle />
               <p className="NavbarMenu">Sign in</p>
             </Link>
-          )}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            setIsLightTheme(!isLightTheme);
-          }}
-        >
-          {isLightTheme ? (
-            <>
-              <DarkMode />
-              <p className="NavbarMenu">Dark Mode</p>
-            </>
-          ) : (
-            <>
-              <LightMode />
-              <p className="NavbarMenu">Light Mode</p>
-            </>
           )}
         </MenuItem>
       </Menu>
