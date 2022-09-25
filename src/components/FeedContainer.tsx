@@ -69,8 +69,14 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
       <div className="FeedContainer">
         <div className="FeedContainer__feedHeader">
           <FormControl>
-            <FormLabel style={{ color: "var(--ui)", fontFamily: "monospace" }}>
-              NSFW Filter
+            <FormLabel
+              style={{
+                color: "#666",
+                fontFamily: "monospace",
+                fontWeight: "bold",
+              }}
+            >
+              NSFW Filter {nsfwFilter ? "On" : "Off"}
             </FormLabel>
             <Box className="FeedContainer__feedHeaderToggle">
               <Switch
@@ -86,8 +92,9 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
             <FormLabel
               style={{
                 textAlign: "right",
-                color: "var(--ui)",
+                color: "#666",
                 fontFamily: "monospace",
+                fontWeight: "bold",
               }}
             >
               Sort By
