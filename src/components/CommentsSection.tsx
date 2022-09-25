@@ -1,7 +1,7 @@
 import { onSnapshot, DocumentData } from "firebase/firestore";
 import { CardOverflowMenu } from "./CardOverflowMenu";
 import { serverTimestamp } from "../lib/firebase";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { UserProfile } from "./UserProfile";
 import firebase from "firebase/compat/app";
 import { useUserData } from "../lib/hooks";
@@ -17,9 +17,9 @@ type CommentsSectionProps = {
 
 export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
   const [comments, setComments] = useState<DocumentData[]>([]);
-  const [comment, setComment] = useState("");
   const [commentCount, setCommentCount] = useState(0);
   const [canComment, setCanComment] = useState(false);
+  const [comment, setComment] = useState("");
   const userData = useUserData();
 
   useEffect(() => {
@@ -45,14 +45,15 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
     }
   }, [comment]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     (async () => {
       await postRef.collection("comments").add({
         comment,
         createdAt: serverTimestamp(),
         username: userData.username,
       });
-      postRef.update({ commentCount: commentCount + 1 });
+      // Reset input
       setComment("");
     })();
   };
@@ -65,10 +66,12 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
         return (
           <div key={index} className="CommentsSection__commentContainer">
             <div className="CommentsSection___commentHeader">
-              <UserProfile username={comment.username} direction="row" />
-              <span className="CommentsSection__timeAgo">
-                {timeAgo(comment.createdAt.toMillis())}
-              </span>
+              <div className="CommentsSection__commentHeaderLeft">
+                <UserProfile username={comment.username} direction="row" />
+                <span className="CommentsSection__timeAgo">
+                  {comment.createdAt && timeAgo(comment.createdAt.toMillis())}
+                </span>
+              </div>
               <CardOverflowMenu
                 isOwner={userData.username === comment.username}
                 onSharePressed={() => null}
@@ -83,39 +86,44 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
         );
       })}
       <div className="CommentsSection__inputContainer">
-        <input
-          type="text"
-          className="CommentsSection__input"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Add a comment..."
-          onClick={() => {
-            if (!userData.username) {
-              toast.error(() => (
-                <span>
-                  You must be signed in to comment.
-                  <br />
-                  <Link
-                    to="/login"
-                    style={{ color: "blue", textDecoration: "underline" }}
-                    onClick={(t) => toast.dismiss(t.currentTarget.id)}
-                  >
-                    Sign in
-                  </Link>
-                </span>
-              ));
-            }
-          }}
-        />
-        <button
-          className={`CommentsSection__button ${
-            canComment ? "" : "m-disabled"
-          }`}
-          onClick={handleSubmit}
-          disabled={!canComment}
+        <form
+          className="CommentsSection__inputContainerInner"
+          onSubmit={(e) => handleSubmit(e)}
         >
-          Post
-        </button>
+          <input
+            type="text"
+            className="CommentsSection__input"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Leave a comment..."
+            onClick={() => {
+              if (!userData.username) {
+                toast.error(() => (
+                  <span>
+                    You must be signed in to comment.
+                    <br />
+                    <Link
+                      to="/login"
+                      style={{ color: "blue", textDecoration: "underline" }}
+                      onClick={(t) => toast.dismiss(t.currentTarget.id)}
+                    >
+                      Sign in
+                    </Link>
+                  </span>
+                ));
+              }
+            }}
+          />
+          <button
+            type="submit"
+            className={`CommentsSection__button ${
+              canComment ? "" : "m-disabled"
+            }`}
+            disabled={!canComment}
+          >
+            Post
+          </button>
+        </form>
       </div>
     </div>
   );
