@@ -29,6 +29,7 @@ export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
       onThemeChangeCallback("dark");
     }
   }, [isLightTheme, onThemeChangeCallback]);
+
   return (
     <nav className="Navbar">
       <div className="Navbar__container">

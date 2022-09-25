@@ -1,22 +1,13 @@
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  IconButton,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Box, Switch, FormLabel, Typography, FormControl } from "@mui/material";
 import { FieldValue } from "firebase/firestore";
 import { SignOutButton } from "./SignOutButton";
 import { useParams } from "react-router-dom";
 import { UserProfile } from "./UserProfile";
 import { SortMenu } from "./SortMenu";
+import { useState } from "react";
 import { Feed } from "./Feed";
 
 import "../styles/FeedContainer.css";
-import { ToggleOff, ToggleOn } from "@mui/icons-material";
-import { useState } from "react";
 
 export type PostType = {
   uid: string;
