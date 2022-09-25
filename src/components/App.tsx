@@ -5,13 +5,13 @@ import { getThemeFromLocalStorage } from "../lib/storage";
 import { FeedContainer, PostType } from "./FeedContainer";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { firestore, postToJSON } from "../lib/firebase";
+import { SinglePostPage } from "./SinglePostPage";
 import { Route, Routes } from "react-router-dom";
 import { MainContainer } from "./MainContainer";
 import { useEffect, useState } from "react";
 import { ShareDrawer } from "./ShareDrawer";
 import { useUserData } from "../lib/hooks";
 import { updateTheme } from "../lib/theme";
-import { SinglePostPage } from "./SinglePostPage";
 import { Custom404 } from "./Custom404";
 import toast from "react-hot-toast";
 import { Navbar } from "./Navbar";
@@ -33,6 +33,7 @@ const App = () => {
   const [orderBy, setOrderBy] = useState<"createdAt" | "heartCount">(
     "createdAt"
   );
+  const [nsfwFilter, setNsfwFilter] = useState(true);
   const [theme, setTheme] = useState(getThemeFromLocalStorage());
   const [showSplash, setShowSplash] = useState(true);
   const [body, setBody] = useState<HTMLBodyElement | null>(null);
@@ -60,10 +61,16 @@ const App = () => {
     // Listen for any changes to the posts collection
     onSnapshot(
       query(
-        firestore
-          .collectionGroup("posts")
-          .orderBy(orderBy, "desc")
-          .limit(POSTS_PER_REQUEST_LIMIT)
+        nsfwFilter
+          ? firestore
+              .collectionGroup("posts")
+              .where("nsfw", "==", false)
+              .orderBy(orderBy, "desc")
+              .limit(POSTS_PER_REQUEST_LIMIT)
+          : firestore
+              .collectionGroup("posts")
+              .orderBy(orderBy, "desc")
+              .limit(POSTS_PER_REQUEST_LIMIT)
       ),
       (querySnapshot) => {
         const initialPosts = querySnapshot.docs.map(postToJSON) as PostType[];
@@ -76,7 +83,7 @@ const App = () => {
         toast.error(error.message);
       }
     );
-  }, [orderBy]);
+  }, [orderBy, nsfwFilter]);
 
   useEffect(() => {
     // Listen for changes to the posts collection
@@ -84,11 +91,18 @@ const App = () => {
       setLoadingPosts(true);
       onSnapshot(
         query(
-          firestore
-            .collectionGroup("posts")
-            .orderBy(orderBy, "desc")
-            .startAfter(cursor)
-            .limit(POSTS_PER_REQUEST_LIMIT)
+          nsfwFilter
+            ? firestore
+                .collectionGroup("posts")
+                .where("nsfw", "==", false)
+                .orderBy(orderBy, "desc")
+                .startAfter(cursor)
+                .limit(POSTS_PER_REQUEST_LIMIT)
+            : firestore
+                .collectionGroup("posts")
+                .orderBy(orderBy, "desc")
+                .startAfter(cursor)
+                .limit(POSTS_PER_REQUEST_LIMIT)
         ),
         (querySnapshot) => {
           const newPosts = querySnapshot.docs.map(postToJSON) as PostType[];
@@ -102,7 +116,7 @@ const App = () => {
         }
       );
     }
-  }, [loadMore, cursor, orderBy, posts]);
+  }, [loadMore, cursor, orderBy, posts, nsfwFilter]);
 
   // Reset cursor on orderBy change
   useEffect(() => {
@@ -156,6 +170,9 @@ const App = () => {
                       uid={userData.user?.uid}
                       username={userData.username}
                       reachedEnd={reachedEndOfPosts}
+                      onFilterPressed={(nsfwFilter) =>
+                        setNsfwFilter(nsfwFilter)
+                      }
                       onSortPressed={(orderBy) => setOrderBy(orderBy)}
                       orderBy={orderBy}
                       loadingPosts={loadingPosts}
@@ -172,6 +189,9 @@ const App = () => {
                       posts={posts}
                       username={userData.username}
                       reachedEnd={reachedEndOfPosts}
+                      onFilterPressed={(nsfwFilter) =>
+                        setNsfwFilter(nsfwFilter)
+                      }
                       onSortPressed={(orderBy) => setOrderBy(orderBy)}
                       orderBy={orderBy}
                       loadingPosts={loadingPosts}

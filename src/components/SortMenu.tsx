@@ -1,29 +1,22 @@
 import { IconButton, Menu, MenuItem } from "@mui/material";
-import { Sort } from "@mui/icons-material";
+import { Sort, ToggleOff, ToggleOn } from "@mui/icons-material";
 import { useState } from "react";
 
 import "../styles/SortMenu.css";
 
 type SortMenuProps = {
   onSortPressed: (sort: "createdAt" | "heartCount") => void;
+  onFilterPressed: (toggleNsfwOn: boolean) => void;
 };
 
-export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
+export const SortMenu = ({ onFilterPressed, onSortPressed }: SortMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [nsfwFilter, setNsfwFilter] = useState(true);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (menuItem?: string | null) => {
-    const orderBy =
-      menuItem && menuItem === "Most recent"
-        ? "createdAt"
-        : menuItem === "Most popular"
-        ? "heartCount"
-        : undefined;
-    orderBy && onSortPressed(orderBy);
-    setAnchorEl(null);
-  };
+
   return (
     <div className="SortMenu">
       <IconButton onClick={handleClick} className="SortMenu__icon">
@@ -32,7 +25,7 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
       <Menu
         anchorEl={anchorEl}
         open={open}
-        onClose={() => handleClose()}
+        onClose={() => setAnchorEl(null)}
         PaperProps={{
           style: {
             backgroundColor: "var(--card-bg)",
@@ -40,11 +33,31 @@ export const SortMenu = ({ onSortPressed }: SortMenuProps) => {
           },
         }}
       >
-        <MenuItem onClick={(e) => handleClose(e.currentTarget.textContent)}>
-          Most recent
+        <MenuItem
+          onClick={() => {
+            onSortPressed("createdAt");
+            setAnchorEl(null);
+          }}
+        >
+          Sort by Most Recent
         </MenuItem>
-        <MenuItem onClick={(e) => handleClose(e.currentTarget.textContent)}>
-          Most popular
+        <MenuItem
+          onClick={() => {
+            onSortPressed("heartCount");
+            setAnchorEl(null);
+          }}
+        >
+          Sort by Most Popular
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setNsfwFilter(!nsfwFilter);
+            onFilterPressed(!nsfwFilter);
+            setAnchorEl(null);
+          }}
+        >
+          <IconButton>{nsfwFilter ? <ToggleOff /> : <ToggleOn />}</IconButton>
+          {nsfwFilter ? "NSFW Filter On" : "NSFW Filter Off"}
         </MenuItem>
       </Menu>
     </div>

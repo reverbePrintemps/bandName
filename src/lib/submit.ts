@@ -1,5 +1,6 @@
 import { doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { firestore, serverTimestamp } from "../lib/firebase";
+import { isProfane } from "./nsfw-filter";
 import kebabCase from "lodash.kebabcase";
 import { FormEvent } from "react";
 
@@ -20,6 +21,7 @@ export type EditPostProps = {
 type EditPostData = {
   title: string;
   genre: string;
+  nsfw: boolean;
   country: string;
   description: string;
   updatedAt: FieldValue;
@@ -36,6 +38,8 @@ export const editPost = async ({
 }: EditPostProps) => {
   e.preventDefault();
 
+  const isNSFW = isProfane(title) || isProfane(genre) || isProfane(description);
+
   // const uid = user.uid;
   const ref = firestore
     .collection("users")
@@ -48,6 +52,7 @@ export const editPost = async ({
     title,
     genre,
     country,
+    nsfw: isNSFW,
     // TODO Migrate posts to all have empty description field
     // description field was introduced later, so it might not exist on older posts
     description: description || "",
@@ -70,6 +75,7 @@ export type CreatePostProps = {
 type CreatePostData = {
   uid: string;
   slug: string;
+  nsfw: boolean;
   title: string;
   genre: string;
   country: string;
@@ -94,6 +100,8 @@ export const createPost = async ({
   // Ensure slug is URL safe
   const slug = encodeURI(kebabCase(title));
 
+  const isNSFW = isProfane(title) || isProfane(genre) || isProfane(description);
+
   // const uid = user.uid;
   const ref = firestore
     .collection("users")
@@ -110,6 +118,7 @@ export const createPost = async ({
     uid,
     username,
     description,
+    nsfw: isNSFW,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
     heartCount: 0,

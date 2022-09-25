@@ -33,6 +33,7 @@ type FeedContainerProps = {
   username: string | null | undefined;
   reachedEnd: boolean;
   onSortPressed: (sort: "createdAt" | "heartCount") => void;
+  onFilterPressed: (nsfwFilter: boolean) => void;
   orderBy: "createdAt" | "heartCount";
   uid: string | undefined;
   loadingPosts: boolean;
@@ -43,8 +44,14 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
     filterKind: "username" | "country" | "genre";
     filter: string;
   }>();
-  const { username, reachedEnd, onSortPressed, orderBy, loadingPosts } =
-    feedProps;
+  const {
+    username,
+    reachedEnd,
+    onSortPressed,
+    onFilterPressed,
+    orderBy,
+    loadingPosts,
+  } = feedProps;
   const filteredPosts =
     filterKind && feedProps.posts.filter((post) => post[filterKind] === filter);
   const posts = filteredPosts ?? feedProps.posts;
@@ -64,7 +71,10 @@ export const FeedContainer = (feedProps: FeedContainerProps) => {
               {orderBy === "createdAt" ? "Latest" : "Most popular"}
             </Typography>
           </Box>
-          <SortMenu onSortPressed={onSortPressed} />
+          <SortMenu
+            onFilterPressed={onFilterPressed}
+            onSortPressed={onSortPressed}
+          />
         </div>
         {posts.length > 0 ? (
           <>
