@@ -68,6 +68,7 @@ export const AutogrowingInput = ({
           autoComplete={passwordManager === "disable" ? "off" : undefined}
           data-lpignore={passwordManager === "disable" ? "true" : undefined}
           data-form-type={passwordManager === "disable" ? "other" : undefined}
+          spellCheck={false}
         />
       </div>
     </div>

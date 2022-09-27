@@ -6,6 +6,7 @@
   align-items: center;
   background: var(--button-bg);
   color: #eef0f1;
+  font-family: monospace;
 }
 
 .CardButton:hover {

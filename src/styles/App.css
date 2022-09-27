@@ -6,7 +6,7 @@
   --font-fam-knewave: "Knewave", "Verdana", sans-serif;
   --font-fam-inter: "Inter", "Verdana", sans-serif;
   --font-fam-nanum: "Nanum Pen Script", "Verdana", sans-serif;
-  --navbar-height: 85px;
+  --navbar-height: 100px;
   --comment-box-height: 72px;
   --container-max-width: 800px;
 }
@@ -58,6 +58,7 @@ li {
 
 .App {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--app-bg);
 }

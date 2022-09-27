@@ -7,6 +7,16 @@ import { FormEvent } from "react";
 export const deletePost = async (uid: string, slug: string) =>
   await deleteDoc(doc(firestore, `/users/${uid}/posts`, slug));
 
+// So far unused
+export const deleteComment = async (
+  uid: string,
+  postId: string,
+  commentId: string
+) =>
+  await deleteDoc(
+    doc(firestore, `/users/${uid}/posts/${postId}/comments/`, commentId)
+  );
+
 export type EditPostProps = {
   e: FormEvent<HTMLFormElement>;
   uid: string;

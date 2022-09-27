@@ -6,7 +6,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin: 16px 0 0;
 }
 
 .FeedContainer__feedHeader {
@@ -14,6 +13,12 @@
   justify-content: space-between;
   color: var(--main-text);
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--app-bg);
+  padding: 16px 16px;
+  margin: 0 -16px;
 }
 
 .FeedContainer__feedHeaderToggle {

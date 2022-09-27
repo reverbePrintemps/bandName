@@ -3,25 +3,30 @@
   justify-content: space-between;
   width: 100%;
   background: #181818;
-  position: fixed;
-  top: 0;
-  left: 0;
   font-weight: bold;
-  z-index: 1;
+  z-index: 2;
 }
 
 .Navbar__container {
   padding: 0 16px;
   width: 100%;
+  height: var(--navbar-height);
   max-width: var(--container-max-width);
   margin: auto;
   display: flex;
   justify-content: space-between;
 }
 
+.Navbar__link {
+  height: max-content;
+  margin: auto 0;
+}
+
 .Navbar__logo {
   width: var(--navbar-height);
   object-fit: cover;
+  /* TODO Magic number */
+  width: 84px;
 }
 
 .Navbar__logo:hover {

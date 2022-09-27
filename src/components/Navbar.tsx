@@ -4,6 +4,7 @@ import bandNameLogo from "../assets/band-name-logo.png";
 import { IconButton, Tooltip } from "@mui/material";
 import { NavbarMenu } from "./NavbarMenu";
 import { Link } from "react-router-dom";
+import Headroom from "react-headroom";
 
 import "../styles/Navbar.css";
 
@@ -31,9 +32,12 @@ export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
   }, [isLightTheme, onThemeChangeCallback]);
 
   return (
-    <nav className="Navbar">
+    <Headroom
+      className="Navbar"
+      style={{ backgroundColor: "#181818", width: "100%" }}
+    >
       <div className="Navbar__container">
-        <Link to="/" onClick={onClick}>
+        <Link className="Navbar__link" to="/" onClick={onClick}>
           <img
             className="Navbar__logo"
             // Ratio of image is 1,91:1 as per specs
@@ -55,6 +59,6 @@ export const Navbar = ({ theme, onClick, onThemeChange }: NavBarProps) => {
           <NavbarMenu />
         </div>
       </div>
-    </nav>
+    </Headroom>
   );
 };
