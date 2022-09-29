@@ -13,7 +13,11 @@ const MONTH_NAMES = [
   "December",
 ];
 
-function getFormattedDate(date, prefomattedDate = false, hideYear = false) {
+function getFormattedDate(
+  date: Date,
+  prefomattedDate?: string,
+  hideYear?: boolean
+) {
   const day = date.getDate();
   const month = MONTH_NAMES[date.getMonth()];
   const year = date.getFullYear();
@@ -22,7 +26,7 @@ function getFormattedDate(date, prefomattedDate = false, hideYear = false) {
 
   if (minutes < 10) {
     // Adding leading zero to minutes
-    minutes = `0${minutes}`;
+    return `0${minutes}`;
   }
 
   if (prefomattedDate) {
@@ -41,16 +45,18 @@ function getFormattedDate(date, prefomattedDate = false, hideYear = false) {
 }
 
 // --- Main function
-export function timeAgo(dateParam) {
-  if (!dateParam) {
+export function timeAgo(locale: string, date: Date) {
+  if (!date) {
     return null;
   }
 
-  const date = typeof dateParam === "object" ? dateParam : new Date(dateParam);
   const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
   const today = new Date();
-  const yesterday = new Date(today - DAY_IN_MS);
-  const seconds = Math.round((today - date) / 1000);
+  const yesterday = new Date(today.getDate() - DAY_IN_MS);
+
+  const seconds = Math.round(
+    (new Date(today).valueOf() - new Date(date).valueOf()) / 1000
+  );
   const minutes = Math.round(seconds / 60);
   const isToday = today.toDateString() === date.toDateString();
   const isYesterday = yesterday.toDateString() === date.toDateString();
@@ -69,7 +75,7 @@ export function timeAgo(dateParam) {
   } else if (isYesterday) {
     return getFormattedDate(date, "Yesterday"); // Yesterday at 10:20
   } else if (isThisYear) {
-    return getFormattedDate(date, false, true); // 10. January at 10:20
+    return date.toLocaleDateString(locale, { dateStyle: "short" }); // 31/01/2022 for "en-US"
   }
 
   return getFormattedDate(date); // 10. January 2017. at 10:20

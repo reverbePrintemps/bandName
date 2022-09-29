@@ -20,7 +20,15 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
   const [commentCount, setCommentCount] = useState(0);
   const [canComment, setCanComment] = useState(false);
   const [comment, setComment] = useState("");
+  const [locale, setLocale] = useState<string>("en-US");
   const userData = useUserData();
+
+  useEffect(() => {
+    if (navigator.language !== "") {
+      setLocale(navigator.language);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     onSnapshot(
@@ -69,7 +77,8 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
               <div className="CommentsSection__commentHeaderLeft">
                 <UserProfile username={comment.username} direction="row" />
                 <span className="CommentsSection__timeAgo">
-                  {comment.createdAt && timeAgo(comment.createdAt.toMillis())}
+                  {comment.createdAt &&
+                    timeAgo(locale, comment.createdAt.toDate())}
                 </span>
               </div>
               <CardOverflowMenu
@@ -96,6 +105,7 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Leave a comment..."
+            autoFocus
             onClick={() => {
               if (!userData.username) {
                 toast.error(() => (

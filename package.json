@@ -59,6 +59,7 @@
   "devDependencies": {
     "@types/lodash.kebabcase": "^4.1.7",
     "@types/react-headroom": "^2.2.2",
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "webpack-dev-server": "^4.11.1"
   }
 }

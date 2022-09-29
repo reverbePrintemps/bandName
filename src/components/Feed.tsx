@@ -68,6 +68,7 @@ export const Feed = ({ posts, orderBy, loadingPosts }: FeedProps) => {
                   >
                     Sign in
                   </Link>
+                  {" 💁"}
                 </span>
               ),
               { position: "bottom-center", style: { marginBottom: "72px" } }
