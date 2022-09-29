@@ -82,4 +82,5 @@
   cursor: not-allowed;
   background-color: var(--cardbutton-bg);
   opacity: 0.6;
+  color: var(--secondary-text);
 }

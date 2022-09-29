@@ -27,7 +27,6 @@ export const CommentsSection = ({ postRef }: CommentsSectionProps) => {
     if (navigator.language !== "") {
       setLocale(navigator.language);
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
