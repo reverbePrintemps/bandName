@@ -5,12 +5,12 @@ import "firebase/compat/storage";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-  projectId: "bandname-8b8ff",
-  messagingSenderId: "380634396627",
-  storageBucket: "bandname-8b8ff.appspot.com",
-  authDomain: "bandname-8b8ff.firebaseapp.com",
-  apiKey: "AIzaSyAIBSCRfx_k1bH5XiuSMoQDu7sP4jiAekk",
-  appId: "1:380634396627:web:5887214d04fe9b123d2126",
+  projectId: process.env.REACT_APP_projectId,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  authDomain: process.env.REACT_APP_authDomain,
+  apiKey: process.env.REACT_APP_apiKey,
+  appId: process.env.REACT_APP_appId,
 };
 
 if (!firebase.apps.length) {
